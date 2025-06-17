@@ -1,0 +1,62 @@
+{
+    "login": {
+        "title": "ًWelcome Back",
+        "desc": "Please login to continue inside our store",
+        "username": "Username or Email",
+        "password": "Password",
+        "login_btn": "Login",
+        "have_account": "Don't have an account ? ",
+        "register": "Register",
+        "errors": {
+            "username": {
+                "required": "Username or email is required",
+                "invalid": "Username or email is invalid"
+            },
+            "password": {
+                "required": "Password is required",
+                "min_length": "Password must be at least 6 characters long"
+            }
+        }
+    },
+    "register": {
+        "title": "Create New Account",
+        "desc": "Please enter the required data to create a new account",
+        "full_name": "Full Name",
+        "enter_full_name": "Enter your full name",
+        "username": "Username",
+        "phone_no": "Phone Number",
+        "enter_phone_no": "Enter your phone number",
+        "email": "Email",
+        "store_name": "Store Name",
+        "enter_store_name": "Enter store name",
+        "password": "Password",
+        "register_btn": "Create Account",
+        "have_account": "Already have an account ? ",
+        "login": "Login",
+        "errors": {
+            "full_name": {
+                "required": "Full name is required"
+            },
+            "username": {
+                "required": "Username is required",
+                "invalid": "Username must be lowercase English letters or numbers only"
+            },
+            "phone_no": {
+                "required": "Phone number is required",
+                "invalid": "Phone number is invalid"
+            },
+            "email": {
+                "required": "Email is required",
+                "invalid": "Email is invalid"
+            },
+            "store_name": {
+                "required": "Store name is required",
+                "min_length": "Store name must be at least 3 characters long"
+            },
+            "password": {
+                "required": "Password is required",
+                "min_length": "Password must be at least 6 characters long"
+            }
+        }
+    }
+}

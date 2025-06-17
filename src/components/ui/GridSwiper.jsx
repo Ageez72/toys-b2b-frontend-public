@@ -1,0 +1,99 @@
+"use client"
+import React, { useEffect } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Grid } from 'swiper/modules';
+import Link from 'next/link';
+import { useAppContext } from '../../../context/AppContext';
+import ProductCard from './ProductCard';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { BASE_API, endpoints } from '../../../constant/endpoints';
+import HorizontalLoader from './Loaders/HorizontalLoader';
+
+export default ({ title, route, badgeType, type, id }) => {
+    const { push } = useRouter();
+    async function fetchHomeProducts() {
+        const res = await axios.get(`${BASE_API}${endpoints.products.list}&itemType=${type}&pageSize=12`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+            }
+        });
+        return res;
+    }
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const { data, isLoading, error } = useQuery({
+        queryKey: [type],
+        queryFn: fetchHomeProducts,
+    });
+
+    if (isLoading) return <HorizontalLoader />;
+    if (error instanceof Error) return push("/");
+
+    if (data) {
+        const cookieKey = `has_items_${type.replace(/\s+/g, '_')}`;
+        const hasItems = data?.data?.items?.length > 0;
+
+        Cookies.set(cookieKey, hasItems.toString());
+    }
+
+    return (
+        <>
+            {
+                data?.data?.items.length ? (
+                    <div className="grid-card-container" id={id}>
+                        <div className="grid-header w-full flex items-center justify-between">
+                            <h2 className='grid-header-title'>{title}</h2>
+                            <Link href={route} className="outline-btn flex items-center justify-between gap-2">
+                                <span>اكتشف المزيد</span>
+                                <i className="icon-arrow-left-01-round"></i>
+                            </Link>
+                        </div>
+                        <Swiper
+                            dir={state.LANG === "ar" ? "rtl" : "ltr"}
+                            modules={[Navigation, Grid]}
+                            navigation
+                            spaceBetween={10}
+                            slidesPerView={1}
+                            slidesPerGroup={1}
+                            breakpoints={{
+                                320: {    // screens >= 320px
+                                    slidesPerView: 1,
+                                    grid: { rows: 1 },
+                                    spaceBetween: 10,
+                                },
+                                760: {    // screens >= 640px
+                                    slidesPerView: 1.2,
+                                    grid: { rows: 1 },
+                                    spaceBetween: 10,
+                                },
+                                1024: {   // screens >= 1024px
+                                    slidesPerView: 1.2,
+                                    grid: { rows: 1 },
+                                    spaceBetween: 10,
+                                },
+                                1160: {   // screens >= 1024px
+                                    slidesPerView: 1.5,
+                                    grid: { rows: 1 },
+                                    spaceBetween: 20,
+                                },
+                                1320: {   // screens >= 1024px
+                                    slidesPerView: 2,
+                                    grid: { rows: 2, fill: 'row' },
+                                    spaceBetween: 20,
+                                },
+                            }}
+                        >
+                            {
+                                data?.data?.items?.map((item, i) => (
+                                    <SwiperSlide key={item.id}><ProductCard item={item} type="grid" badgeType={badgeType} /></SwiperSlide>
+                                ))
+                            }
+                        </Swiper>
+                    </div>
+                ) : ""
+            }
+        </>
+    );
+};

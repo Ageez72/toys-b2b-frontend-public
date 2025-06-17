@@ -1,0 +1,236 @@
+"use client"
+import React, { useState, useEffect } from 'react';
+import FilterSingleItem from './FilterSingleItem';
+import FilterMultiItem from './FilterMultiItem';
+import Select2Form from './Select2Form';
+import MultiRangeSlider from './MultiRangeSlider';
+import BrandsFilters from './BrandsFilters';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { BASE_API } from '../../../constant/endpoints';
+
+const options2 = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+]
+
+const StatusOptions = [
+    {
+        id: 1,
+        title: "الكل",
+        value: ""
+    },
+    {
+        id: 2,
+        title: "متوفر",
+        value: "INSTOCK"
+    },
+    {
+        id: 3,
+        title: "غير متوفر",
+        value: "OUTOFSTOCK"
+    },
+]
+
+const itemTypeOptions = [
+    {
+        id: 1,
+        title: "وصل حديثاً",
+        value: "NEW ARRIVAL"
+    },
+    {
+        id: 2,
+        title: "منتجات قادمة",
+        value: "COMMING SOON"
+    },
+    {
+        id: 3,
+        title: "عروض",
+        value: "GIVEAWAY"
+    },
+    {
+        id: 4,
+        title: "تصفيات",
+        value: "CLEARANCE"
+    },
+]
+
+
+export default function FilterBar({ isProductsPage, close, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm }) {
+    const router = useRouter();
+    const useParams = useSearchParams();
+
+    const [fromPrice, setFromPrice] = useState(useParams.get('fromPrice') || 0); // نطاق السعر
+    const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 1000); // نطاق السعر
+    const [itemType, setItemType] = useState(useParams.get('itemType') || ""); // الاقسام
+    const [brand, setBrand] = useState(() => {
+        const value = useParams.get('brand');
+        return value ? value.split(',') : [];
+    }); // العلامات التجارية
+    const [category, setCategory] = useState(useParams.get('category') ? useParams.get('category').split(',') : ""); // التصنيفات
+    const [catalog, setCatalog] = useState(useParams.get('catalog') ? useParams.get('catalog').split(',') : ""); // الاستخدامات
+    const [itemStatus, setItemStatus] = useState(useParams.get('itemStatus') || ""); // حالة التوفر
+    const [categoriesAllOptions, setCategoriesAllOptions] = useState([])
+    const [catalogsAllOptions, setCatalogsAllOptions] = useState([])
+    const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([])
+    const [selectedCatalogsOptions, setSelectedCatalogsOptions] = useState([])
+
+    const handleApplyFilters = () => {
+        const query = new URLSearchParams();
+
+        if (fromPrice) query.set('fromPrice', fromPrice);
+        if (toPrice) query.set('toPrice', toPrice);
+        if (itemType) query.set('itemType', itemType);
+        if (itemStatus) query.set('itemStatus', itemStatus);
+        if (sortItem) query.set('sort', sortItem);
+        if (pageSizeItem) query.set('pageSize', pageSizeItem);
+        if (searchTerm) query.set('search', searchTerm);
+        if (brand && brand.length > 0) query.set('brand', brand.join(','));
+        if (category && category.length > 0) query.set('category', category.join(','));
+        if (catalog && catalog.length > 0) query.set('catalog', catalog.join(','));
+
+        console.log(itemStatus, itemType);
+        console.log(query.toString());
+
+        // Clear pagination token when filters change
+        Cookies.remove('pagesToken');
+        // Push new query to URL
+        router.push(`/products?${query.toString()}`);
+    };
+
+    const handleClearFilter = () => {
+        const query = new URLSearchParams();
+        Cookies.remove('pagesToken');
+        query.set('page', '1');
+        // Reset all filters
+        setFromPrice(0);
+        setToPrice(1000);
+        setItemType("");
+        setItemStatus("");
+        setBrand([]);
+        setCategory([]);
+        setCatalog([]);
+
+        setSelectedCategoriesOptions([]);
+        setSelectedCatalogsOptions([]);
+
+        // Push clean URL
+        router.push('/products');
+    }
+
+    const changePriceFrom = (from) => {
+        setFromPrice(from);
+    }
+
+    const changePriceTo = (to) => {
+        setToPrice(to)
+    }
+
+    const changeSingleItem = (name, value) => {
+        if (name === "itemType") {
+            setItemType(value)
+        } else if (name === "itemStatus") {
+            setItemStatus(value)
+        }
+    }
+
+    const changeMultiItem = (name, value) => {
+        if (name === "categories") {
+            setCategory(value.map(item => item.value))
+        } else if (name === "catalog") {
+            setCatalog(value.map(item => item.value))
+        }
+    }
+
+    const parentOptions = (options) => {
+        setBrand(options)
+    }
+
+    // get all options
+    const fetchCategoriesOptions = async () => {
+        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brand.join(',')}&lang=AR`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+            }
+        });
+
+        setCategoriesAllOptions(res.data);
+        const arr = res.data.filter(item => category.includes(item.categoryId));
+        let selected = [];
+        arr?.map(item => (
+            selected.push({
+                label: item.description,
+                value: item.categoryId
+            })
+        ))
+        setSelectedCategoriesOptions(selected)
+
+    }
+
+    const fetchCatalogsOptions = async () => {
+        const res = await axios.get(`${BASE_API}${catalogEndpoint}`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+            }
+        });
+        setCatalogsAllOptions(res.data);
+        const arr = res.data.catalogs.filter(item => catalog.includes(item.code));
+        let selected = [];
+        arr?.map(item => (
+            selected.push({
+                label: item.name,
+                value: item.categoryId
+            })
+        ))
+        setSelectedCatalogsOptions(selected)
+    }
+
+    useEffect(() => {
+        fetchCategoriesOptions()
+        fetchCatalogsOptions()
+    }, [])
+
+    return (
+        <>
+            <div className={`filter-bar card ${isProductsPage ? "filter-products-page" : ""}`}>
+                <div className="filter-header flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <i className="icon-filter-search"></i>
+                        <span className='filter-title'>تصفية النتائج</span>
+                    </div>
+                    {
+                        <div className="close-filter">
+                            <i className="icon-multiplication-sign cursor-pointer" onClick={() => {
+                                if (close) {
+                                    close();
+                                }
+                                const filterElement = document.querySelector(".filter-products-page");
+                                if (filterElement) {
+                                    filterElement.classList.remove("active");
+                                    document.documentElement.classList.remove("html-overflow");
+                                }
+                            }}></i>
+                        </div>
+
+                    }
+                </div>
+                <div className="filter-body">
+                    <MultiRangeSlider title={`نطاق السعر`} min={0} max={1000} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                    <FilterSingleItem title={`الأقسام`} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
+                    <BrandsFilters selected={brand} parentOptions={parentOptions} />
+                    <Select2Form title={`التصنيفات`} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} />
+                    <Select2Form title={`الاستخدامات`} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} />
+                    <FilterSingleItem title={`حالة التوفر`} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+
+                    <div className="action-btns flex gap-3 mt-4">
+                        <button className="primary-btn flex-1" onClick={handleApplyFilters}>إضافة</button>
+                        <button className="gray-btn flex-1" onClick={handleClearFilter}>مسح</button>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}

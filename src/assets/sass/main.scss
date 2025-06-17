@@ -1,0 +1,20 @@
+@import "./base/base.scss";
+@import "./base/loader.scss";
+@import"./base/_general.scss";
+
+
+// pages
+@import "./pages/auth.scss";
+@import "./pages/products.scss";
+
+
+// components
+@import "./components/modal.scss";
+@import "./components/productCard.scss";
+@import "./components/header.scss";
+@import "./components/hero.scss";
+@import "./components/sidebar.scss";
+@import "./components/pagination.scss";
+
+
+@import "./base/ltr.scss";
