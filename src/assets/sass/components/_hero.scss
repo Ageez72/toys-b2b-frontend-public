@@ -323,3 +323,37 @@
         }
     }
 }
+
+/* Add this to your global CSS or inside a scoped <style> block if using Tailwind */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 99999;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: fade-in-out 3s ease forwards;
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
