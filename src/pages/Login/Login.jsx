@@ -27,7 +27,6 @@ function Login() {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const translation = state.LANG === "en" ? en : ar;
   const router = useRouter()
-  // console.log(BASEURL);
 
   useEffect(() => {
     setIsLoading(false);
@@ -42,7 +41,6 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.get(`${BASE_API + endpoints.auth.login}&username=${data.identifier}&password=${data.password}`)
-      console.log(res);
 
       if (res.data.error) {
         setIsModalOpen(true);

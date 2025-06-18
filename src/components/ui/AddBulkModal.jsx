@@ -1,10 +1,17 @@
 'use client'
+import React, {useState} from 'react'
+import SearchInput from './SearchInput'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 
 export default function AddBulkModal({ open, onClose }) {
+    const [bulkItems, setBulkItems] = useState([])
+
+    const collectBulkItems = (item) => {
+        setBulkItems(item);
+    }
 
     return (
-        <Dialog open={open} onClose={onClose} className="relative z-9999">
+        <Dialog open={true} onClose={onClose} className="relative z-9999">
             <DialogBackdrop
                 transition
                 className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
@@ -41,7 +48,7 @@ export default function AddBulkModal({ open, onClose }) {
                                         <div className="name-qty flex items-center justify-between">
                                             <div className="name">
                                                 <label className='mobile-title hidden'>الاسم</label>
-                                                <input type='text' placeholder='أدخل الأسم' className='w-full mobile-box' />
+                                                <SearchInput bulk={true} onCollectBulkItems={collectBulkItems} />
                                             </div>
                                             <div className="qty">
                                                 <label className='mobile-title hidden'>المنتج</label>
@@ -83,53 +90,7 @@ export default function AddBulkModal({ open, onClose }) {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* product 2 */}
-                                    <div className="product-row flex items-center gap-4">
-                                        <div className="name-qty flex items-center justify-between">
-                                            <div className="name">
-                                                <label className='mobile-title hidden'>الاسم</label>
-                                                <input type='text' placeholder='أدخل الأسم' className='w-full mobile-box' />
-                                            </div>
-                                            <div className="qty">
-                                                <label className='mobile-title hidden'>المنتج</label>
-                                                <input type='number' min="0" placeholder='الكمية' className='w-full mobile-box' />
-                                            </div>
-                                        </div>
-                                        <div className="info flex items-center justify-between">
-                                            <div className="item flex-2">
-                                                <label className='mobile-title hidden'>رقم المنتج</label>
-                                                <span className='mobile-box'>0001</span>
-                                            </div>
-                                            <div className="item flex-1">
-                                                <label className='mobile-title hidden'>حالة التوفر</label>
-                                                <span className='mobile-box'>متوفر</span>
-                                            </div>
-                                            <div className="item flex-1">
-                                                <label className='mobile-title hidden'>اجمالي القطع</label>
-                                                <span className='mobile-box'>0</span>
-                                            </div>
-                                            <div className="item flex-1">
-                                                <label className='mobile-title hidden'>سعر القطعة</label>
-                                                <span className='mobile-box'>
-                                                    <span>0.00</span>
-                                                    <span> دينار</span>
-                                                </span>
-                                            </div>
-                                            <div className="item flex-1">
-                                                <label className='mobile-title hidden'>إجمالي السعر</label>
-                                                <span className='mobile-box'>
-                                                    <span>0.00</span>
-                                                    <span> دينار</span>
-                                                </span>
-                                            </div>
-                                            <div className="item delete">
-                                                <button className='delete-btn'>
-                                                    <i className="icon-minus"></i>
-                                                    <span className='mobile-title hidden'>حذف</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+
 
                                 </div>
 

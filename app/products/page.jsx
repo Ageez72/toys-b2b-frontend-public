@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import FilterBar from "@/components/ui/FilterBar";
 import ProductCard from "@/components/ui/ProductCard";
 import Dropdown from "@/components/ui/Dropdown";
-import Pagination from "@/components/ui/pagination";
+import Pagination from "@/components/ui/Pagination";
 import Loader from '@/components/ui/Loaders/Loader';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -114,7 +114,7 @@ export default function Page() {
   }, [apiParams]);
 
   async function fetchProducts() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}`, {
+    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&itemStatus=INSTOCK&lang=AR`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }

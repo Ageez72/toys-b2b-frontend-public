@@ -30,9 +30,6 @@ export default () => {
         queryFn: fetchHomeBrands,
     });
 
-    console.log(data);
-
-
     if (isLoading) return <CardLoader />;
     if (error instanceof Error) return push("/");
 

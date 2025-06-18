@@ -67,14 +67,14 @@ export default function Pagination({ currentPage, pagesToken, totalPages }) {
     <div className="flex items-center justify-center mt-4 px-4 py-3 sm:px-6 pagination-container">
       <div className="flex sm:flex-1 sm:items-center sm:justify-center">
         <div>
-          <nav aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md gap-3" dir="ltr">
+          <nav aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md gap-3">
             <button
               onClick={() => goToPage(currentPage - 1, pagesToken)}
               className="relative z-10 inline-flex items-center px-4 py-2 focus:z-20 prev"
               disabled={currentPage <= 1}
             >
               <span className="sr-only">Previous</span>
-              <i className="icon-double-left"></i>
+              <i className="icon-double-right"></i>
             </button>
 
             {renderPageButtons()}
@@ -85,7 +85,7 @@ export default function Pagination({ currentPage, pagesToken, totalPages }) {
               disabled={currentPage >= totalPages}
             >
               <span className="sr-only">Next</span>
-              <i className="icon-double-right"></i>
+              <i className="icon-double-left"></i>
             </button>
           </nav>
         </div>

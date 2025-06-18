@@ -11,12 +11,6 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { BASE_API } from '../../../constant/endpoints';
 
-const options2 = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
-
 const StatusOptions = [
     {
         id: 1,
@@ -72,33 +66,49 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     }); // العلامات التجارية
     const [category, setCategory] = useState(useParams.get('category') ? useParams.get('category').split(',') : ""); // التصنيفات
     const [catalog, setCatalog] = useState(useParams.get('catalog') ? useParams.get('catalog').split(',') : ""); // الاستخدامات
-    const [itemStatus, setItemStatus] = useState(useParams.get('itemStatus') || ""); // حالة التوفر
+    const [itemStatus, setItemStatus] = useState(useParams.get('itemStatus') || "INSTOCK"); // حالة التوفر
     const [categoriesAllOptions, setCategoriesAllOptions] = useState([])
     const [catalogsAllOptions, setCatalogsAllOptions] = useState([])
     const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([])
     const [selectedCatalogsOptions, setSelectedCatalogsOptions] = useState([])
 
     const handleApplyFilters = () => {
-        const query = new URLSearchParams();
 
-        if (fromPrice) query.set('fromPrice', fromPrice);
-        if (toPrice) query.set('toPrice', toPrice);
-        if (itemType) query.set('itemType', itemType);
-        if (itemStatus) query.set('itemStatus', itemStatus);
-        if (sortItem) query.set('sort', sortItem);
-        if (pageSizeItem) query.set('pageSize', pageSizeItem);
-        if (searchTerm) query.set('search', searchTerm);
-        if (brand && brand.length > 0) query.set('brand', brand.join(','));
-        if (category && category.length > 0) query.set('category', category.join(','));
-        if (catalog && catalog.length > 0) query.set('catalog', catalog.join(','));
+        if (isProductsPage) {
+            const query = new URLSearchParams();
 
-        console.log(itemStatus, itemType);
-        console.log(query.toString());
+            if (fromPrice) query.set('fromPrice', fromPrice);
+            if (toPrice) query.set('toPrice', toPrice);
+            if (itemType) query.set('itemType', itemType);
+            if (itemStatus) query.set('itemStatus', itemStatus);
+            if (sortItem) query.set('sort', sortItem);
+            if (pageSizeItem) query.set('pageSize', pageSizeItem);
+            if (searchTerm) query.set('search', searchTerm);
+            if (brand && brand.length > 0) query.set('brand', brand.join(','));
+            if (category && category.length > 0) query.set('category', category.join(','));
+            if (catalog && catalog.length > 0) query.set('catalog', catalog.join(','));
+            // Clear pagination token when filters change
+            Cookies.remove('pagesToken');
+            // Push new query to URL
+            router.push(`/products?${query.toString()}`);
+        } else {
+            const searchParams = new URLSearchParams(); // This will be used for building query
+            let searchItems = '';
 
-        // Clear pagination token when filters change
-        Cookies.remove('pagesToken');
-        // Push new query to URL
-        router.push(`/products?${query.toString()}`);
+            if (fromPrice) searchParams.append('fromPrice', fromPrice);
+            if (toPrice) searchParams.append('toPrice', toPrice);
+            if (itemType) searchParams.append('itemType', itemType);
+            if (itemStatus) searchParams.append('itemStatus', itemStatus);
+            if (sortItem) searchParams.append('sort', sortItem);
+            if (pageSizeItem) searchParams.append('pageSize', pageSizeItem);
+            if (searchTerm) searchParams.append('search', searchTerm);
+            if (brand && brand.length > 0) searchParams.append('brand', brand.join(','));
+            if (category && category.length > 0) searchParams.append('category', category.join(','));
+            if (catalog && catalog.length > 0) searchParams.append('catalog', catalog.join(','));
+
+            searchItems = `${searchParams.toString()}`;
+            Cookies.set('store_filters', searchItems);
+        }
     };
 
     const handleClearFilter = () => {
@@ -226,7 +236,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                     <FilterSingleItem title={`حالة التوفر`} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
 
                     <div className="action-btns flex gap-3 mt-4">
-                        <button className="primary-btn flex-1" onClick={handleApplyFilters}>إضافة</button>
+                        <button className="primary-btn flex-1" onClick={handleApplyFilters}>تطبيق</button>
                         <button className="gray-btn flex-1" onClick={handleClearFilter}>مسح</button>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ import heroLeft from "../../assets/imgs/hero-left.png";
 import heroRight from "../../assets/imgs/hero-right.png";
 import AddBulkModal from './AddBulkModal';
 import SidebarModal from './SideModal';
+import SearchInput from './SearchInput';
 
 export default function Hero() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +41,7 @@ export default function Hero() {
                                 }}>
                                     <i className="icon-setting-4"></i>
                                 </div>
-                                <input className='w-full h-full ps-10 p-2.5' type='text' placeholder='البحث عن منتج' />
+                                <SearchInput />
                             </div>
                         </div>
                         <div className='quantatity-container flex items-center gap-2 card'>

@@ -36,7 +36,6 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
             return updated;
         });
     };
-    console.log(selected);
 
     if (error instanceof Error) return <p>Error: {error.message}</p>;
     if (!data?.data?.length) return null;

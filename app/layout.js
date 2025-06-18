@@ -5,7 +5,6 @@ import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
 import Offcanvas from "@/components/ui/Offcanvas";
 import AppProvider from "../context/AppContext";
-import { Geist, Geist_Mono } from "next/font/google";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import "./globals.scss";
 

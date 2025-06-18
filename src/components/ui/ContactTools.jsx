@@ -29,7 +29,7 @@ const ContactTools = () => {
         <i className="icon-arrow-up"></i>
       </button>
       <div className='contact-link circle-icon-container contact-btn' onClick={(e) => toggleOpen(e)}>
-        <i class="icon-multiplication-sign close" onClick={(e) => toggleOpen(e)}></i>
+        <i className="icon-multiplication-sign close" onClick={(e) => toggleOpen(e)}></i>
         <i className="icon-call-center call" onClick={(e) => toggleOpen(e)}></i>
       </div>
 

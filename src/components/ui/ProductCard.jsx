@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Badge from "./Badge";
+import Link from 'next/link';
 
 export default function ProductCard({ type, badgeType, badgeText, item }) {
     const [count, setCount] = useState(0);
@@ -65,9 +66,9 @@ export default function ProductCard({ type, badgeType, badgeText, item }) {
 
                 <Badge type={badgeType || handleBadgeType(item)} text={handleBadgeText(item)} />
                 <h3 className="product-card-title">{item?.name}</h3>
-                {/* <Link href={``}>
+                {<Link href={``}>
                     <p className="product-card-description" dangerouslySetInnerHTML={{ __html: `${item?.type} - ${item?.category?.description}` }} />
-                </Link> */}
+                </Link> }
                 <div className="stars flex items-center gap-1">
                     {
                         rate && rate > 0 ?
@@ -113,7 +114,7 @@ export default function ProductCard({ type, badgeType, badgeText, item }) {
                             <button onClick={handleAddToCart} className="primary-btn w-1/2 add-to-cart-btn">اضف</button>
                         </div>
                     ) : (
-                        <p className='out-stock-btn'>OUT OF STOCK</p>
+                        <p className='out-stock-btn'>غير متوفر</p>
                     )
                 }
 

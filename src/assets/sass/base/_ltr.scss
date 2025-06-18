@@ -72,4 +72,12 @@
         border-top-right-radius: 50%;
         border-bottom-right-radius: 50%;
     }
+
+    .pagination-container {
+        direction: ltr;
+        .next,
+        .prev {
+            transform: rotate(180deg);
+        }
+    }
 }

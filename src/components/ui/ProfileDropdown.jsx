@@ -24,8 +24,6 @@ export default function ProfileDropdown() {
         queryFn: fetchProfile,
     });
 
-    console.log(data);
-
 const getInitials = (str) => {
     if (!str) return ['', ''];
     const words = str.trim().split(/\s+/);

@@ -27,9 +27,6 @@ export default function Page() {
     queryFn: fetchBrandsPage,
   });
 
-  console.log(data);
-
-
   if (isLoading) return <Loader />;
   if (error instanceof Error) return push("/");
 

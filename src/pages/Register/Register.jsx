@@ -50,7 +50,6 @@ export default function Register() {
 
     try {
       const res = await axios.post(`${BASE_API + endpoints.auth.register}`, userData)
-      console.log(res);
 
       if (!res.data.error) {
         setIsModalOpen(true);
