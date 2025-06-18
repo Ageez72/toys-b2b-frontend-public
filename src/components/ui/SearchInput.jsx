@@ -8,7 +8,7 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import { useDebounce } from '../../../lib/useDebounce';
 import Link from 'next/link';
 
-export default function SearchInput({ bulk, onCollectBulkItems }) {
+export default function SearchInput({ bulk, onCollectBulkItems, pageSize }) {
     const { push } = useRouter();
     const [searchText, setSearchText] = useState('');
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -26,7 +26,7 @@ export default function SearchInput({ bulk, onCollectBulkItems }) {
         const filterItems = Cookies.get('store_filters') || '';
         const token = Cookies.get('token');
 
-        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=3&${filterItems}&itemStatus=INSTOCK&lang=EN`;
+        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize ? pageSize : 3}&${filterItems}&itemStatus=INSTOCK&lang=AR`;
 
         const res = await axios.get(url, {
             headers: {
@@ -75,7 +75,7 @@ export default function SearchInput({ bulk, onCollectBulkItems }) {
             />
 
             {showResults && (
-                <div className={`search-results-listing ${!bulk ? 'bulk-listing' : ''}`}>
+                <div className={`search-results-listing ${bulk ? 'bulk-listing' : ''}`}>
                     {data.items.map((item) => (
                         <div className='search-item flex items-center justify-evenly' key={item.id}>
                             <span className='image'>
@@ -107,7 +107,7 @@ export default function SearchInput({ bulk, onCollectBulkItems }) {
             )}
 
             {data?.items?.length === 0 && !hasSelected && (
-                <div className={`search-results-listing no-results ${!bulk ? 'bulk-listing' : ''}`}>
+                <div className={`search-results-listing no-results`}>
                     لا توجد نتائج
                 </div>
             )}

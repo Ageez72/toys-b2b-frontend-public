@@ -6,9 +6,15 @@
     border-radius: 8px;
     text-align: start;
     padding: 15px 0;
+    border: 1px solid #ccc;
 
     &.no-results {
         text-align: center;
+    }
+
+    &.bulk-listing {
+        height: 188px;
+        overflow: auto;
     }
 
     .search-item {

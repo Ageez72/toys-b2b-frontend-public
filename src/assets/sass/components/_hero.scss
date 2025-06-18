@@ -155,7 +155,8 @@
 
 .add-bulk-modal {
     width: 90%;
-    min-height: 400px;
+    // min-height: 400px;
+    overflow: visible;
 
     .modal-title {
         font-size: 24px;
@@ -292,6 +293,7 @@
             @media (max-width: 992px) {
                 flex-wrap: wrap;
                 gap: 0;
+                padding-bottom: 16px;
             }
         }
 
@@ -305,6 +307,7 @@
                 display: block;
                 margin-top: 16px;
                 margin-bottom: 10px;
+                font-weight: 700;
             }
         }
 

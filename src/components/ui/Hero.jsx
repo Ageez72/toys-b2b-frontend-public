@@ -41,7 +41,7 @@ export default function Hero() {
                                 }}>
                                     <i className="icon-setting-4"></i>
                                 </div>
-                                <SearchInput />
+                                <SearchInput bulk={false} />
                             </div>
                         </div>
                         <div className='quantatity-container flex items-center gap-2 card'>
