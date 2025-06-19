@@ -65,7 +65,7 @@ export default function ProductCard({ type, badgeType, badgeText, item }) {
             <div className="product-card-content">
 
                 <Badge type={badgeType || handleBadgeType(item)} text={handleBadgeText(item)} />
-                <h3 className="product-card-title"><Link href={`products/${item?.brand.id}`}>{item.name}</Link></h3>
+                <h3 className="product-card-title"><Link href={`products/${item?.id}`}>{item.name}</Link></h3>
                 {<Link href={``}>
                     <p className="product-card-description" dangerouslySetInnerHTML={{ __html: `${item?.type} - ${item?.category?.description}` }} />
                 </Link> }
