@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 const ContactTools = () => {
   const [showButton, setShowButton] = useState(false);
@@ -23,6 +24,8 @@ const ContactTools = () => {
     document.querySelector(".contact-tools").classList.toggle("open");
   }
 
+  const profile = JSON.parse(Cookies.get('profile'))
+
   return (
     <div className='contact-tools'>
       <button onClick={scrollToTop} className={`back-to-top circle-icon-container ${showButton ? "show" : "not-allowed"}`}>
@@ -35,7 +38,7 @@ const ContactTools = () => {
 
       <div className="socials">
         <a
-          href="mailto:youremail@example.com"
+          href={`mailto:${profile.contactEmail}`}
           target="_blank"
           rel="noopener noreferrer"
           className='contact-link circle-icon-container mb-2 contact-email'
@@ -43,7 +46,7 @@ const ContactTools = () => {
           <i className="icon-sms"></i>
         </a>
         <a
-          href="https://wa.me/1234567890"
+          href={`https://wa.me/${profile.contactPhone}`}
           target="_blank"
           rel="noopener noreferrer"
           className='contact-link circle-icon-container contact-whatsapp'

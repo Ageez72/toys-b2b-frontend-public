@@ -172,7 +172,7 @@ export default function Page() {
   }
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['allProducts', queryString],
+    queryKey: [`allProducts-${queryString}`, queryString],
     queryFn: fetchProducts,
   });
 

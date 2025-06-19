@@ -11,7 +11,6 @@ export default function Rate({ item }) {
         return [first.toUpperCase(), last.toUpperCase()];
     };
 
-
     const [firstInitial, lastInitial] = getInitials(item.name);
 
     return (
