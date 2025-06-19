@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import FilterBar from "@/components/ui/FilterBar";
 import ProductCard from "@/components/ui/ProductCard";
 import Dropdown from "@/components/ui/Dropdown";
-import Pagination from "@/components/ui/Pagination";
+import Pagination from '@/components/ui/Pagination';
 import Loader from '@/components/ui/Loaders/Loader';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
