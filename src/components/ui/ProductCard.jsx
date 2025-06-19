@@ -3,11 +3,19 @@ import React, { useState } from 'react';
 import StarsRate from './StarsRate';
 import Badge from "./Badge";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-export default function ProductCard({ type, badgeType, badgeText, item }) {
+export default function ProductCard({ type, badgeType, related, item }) {
     const [count, setCount] = useState(0);
     const increase = () => setCount(prev => prev + 1);
     const decrease = () => setCount(prev => prev - 1);
+
+     const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/products/${item.id}`);
+  };
+
     const handleAddToCart = () => {
         console.log("Added to cart");
     };
@@ -65,7 +73,7 @@ export default function ProductCard({ type, badgeType, badgeText, item }) {
             <div className="product-card-content">
 
                 <Badge type={badgeType || handleBadgeType(item)} text={handleBadgeText(item)} />
-                <h3 className="product-card-title"><Link href={`products/${item?.id}`}>{item.name}</Link></h3>
+                <h3 className="product-card-title cursor-pointer" onClick={handleClick} >{item.name}</h3>
                 {<Link href={``}>
                     <p className="product-card-description" dangerouslySetInnerHTML={{ __html: `${item?.type} - ${item?.category?.description}` }} />
                 </Link> }
@@ -88,7 +96,7 @@ export default function ProductCard({ type, badgeType, badgeText, item }) {
                 </div>
                 {
                     item?.status === "INSTOCK" ? (
-                        <div className="add-to-cart flex items-center gap-3">
+                        <div className="add-to-cart flex items-center gap-3 w-full">
                             <div className="product-card-quantity flex items-center gap-1 w-1/2">
                                 <button onClick={decrease} className="btn btn-secondary w-fit">
                                     <i className="icon-minus"></i>

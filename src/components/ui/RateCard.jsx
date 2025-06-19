@@ -27,7 +27,7 @@ export default function RateCard({ reviews, id, onRefresh }) {
                         ))
                     ) : (
                         <>
-                            <div className='empty-state text-center'>
+                            <div className='empty-state text-center mb-10'>
                                 <svg className='m-auto my-8' xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260" fill="none">
                                     <rect width="260" height="260" rx="130" fill="url(#paint0_linear_239_7570)" />
                                     <path d="M138.667 104.067L147.467 121.667C148.667 124.067 151.867 126.467 154.534 126.867L170.467 129.533C180.667 131.267 183.067 138.6 175.734 145.933L163.334 158.333C161.267 160.4 160.067 164.467 160.734 167.4L164.267 182.8C167.067 194.933 160.601 199.667 149.867 193.333L134.934 184.467C132.2 182.867 127.8 182.867 125.067 184.467L110.134 193.333C99.4004 199.667 92.9337 194.933 95.7337 182.8L99.2672 167.4C99.9339 164.533 98.7338 160.467 96.6671 158.333L84.2672 145.933C76.9339 138.6 79.3337 131.2 89.5337 129.533L105.467 126.867C108.134 126.4 111.334 124.067 112.534 121.667L121.334 104.067C126.067 94.5334 133.934 94.5334 138.667 104.067Z" fill="#7E818E" />
@@ -36,8 +36,8 @@ export default function RateCard({ reviews, id, onRefresh }) {
                                     <path opacity="0.4" d="M130 81.6667C127.267 81.6667 125 79.4 125 76.6667V63.3334C125 60.6 127.267 58.3334 130 58.3334C132.733 58.3334 135 60.6 135 63.3334V76.6667C135 79.4 132.733 81.6667 130 81.6667Z" fill="#7E818E" />
                                     <defs>
                                         <linearGradient id="paint0_linear_239_7570" x1="130" y1="0" x2="130" y2="260" gradientUnits="userSpaceOnUse">
-                                            <stop stop-color="#E9EBED" />
-                                            <stop offset="1" stop-color="white" />
+                                            <stop stopColor="#E9EBED" />
+                                            <stop offset="1" stopColor="white" />
                                         </linearGradient>
                                     </defs>
                                 </svg>
