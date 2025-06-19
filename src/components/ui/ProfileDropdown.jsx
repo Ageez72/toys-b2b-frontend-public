@@ -34,7 +34,7 @@ export default function ProfileDropdown() {
 
 
     const [firstInitial, lastInitial] = getInitials(data?.data?.name);
-    Cookies.set('profile', JSON.stringify(data?.data))
+    Cookies.set('profile', JSON?.stringify(data?.data))
 
     // if (isLoading) return <VerticalLoader />;
     if (error instanceof Error) return push("/");

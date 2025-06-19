@@ -24,7 +24,7 @@ const ContactTools = () => {
     document.querySelector(".contact-tools").classList.toggle("open");
   }
 
-  const profile = JSON.parse(Cookies.get('profile'))
+  const profile = JSON?.parse(Cookies.get('profile'))
 
   return (
     <div className='contact-tools'>
