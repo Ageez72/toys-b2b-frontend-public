@@ -262,7 +262,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {
+      { 
         data?.data?.items?.length > 0 && (
           <Pagination
             currentPage={Number(data?.data?.page) || 1}
