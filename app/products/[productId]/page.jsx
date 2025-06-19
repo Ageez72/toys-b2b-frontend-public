@@ -16,14 +16,10 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Link from 'next/link';
 import Loader from '@/components/ui/Loaders/Loader';
 
+let breadcrumbItems = [];
 export default function Page() {
   const [refresh, setRefresh] = useState(false);
   const { productId } = useParams();
-  const breadcrumbItems = [
-    { label: 'الرئيسية', href: '/home' },
-    { label: 'Maravel', href: `/products?brand=${productId}` },
-    { label: 'ماسك هالك EY-293 للاطفال فوق 3 سنوات' }
-  ];
 
   const { push } = useRouter();
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -51,6 +47,12 @@ export default function Page() {
   let details = data?.data?.items[0];
   if (isLoading) return <Loader />;
   if (error instanceof Error) return push("/");
+
+  breadcrumbItems = [
+    { label: 'الرئيسية', href: '/home' },
+    { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}` },
+    { label: `${details?.name}`}
+  ]
 
   return data ? (
     <div className="max-w-screen-xl mx-auto p-4 product-details">

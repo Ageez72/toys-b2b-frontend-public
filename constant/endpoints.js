@@ -17,6 +17,7 @@ export const endpoints = {
     list: "?action=GET.ITEMS",
     categoriesList: "?action=GET.CATEGORIES",
     catalogList: "?action=CATALOGS",
+    brandsFilters: "?action=GET.BRANDS&grouped=1",
     review: "?action=ADD.REVIEW",
   },
 
