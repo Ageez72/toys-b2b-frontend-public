@@ -363,13 +363,15 @@
         }
     }
 
-.close {
-            display: none;
-        }
+    .close {
+        display: none;
+    }
+
     &.open {
         .call {
             display: none;
         }
+
         .close {
             display: block;
         }
@@ -384,5 +386,99 @@
             left: 0;
             transform: translateX(35%);
         }
+    }
+}
+
+.breadcrumb-wrapper {
+    ol {
+        flex-wrap: wrap;
+        gap: 4px;
+
+        li {
+
+            svg,
+            a,
+            span {
+                font-size: 16px;
+                color: #1E1E1E;
+
+                @media (max-width: 600px) {
+                    font-size: 12px;
+                }
+            }
+
+            .last {
+                color: var(--primary-color) !important;
+            }
+        }
+    }
+
+
+}
+
+.products-gallery {
+    min-height: 470px;
+    max-height: 500px;
+
+    @media (max-width: 1023px) {
+        min-height: auto;
+    }
+
+    .main-image {
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        height: 100%;
+        border-radius: 12px;
+
+        @media (max-width: 767px) {
+            flex: auto;
+            height: 370px;
+        }
+
+        img {
+            border-radius: 5px;
+            max-width: 100%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        iframe {
+            border-radius: 5px;
+        }
+    }
+
+    .thumbnails {
+        height: 100%;
+
+        @media (max-width: 767px) {
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            overflow: auto;
+        }
+
+
+        button {
+            cursor: pointer;
+            background-color: #fff;
+            border: 2px solid transparent;
+        }
+
+        .border-red-500 {
+            border-radius: 12px;
+            border: 2px solid var(--primary-color);
+        }
+    }
+
+    .player-icon {
+        position: absolute;
+        color: #fff;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 }

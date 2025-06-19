@@ -40,7 +40,7 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      {/* <div className="mt-90 py-4">
+      <div className="mt-90 py-4">
         <BrandsSwiper />
       </div>
 
@@ -58,7 +58,7 @@ export default async function Home() {
           ))
         }
         <ContactTools />
-      </div> */}
+      </div>
     </>
   );
 }

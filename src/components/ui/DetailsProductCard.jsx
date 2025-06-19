@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from 'react';
 import StarsRate from './StarsRate';
-import Badge from "./Badge";
 import Link from 'next/link';
 
-export default function ProductCard({ type, badgeType, badgeText, item }) {
+export default function DetailsProductCard({ item }) {
     const [count, setCount] = useState(0);
     const increase = () => setCount(prev => prev + 1);
     const decrease = () => setCount(prev => prev - 1);
@@ -18,60 +17,15 @@ export default function ProductCard({ type, badgeType, badgeText, item }) {
         }
     };
 
-    const handleBadgeType = (item) => {
-        let type = "";
-        if (item.status === "OUTOFSTOCK") {
-            type = "red"
-        } else if (item.status === "INSTOCK" && item.isNew) {
-            type = "blue"
-        } else if (item.status === "INSTOCK" && !item.isNew) {
-            type = "new"
-        } else if (item.commingSoon) {
-            type = "yellow"
-        }
-        return type
-    }
-
-    const handleBadgeText = (item) => {
-        let text = "";
-        // if(item.status === "OUTOFSTOCK") {
-        //     text = "OUT OF STOCK"
-        // } else if(item.status === "INSTOCK" && item.isNew) {
-        //     text = "NEW"
-        // } else if(item.status === "INSTOCK" && !item.isNew) {
-        //     text = "IN STOCK"
-        // } else if(item.commingSoon) {
-        //     text = "COMMING SOON"
-        // }
-        if (item.isNew) {
-            text = "جديد"
-        } else if (item.commingSoon) {
-            text = "قريبا"
-        } else if (item.itemdisc) {
-            text = "تصفية"
-        } else {
-            text = "خصم";
-        }
-
-        return text
-    }
-
     const rate = item?.reviews.rating || 0;
     return (
-        <div className={`card product-card ${type === 'grid' ? 'grid-card flex items-center gap-3' : 'list-card'}`}>
-            <div className="product-card-image">
-                <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive" />
-            </div>
+        <div className="card product-card">
             <div className="product-card-content">
-
-                <Badge type={badgeType || handleBadgeType(item)} text={handleBadgeText(item)} />
                 <h3 className="product-card-title"><Link href={`products/${item?.brand.id}`}>{item.name}</Link></h3>
                 {<Link href={``}>
                     <p className="product-card-description" dangerouslySetInnerHTML={{ __html: `${item?.type} - ${item?.category?.description}` }} />
-                </Link> }
-                <div className="stars flex items-center gap-1">
-                    <StarsRate rate={rate} />
-                </div>
+                </Link>}
+
                 <div className="price flex items-center gap-3">
                     <span className="product-card-price">
                         <span className="price-number">{item?.price} </span>
@@ -86,6 +40,11 @@ export default function ProductCard({ type, badgeType, badgeText, item }) {
                         ) : ""
                     }
                 </div>
+
+                <div className="stars flex items-center gap-1">
+                    <StarsRate rate={rate} />
+                </div>
+                <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description}} />
                 {
                     item?.status === "INSTOCK" ? (
                         <div className="add-to-cart flex items-center gap-3">

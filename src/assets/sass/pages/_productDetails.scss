@@ -1,0 +1,36 @@
+.product-details {
+    padding: 60px 0;
+
+    .product-description {
+        color: #666876;
+        margin-bottom: 25px;
+        font-size: 12px;
+    }
+
+    .add-to-cart {
+        align-items: center;
+        display: flex;
+        width: 60%;
+    }
+
+    .badge {
+        font-size: 12px;
+        color: #4A4A49;
+        font-weight: 700;
+        padding: 16px;
+    }
+
+    .view-more-reviews {
+        font-size: 16px;
+        margin-top: 30px;
+        color: #4a4a49;
+        padding: 10px 5px;
+        border-radius: 6px;
+        background-color: #f5f5f5;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background-color: #d9d9d9;
+        }
+    }
+}
