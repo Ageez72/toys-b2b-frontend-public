@@ -33,4 +33,21 @@
             background-color: #d9d9d9;
         }
     }
+
+}
+
+.rate-comment-title {
+    font-size: 14px;
+    color: #424242;
+}
+#rate-comment {
+    border-color: #CCD3D9;
+    outline: #CCD3D9;
+    resize: none;
+    font-size: 14px;
+    color: #A8B1CE;
+
+    &:focus {
+        border-color: #545455;
+    }
 }

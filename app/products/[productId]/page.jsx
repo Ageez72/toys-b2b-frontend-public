@@ -1,4 +1,5 @@
 'use client';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import ProductGallery from '@/components/ui/ProductGallery';
@@ -14,6 +15,7 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Link from 'next/link';
 
 export default function Page() {
+  const [refresh, setRefresh] = useState(false);
   const { productId } = useParams();
   const breadcrumbItems = [
     { label: 'الرئيسية', href: '/home' },
@@ -31,14 +33,22 @@ export default function Page() {
     });
     return res;
   }
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['product-details'],
     queryFn: fetchProductDetails,
   });
 
+  // Effect to re-call the API whenever refresh is changed
+  useEffect(() => {
+    if (refresh) {
+      refetch();
+      setRefresh(false); // reset after fetching
+    }
+  }, [refresh, refetch]);
+
   const details = data?.data?.items[0];
   // if (isLoading) return <VerticalLoader />;
-  // if (error instanceof Error) return push("/");
+  if (error instanceof Error) return push("/");
 
   return data ? (
     <div className="max-w-screen-xl mx-auto p-4 product-details">
@@ -54,14 +64,14 @@ export default function Page() {
         <div className="badges flex gap-2">
           {
             details?.catalogs?.map(b => (
-            <Link href={`/products?catalog=${b?.id}`} key={b.id}>
-              <Badge text={b?.description} />
-            </Link>
+              <Link href={`/products?catalog=${b?.id}`} key={b.id}>
+                <Badge text={b?.description} />
+              </Link>
             ))
           }
         </div>
       </div>
-      <RateCard reviews={details.reviews.reviews} />
+      <RateCard reviews={details.reviews.reviews} id={details.id} onRefresh={() => setRefresh(true)} />
     </div>
   ) : null;
 }
