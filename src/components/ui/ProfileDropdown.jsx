@@ -24,16 +24,17 @@ export default function ProfileDropdown() {
         queryFn: fetchProfile,
     });
 
-const getInitials = (str) => {
-    if (!str) return ['', ''];
-    const words = str.trim().split(/\s+/);
-    const first = words[0]?.[0] || '';
-    const last = words[words.length - 1]?.[0] || '';
-    return [first.toUpperCase(), last.toUpperCase()];
-};
+    const getInitials = (str) => {
+        if (!str) return ['', ''];
+        const words = str.trim().split(/\s+/);
+        const first = words[0]?.[0] || '';
+        const last = words[words.length - 1]?.[0] || '';
+        return [first.toUpperCase(), last.toUpperCase()];
+    };
 
-const [firstInitial, lastInitial] = getInitials(data?.data?.NAME);
-    
+
+    const [firstInitial, lastInitial] = getInitials(data?.data?.name);
+    Cookies.set('profile', JSON.stringify(data?.data))
 
     // if (isLoading) return <VerticalLoader />;
     if (error instanceof Error) return push("/");
@@ -56,17 +57,17 @@ const [firstInitial, lastInitial] = getInitials(data?.data?.NAME);
                         <div className="flex profile-dropdown-header px-4 py-2">
                             <div className="me-3 shrink-0">
                                 <span className="profile-img block p-2 bg-gray-100 rounded-lg dark:bg-gray-700">
-                                    <span className=''>{firstInitial}</span>
-                                    <span className=''>.</span>
-                                    <span className=''>{lastInitial}</span>
+                                    <span>{firstInitial}</span>
+                                    <span>.</span>
+                                    <span>{lastInitial}</span>
                                 </span>
                             </div>
                             <div>
                                 <p className="mb-0 username text-base leading-none text-gray-900 dark:text-white">
-                                    {data?.data?.NAME}
+                                    {data?.data?.name}
                                 </p>
                                 <p className="user-email mb-0 mt-2 text-sm font-normal">
-                                    {data?.data?.EMAIL}
+                                    {data?.data?.email}
                                 </p>
                             </div>
                         </div>
