@@ -23,8 +23,8 @@ const ContactTools = () => {
     document.querySelector(".socials").classList.toggle("open");
     document.querySelector(".contact-tools").classList.toggle("open");
   }
-  
-  let profile;
+
+  let profile = {};
   if (Cookies.get('profile')) {
     profile = JSON?.parse(Cookies.get('profile'))
   }
