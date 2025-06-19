@@ -1,39 +1,23 @@
 "use client";
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-let initialLang;
+import Cookies from 'js-cookie';
 
-function setLang() {
-  let lang;
-  // // if (typeof window !== 'undefined') {
-  //   if (localStorage?.getItem("lang")) {
-  //     lang = localStorage?.getItem("lang")
-  //   } else {
-  //     lang = "en"
-  //   }
-  // // } else {
-  // //   lang = "en"
-  // // }
-
-//   initialLang = lang
-}
-// setLang()
+let initialLang= Cookies?.get("lang") || "AR";
 
 const initialState = {
-    BASEURL: "https://pick.alekha.com:8443/pick/faces/redirect/b2b?",
-    LANG: initialLang || "ar",
-    STOREDITEMS: [],
-    DIRECTION: initialLang === "en" ? "ltr" : "rtl",
+  BASEURL: "https://pick.alekha.com:8443/pick/faces/redirect/b2b?",
+  LANG: initialLang,
+  STOREDITEMS: [],
+  DIRECTION: initialLang === "EN" ? "ltr" : "rtl",
 };
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
-  // Update localStorage when language state changes
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //   localStorage.setItem("lang", state.LANG);
-  //   }
-  // }, [state.LANG]);
+  // Update Cookies when language state changes
+  useEffect(() => {
+    Cookies.set("lang", state.LANG);
+  }, [state.LANG]);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

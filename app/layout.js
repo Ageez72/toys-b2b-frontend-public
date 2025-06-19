@@ -6,6 +6,7 @@ import Footer from "@/components/ui/Footer";
 import Offcanvas from "@/components/ui/Offcanvas";
 import AppProvider from "../context/AppContext";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
+import Cookies from 'js-cookie';
 import "./globals.scss";
 
 
@@ -16,7 +17,7 @@ import "./globals.scss";
 
 export default function RootLayout({ children }) {
   // const { state = {}, dispatch = () => {} } = useAppContext() || {};
-  const [lang, setLang] = useState("ar")
+  const [lang, setLang] = useState(Cookies?.get("lang"))
   const [scroll, setScroll] = useState(0);
   const [isOffCanvas, setOffCanvas] = useState(false);
   const [isSearch, setSearch] = useState(false);
@@ -40,18 +41,15 @@ export default function RootLayout({ children }) {
         setScroll(scrollCheck);
       }
     });
-
-    if (localStorage?.getItem("lang")) {
-      setLang(localStorage?.getItem("lang"))
-    } else {
-      setLang("ar")
+    if (Cookies?.get("lang")) {
+      document.documentElement.setAttribute("dir", Cookies?.get("lang") === "EN" ? "ltr" : "rtl");
+      document.documentElement.setAttribute("lang", Cookies?.get("lang") || "AR");
     }
-
   }, []);
 
   return (
     <ReactQueryProvider>
-      <html lang="ar" dir={`${lang === 'ar' ? 'rtl' : 'ltr'}`}>
+      <html lang="ar" dir="rtl">
         <body
           className={`antialiased ${!isAuthPage ? "header-padding" : ""}`}
         >

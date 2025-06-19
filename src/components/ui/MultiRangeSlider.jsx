@@ -1,6 +1,7 @@
 "use client";
 import React, { useCallback, useEffect, useState, useRef, useLayoutEffect } from "react";
 import PropTypes from "prop-types";
+import Cookies from 'js-cookie';
 import {
   Disclosure,
   DisclosureButton,

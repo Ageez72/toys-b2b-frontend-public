@@ -2,15 +2,17 @@
 import React from 'react';
 import { useAppContext } from "../../../context/AppContext";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+import Cookies from 'js-cookie';
 
 export default function LangSwitcher() {
     const { state = {}, dispatch = () => {} } = useAppContext() || {};
 
     const handleChangeLanguage = (e) => {
         dispatch({ type: "LANG", payload: e });
-        document.documentElement.setAttribute("dir", e === "ar" ? "rtl" : "ltr");
-        document.documentElement.setAttribute("lang", e);
-        // window.location.reload();
+        Cookies.set("lang", e)
+        // document.documentElement.setAttribute("dir", e === "AR" ? "rtl" : "ltr");
+        // document.documentElement.setAttribute("lang", e);
+        window.location.reload();
     };
     return (
 
@@ -31,14 +33,14 @@ export default function LangSwitcher() {
                     <div className="py-1 text-right">
                         <MenuItem>
                             <span
-                                onClick={() => handleChangeLanguage("ar")}
+                                onClick={() => handleChangeLanguage("AR")}
                                 className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
                             >
                                 <span>
                                     العربية
                                 </span>
                                 {
-                                    state.LANG === "ar" && (
+                                    state.LANG === "AR" && (
                                         <i className="icon-tick-circle"></i>
                                     )
                                 }
@@ -46,14 +48,14 @@ export default function LangSwitcher() {
                         </MenuItem>
                         <MenuItem>
                             <span
-                                onClick={() => handleChangeLanguage("en")}
+                                onClick={() => handleChangeLanguage("EN")}
                                 className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
                             >
                                 <span>
                                     English
                                 </span>
                                 {
-                                    state.LANG === "en" && (
+                                    state.LANG === "EN" && (
                                         <i className="icon-tick-circle"></i>
                                     )
                                 }

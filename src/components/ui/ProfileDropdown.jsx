@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
+import Loader from './Loaders/Loader';
 
 export default function ProfileDropdown() {
     const { push } = useRouter();
@@ -39,7 +40,7 @@ export default function ProfileDropdown() {
         Cookies.set('profile', JSON?.stringify(data?.data))
     }
 
-    // if (isLoading) return <VerticalLoader />;
+    if (isLoading) return <Loader />;
     if (error instanceof Error) return push("/");
     return (
         <>
