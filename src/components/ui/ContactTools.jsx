@@ -23,8 +23,11 @@ const ContactTools = () => {
     document.querySelector(".socials").classList.toggle("open");
     document.querySelector(".contact-tools").classList.toggle("open");
   }
-
-  const profile = JSON?.parse(Cookies.get('profile'))
+  
+  let profile;
+  if (Cookies.get('profile')) {
+    profile = JSON?.parse(Cookies.get('profile'))
+  }
 
   return (
     <div className='contact-tools'>
