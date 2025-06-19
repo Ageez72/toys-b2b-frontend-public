@@ -38,7 +38,7 @@ const ContactTools = () => {
 
       <div className="socials">
         <a
-          href={`mailto:${profile.contactEmail}`}
+          href={`mailto:${profile?.contactEmail}`}
           target="_blank"
           rel="noopener noreferrer"
           className='contact-link circle-icon-container mb-2 contact-email'
@@ -46,7 +46,7 @@ const ContactTools = () => {
           <i className="icon-sms"></i>
         </a>
         <a
-          href={`https://wa.me/${profile.contactPhone}`}
+          href={`https://wa.me/${profile?.contactPhone}`}
           target="_blank"
           rel="noopener noreferrer"
           className='contact-link circle-icon-container contact-whatsapp'
