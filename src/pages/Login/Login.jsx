@@ -12,7 +12,6 @@ import en from "../../../locales/en.json"
 import ar from "../../../locales/ar.json";
 import Loader from '@/components/ui/Loaders/Loader';
 import ErrorModal from '@/components/ui/ErrorModal';
-import { login } from '@/actions/products';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { endpoints } from '../../../constant/endpoints';
@@ -47,8 +46,7 @@ function Login() {
         setModalMessage(res.data.message)
       } else {
         Cookies.set('token', res.data.token);
-        // window.location.href = "/";
-        router.push('/landing')
+        router.push('/home')
       }
     } catch (err) {
       console.error('Error registering user:', err);
@@ -79,7 +77,7 @@ function Login() {
               alt="My Image"
             />
           </div>
-          {/* <LangSwitcher /> */}
+          <LangSwitcher />
           <h2 className='section-title'>{translation.login.title}</h2>
           <p>{translation.login.desc}</p>
 

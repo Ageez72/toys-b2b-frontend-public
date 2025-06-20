@@ -84,7 +84,7 @@ export default function Register() {
             <Image className='logo-img' src={logo} width={252} alt="Logo" />
           </div>
 
-          {/* <LangSwitcher /> */}
+          <LangSwitcher />
           <h2 className='section-title'>{translation.register.title}</h2>
           <p>{translation.register.desc}</p>
 

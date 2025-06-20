@@ -23,12 +23,12 @@ export default function Header({ scroll, handleOffCanvas }) {
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
               <div className="flex flex-wrap items-center gap-4" style={{ gap: "2.5rem" }}>
                   <Link
-                  href="/landing"
+                  href="/home"
                   className={`flex items-center space-x-3 rtl:space-x-reverse`}
                   >
                   {
                       <Image
-                        className={`logo-img ${scroll && isActive("/landing") && 'hide-logo'}`}
+                        className={`logo-img ${scroll && isActive("/home") && 'hide-logo'}`}
                         src={logo}
                         alt="My Image"
                         width={166}

@@ -4,7 +4,7 @@ import { useAppContext } from "../../../context/AppContext";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import Cookies from 'js-cookie';
 
-export default function LangSwitcher() {
+export default function LangSwitcher({top}) {
     const { state = {}, dispatch = () => {} } = useAppContext() || {};
 
     const handleChangeLanguage = (e) => {
@@ -17,7 +17,7 @@ export default function LangSwitcher() {
     return (
 
         <>
-            <Menu as="div" className="relative inline-block text-left">
+            <Menu as="div" className={`${top ? 'relative' : ''} inline-block text-left`}>
                 <div>
                     <MenuButton className="inline-flex w-full lang-switcher">
                         <span>
