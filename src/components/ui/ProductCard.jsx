@@ -4,6 +4,7 @@ import StarsRate from './StarsRate';
 import Badge from "./Badge";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import AddToCart from './AddToCart';
 
 export default function ProductCard({ type, badgeType, related, item }) {
     const [count, setCount] = useState(0);
@@ -42,22 +43,13 @@ export default function ProductCard({ type, badgeType, related, item }) {
 
     const handleBadgeText = (item) => {
         let text = "";
-        // if(item.status === "OUTOFSTOCK") {
-        //     text = "OUT OF STOCK"
-        // } else if(item.status === "INSTOCK" && item.isNew) {
-        //     text = "NEW"
-        // } else if(item.status === "INSTOCK" && !item.isNew) {
-        //     text = "IN STOCK"
-        // } else if(item.commingSoon) {
-        //     text = "COMMING SOON"
-        // }
         if (item.isNew) {
             text = "جديد"
         } else if (item.commingSoon) {
             text = "قريبا"
-        } else if (item.itemdisc) {
+        } else if (item.discountType === 'CLEARANCE') {
             text = "تصفية"
-        } else {
+        } else if (item.discountType !== 'CLEARANCE' && item.itemdisc > 0) {
             text = "خصم";
         }
 
@@ -96,18 +88,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 </div>
                 {
                     item?.status === "INSTOCK" ? (
-                        <div className="add-to-cart flex items-center gap-3 w-full">
-                            <div className="product-card-quantity flex items-center gap-1 w-1/2">
-                                <button onClick={decrease} className="btn btn-secondary w-fit">
-                                    <i className="icon-minus"></i>
-                                </button>
-                                <input className='w-fit' type="number" min={0} value={count <= 0 ? 0 : count} onChange={handleQuantityChange} />
-                                <button onClick={increase} className="btn btn-secondary w-fit">
-                                    <i className="icon-add"></i>
-                                </button>
-                            </div>
-                            <button onClick={handleAddToCart} className="primary-btn w-1/2 add-to-cart-btn">اضف</button>
-                        </div>
+                        <AddToCart item={item} />
                     ) : (
                         <p className='out-stock-btn'>غير متوفر</p>
                     )

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import StarsRate from './StarsRate';
 import Link from 'next/link';
+import AddToCart from './AddToCart';
 
 export default function DetailsProductCard({ item }) {
     const [count, setCount] = useState(0);
@@ -47,18 +48,7 @@ export default function DetailsProductCard({ item }) {
                 <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description}} />
                 {
                     item?.status === "INSTOCK" ? (
-                        <div className="add-to-cart flex items-center gap-3">
-                            <div className="product-card-quantity flex items-center gap-1 w-1/2">
-                                <button onClick={decrease} className="btn btn-secondary w-fit">
-                                    <i className="icon-minus"></i>
-                                </button>
-                                <input className='w-fit' type="number" min={0} value={count <= 0 ? 0 : count} onChange={handleQuantityChange} />
-                                <button onClick={increase} className="btn btn-secondary w-fit">
-                                    <i className="icon-add"></i>
-                                </button>
-                            </div>
-                            <button onClick={handleAddToCart} className="primary-btn w-1/2 add-to-cart-btn">اضف</button>
-                        </div>
+                        <AddToCart item={item} />
                     ) : (
                         <p className='out-stock-btn'>غير متوفر</p>
                     )

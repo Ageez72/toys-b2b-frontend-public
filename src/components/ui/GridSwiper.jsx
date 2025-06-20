@@ -15,7 +15,7 @@ import HorizontalLoader from './Loaders/HorizontalLoader';
 export default ({ title, route, badgeType, type, id }) => {
     const { push } = useRouter();
     async function fetchHomeProducts() {
-        const res = await axios.get(`${BASE_API}${endpoints.products.list}&itemType=${type}&pageSize=12`, {
+        const res = await axios.get(`${BASE_API}${endpoints.products.list}&itemType=${type}&pageSize=12&itemStatus=INSTOCK`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
             }
@@ -51,7 +51,7 @@ export default ({ title, route, badgeType, type, id }) => {
                             </Link>
                         </div>
                         <Swiper
-                            dir={state.LANG === "ar" ? "rtl" : "ltr"}
+                            dir={state.LANG === "AR" ? "rtl" : "ltr"}
                             modules={[Navigation, Grid]}
                             navigation
                             spaceBetween={10}
