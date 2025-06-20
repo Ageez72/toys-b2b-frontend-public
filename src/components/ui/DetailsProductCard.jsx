@@ -5,19 +5,6 @@ import Link from 'next/link';
 import AddToCart from './AddToCart';
 
 export default function DetailsProductCard({ item }) {
-    const [count, setCount] = useState(0);
-    const increase = () => setCount(prev => prev + 1);
-    const decrease = () => setCount(prev => prev - 1);
-    const handleAddToCart = () => {
-        console.log("Added to cart");
-    };
-    const handleQuantityChange = (e) => {
-        const value = parseInt(e.target.value);
-        if (!isNaN(value)) {
-            setCount(value);
-        }
-    };
-
     const rate = item?.reviews.rating || 0;
     return (
         <div className="card product-card">

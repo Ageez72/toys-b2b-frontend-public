@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { getCart } from '@/actions/utils';
+import { useAppContext } from '../../../context/AppContext';
 
 export default function InlineAddToCart({ itemId, onQtyChange }) {
     const [count, setCount] = useState(0);
+    const { state, dispatch } = useAppContext();
 
     useEffect(() => {
         const cart = getCart();
@@ -32,6 +34,10 @@ export default function InlineAddToCart({ itemId, onQtyChange }) {
         }
 
         Cookies.set('cart', JSON.stringify(cart), { expires: 7, path: '/' });
+        const storedCart = getCart();
+        if (storedCart) {
+            dispatch({ type: "STORED-ITEMS", payload: storedCart });
+        }
         setCount(newQty);
 
         if (onQtyChange) onQtyChange();
@@ -41,6 +47,10 @@ export default function InlineAddToCart({ itemId, onQtyChange }) {
         let cart = getCart();
         const newCart = cart.filter(item => item.item !== itemId);
         Cookies.set('cart', JSON.stringify(newCart), { expires: 7, path: '/' });
+        const storedCart = getCart();
+        if (storedCart) {
+            dispatch({ type: "STORED-ITEMS", payload: storedCart });
+        }
         setCount(0); // reset qty to 0 in UI
         if (onQtyChange) onQtyChange();
     };

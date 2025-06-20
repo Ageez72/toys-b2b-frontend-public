@@ -7,24 +7,10 @@ import { useRouter } from 'next/navigation';
 import AddToCart from './AddToCart';
 
 export default function ProductCard({ type, badgeType, related, item }) {
-    const [count, setCount] = useState(0);
-    const increase = () => setCount(prev => prev + 1);
-    const decrease = () => setCount(prev => prev - 1);
+    const router = useRouter();
 
-     const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/products/${item.id}`);
-  };
-
-    const handleAddToCart = () => {
-        console.log("Added to cart");
-    };
-    const handleQuantityChange = (e) => {
-        const value = parseInt(e.target.value);
-        if (!isNaN(value)) {
-            setCount(value);
-        }
+    const handleClick = () => {
+        router.push(`/products/${item.id}`);
     };
 
     const handleBadgeType = (item) => {
@@ -68,7 +54,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 <h3 className="product-card-title cursor-pointer" onClick={handleClick} >{item.name}</h3>
                 {<Link href={``}>
                     <p className="product-card-description" dangerouslySetInnerHTML={{ __html: `${item?.type} - ${item?.category?.description}` }} />
-                </Link> }
+                </Link>}
                 <div className="stars flex items-center gap-1">
                     <StarsRate rate={rate} />
                 </div>

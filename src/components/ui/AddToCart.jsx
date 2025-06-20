@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { addToCart } from '@/actions/utils';
+import { addToCart, getCart } from '@/actions/utils';
+import { useAppContext } from '../../../context/AppContext';
 
 export default function AddToCart({ item }) {
     const [count, setCount] = useState(1);
+    const { state, dispatch } = useAppContext();
 
     const increase = () => setCount(prev => prev + 1);
     const decrease = () => setCount(prev => (prev > 1 ? prev - 1 : 1));
@@ -12,7 +14,7 @@ export default function AddToCart({ item }) {
     const handleQuantityChange = (e) => {
         const value = parseInt(e.target.value);
         setCount(isNaN(value) || value < 1 ? 1 : value);
-    };    
+    };
 
     const handleAddToCart = () => {
         addToCart({
@@ -23,6 +25,10 @@ export default function AddToCart({ item }) {
             price: item.price
         });
         setCount(0)
+        const storedCart = getCart();
+        if (storedCart) {
+            dispatch({ type: "STORED-ITEMS", payload: storedCart });
+        }
         alert('تمت الإضافة إلى السلة');
     };
 

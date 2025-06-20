@@ -31,9 +31,9 @@ function Cart() {
             <div className="items-count">{cartItems.length}</div>
           </div>
 
-          <div className="card space-y-4">
-            {cartItems.map((item, index) => (
-              <div key={item.item} className="cart-item flex items-center">
+          {cartItems.map((item, index) => (
+            <div key={item.item} className="card space-y-4 mb-6">
+              <div className="cart-item flex items-center">
                 <div className="image-container flex justify-between items-center w-16">
                   <img src={item.image} width={52} height={52} alt={item.name || "Product"} />
                 </div>
@@ -51,8 +51,8 @@ function Cart() {
                   />
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         <div className="w-1/4">

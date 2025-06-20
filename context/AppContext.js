@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import Cookies from 'js-cookie';
 
-let initialLang= Cookies?.get("lang") || "AR";
+let initialLang = Cookies?.get("lang") || "AR";
 
 const initialState = {
   BASEURL: "https://pick.alekha.com:8443/pick/faces/redirect/b2b?",
@@ -18,6 +18,13 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     Cookies.set("lang", state.LANG);
   }, [state.LANG]);
+
+  useEffect(() => {
+    const storedCart = Cookies.get("cart");
+    if (storedCart) {
+      dispatch({ type: "STORED-ITEMS", payload: JSON.parse(storedCart) });
+    }
+  }, []);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
