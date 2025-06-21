@@ -165,6 +165,12 @@
     }
 }
 
+.disabled {
+    color: #7E818E;
+    background-color: #9B92A529;
+    pointer-events: none;
+}
+
 .gray-btn {
     background-color: #C2C5D233;
     color: #4A4A49;

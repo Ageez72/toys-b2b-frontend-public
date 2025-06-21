@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Breadcrumb from "@/components/ui/Breadcrumb";
 import InlineAddToCart from "@/components/ui/InlineAddToCart";
 import { getCart, getProfile } from "@/actions/utils";
+import ConfirmOrderModal from "@/components/ui/ConfirmOrderModal";
+import SureOrderModal from "@/components/ui/SureOrderModal";
 import Link from "next/link";
 
 function Cart() {
@@ -10,6 +12,8 @@ function Cart() {
   const [addressesItems, setAddressesItems] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [notes, setNotes] = useState('');
+  const [openSureOrder, setOpenSureOrder] = useState(false)
+  const [openConfirmOrder, setOpenConfirmOrder] = useState(false)
 
   const loadCart = () => {
     const items = getCart();
@@ -24,6 +28,7 @@ function Cart() {
     loadCart();
     loadAddresses();
   }, []);
+
 
   const breadcrumbItems = [
     { label: 'الرئيسية', href: '/home' },
@@ -52,7 +57,7 @@ function Cart() {
                       <div className="info flex-1 px-4">
                         <p className="name font-medium">{item.name}</p>
                         <p className="price flex items-center gap-1 mb-0 text-sm text-gray-700">
-                          <span>{item.price}</span>
+                          <span>{Number(item.price).toFixed(2)}</span>
                           <span>دينار</span>
                         </p>
                       </div>
@@ -126,21 +131,21 @@ function Cart() {
             <div className="order-item flex justify-between items-center mb-4">
               <p className="mb-0">التوصيل</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>80</span>
+                <span>{cartItems.length ? Number(20.62).toFixed(2) : 0}</span>
                 <span>دينار</span>
               </p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
               <p className="mb-0">المجموع الفرعي</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>80</span>
+                <span>{cartItems.length ? Number(10).toFixed(2) : 0}</span>
                 <span>دينار</span>
               </p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
               <p className="mb-0">الخصم</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>80</span>
+                <span>{cartItems.length ? Number(80).toFixed(2) : 0}</span>
                 <span>دينار</span>
               </p>
             </div>
@@ -148,14 +153,17 @@ function Cart() {
             <div className="order-item flex justify-between items-center mb-4">
               <h3 className="sub-title">المجموع الكلي</h3>
               <p className="mb-0 flex items-center gap-1 price">
-                <span>80</span>
+                <span>{cartItems.length ? Number(110.62).toFixed(2) : 0}</span>
                 <span>دينار</span>
               </p>
             </div>
-            <button className="primary-btn w-full">تأكيد الطلب</button>
+            <button className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`} onClick={() => setOpenSureOrder(true)}>تأكيد الطلب</button>
           </div>
         </div>
       </div>
+
+          <SureOrderModal setOpen={() => setOpenSureOrder(false)} open={openSureOrder} openConfim={() => setOpenConfirmOrder(true)} />
+          <ConfirmOrderModal setOpen={() => setOpenConfirmOrder(true)} open={openConfirmOrder} />
     </div>
   );
 }
