@@ -486,3 +486,8 @@
         transform: translate(-50%, -50%);
     }
 }
+.empty-state {
+    svg {
+        max-width: 100%;
+    }
+}

@@ -1,7 +1,19 @@
 .cart-page {
     .cart-item {
+        @media (max-width: 767px) {
+            flex-wrap: wrap;
+        }
+
         .image-container {
             height: calc(var(--spacing) * 16);
+        }
+
+        .info {
+            @media (max-width: 767px) {
+                width: 100%;
+                flex: auto;
+                padding: 0;
+            }
         }
 
         .name {
@@ -19,8 +31,25 @@
             font-weight: 700;
         }
 
+        .actions {
+            @media (max-width: 767px) {
+                width: 100%;
+            }
+        }
+
         .add-to-cart {
             align-items: stretch;
+
+            @media (max-width: 767px) {
+                width: 70%;
+                margin-top: 15px;
+            }
+            @media (max-width: 500px) {
+                width: 100%;
+            }
+            @media (max-width: 380px) {
+                flex-direction: row;
+            }
 
             .remove-cart-item {
                 width: 48px;
@@ -35,6 +64,12 @@
                         color: var(--primary-color);
                     }
                 }
+            }
+
+            @media screen and (max-width: 380px) {
+                 .product-card-quantity {
+                    width: 90%;
+                 }
             }
         }
     }
@@ -56,6 +91,12 @@
 
     .order-summary {
         width: 500px;
+        max-width: 500px;
+
+        @media (max-width: 1023px) {
+            width: 100%;
+            max-width: 100%;
+        }
 
         .order-item {
             p {
@@ -69,6 +110,7 @@
             }
         }
     }
+
     .notes-text {
         height: 120px;
     }
@@ -76,33 +118,41 @@
     .addresses {
         .card {
             padding: 0;
+
             input {
                 display: none;
 
-                &:checked + label {
+                &:checked+label {
                     border-color: var(--primary-color);
                     background-color: #8D1A141F;
+
                     .check {
                         opacity: 1;
                     }
                 }
             }
+
             label {
                 color: #4A4A49;
                 cursor: pointer;
                 padding: 20px;
                 border-radius: 16px;
                 border: 1px solid transparent;
-                
+
                 .location {
                     font-size: 20px;
                 }
+
                 .check {
                     font-size: 20px;
                     opacity: 0;
                 }
             }
         }
+    }
+
+    .empty-state {
+        padding: 50px 20px;
     }
 }
 
