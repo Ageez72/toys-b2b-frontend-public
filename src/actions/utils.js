@@ -21,7 +21,12 @@ export function addToCart(newItem) {
     console.log(cart);
 }
 
-// Function to get cart from cookie (optional utility)
+// Function to get cart from cookie
 export function getCart() {
     return Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : [];
+}
+
+// Function to get profile from cookie
+export function getProfile() {
+    return Cookies.get('cart') ? JSON.parse(Cookies.get('profile')) : [];
 }
