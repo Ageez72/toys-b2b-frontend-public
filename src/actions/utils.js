@@ -13,7 +13,16 @@ export function addToCart(newItem) {
         existingItem.qty = (parseInt(existingItem.qty) + parseInt(newItem.qty)).toString();
     } else {
         // Step 4: Add new item
-        cart.push({ item: newItem.item, qty: newItem.qty.toString(), name: newItem.name, price: newItem.price, image: newItem.image });
+        cart.push(
+            {
+                item: newItem.item,
+                qty: newItem.qty.toString(),
+                avlqty: newItem.avlqty.toString(),
+                name: newItem.name,
+                price: newItem.price,
+                image: newItem.image
+            }
+        );
     }
 
     // Step 5: Save updated cart to cookie (7-day expiry)

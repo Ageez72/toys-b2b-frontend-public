@@ -6,18 +6,27 @@ import {
   DialogBackdrop,
   DialogPanel
 } from '@headlessui/react';
+import { addToCart, getCart } from '@/actions/utils';
+import { useAppContext } from '../../../context/AppContext';
 
 export default function AddBulkModal({ open, onClose }) {
   const [bulkItems, setBulkItems] = useState([
     { isConfirmed: false } // Start with one empty row
   ]);
-
   const [popupMessage, setPopupMessage] = useState('');
+  const [popupMessageDone, setPopupMessageDone] = useState('');
+  const { state, dispatch } = useAppContext();
 
   const showToast = (message) => {
     setPopupMessage(message);
     setTimeout(() => {
       setPopupMessage('');
+    }, 3000);
+  };
+  const showDoneToast = (message) => {
+    setPopupMessageDone(message);
+    setTimeout(() => {
+      setPopupMessageDone('');
     }, 3000);
   };
 
@@ -63,14 +72,41 @@ export default function AddBulkModal({ open, onClose }) {
   const handleSubmit = () => {
     const selectedItems = bulkItems.filter(item => item.isConfirmed);
     console.log('Selected Items:', selectedItems);
+    for (let i = 0; i < selectedItems.length; i++) {
+      const selectedItem = selectedItems[i];
+      addToCart({
+        item: selectedItem.id,
+        qty: selectedItem.qty.toString(),
+        image: selectedItem.images['800'].main,
+        name: selectedItem.name,
+        price: selectedItem.price,
+        avlqty: selectedItem.avlqty
+      });
+    }
+
+    const storedCart = getCart();
+    if (storedCart) {
+      dispatch({ type: 'STORED-ITEMS', payload: storedCart });
+    }
+    showDoneToast('تمت الإضافة إلى السلة');
+    // reset selected items
+    setBulkItems([
+      { isConfirmed: false }
+    ])
     onClose();
   };
 
   return (
     <>
       {popupMessage && (
-        <div className="fixed top-6 right-6 z-[99999] bg-red-100 text-red-800 px-4 py-2 rounded-lg shadow-lg transition-all">
+        <div className="fixed bottom-16 right-6 z-[99999] bg-red-100 text-red-800 px-4 py-2 rounded-lg shadow-lg transition-all">
           {popupMessage}
+        </div>
+      )}
+
+      {popupMessageDone && (
+        <div className="fixed bottom-16 right-6 z-[99999] bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow-lg transition-all py-4">
+          {popupMessageDone}
         </div>
       )}
 

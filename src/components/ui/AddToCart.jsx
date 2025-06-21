@@ -32,7 +32,8 @@ export default function AddToCart({ item }) {
       qty: count.toString(),
       image: item.images['800'].main,
       name: item.name,
-      price: item.price
+      price: item.price,
+      avlqty: item.avlqty
     });
 
     setCount(1);

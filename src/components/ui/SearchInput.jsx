@@ -8,7 +8,7 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import { useDebounce } from '../../../lib/useDebounce';
 import Link from 'next/link';
 
-export default function SearchInput({ bulk, onCollectBulkItems, pageSize }) {
+export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onCollectQuickAdd, resetTrigger, onResetDone }) {
     const { push } = useRouter();
     const [searchText, setSearchText] = useState('');
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -19,6 +19,15 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize }) {
     useEffect(() => {
         Cookies.remove('store_filters');
     }, []);
+
+    useEffect(() => {
+        if (resetTrigger) {
+            setSearchText('');
+            setSelectedProduct(null);
+            setHasSelected(false);
+            onResetDone?.(); // Notify parent reset is complete
+        }
+    }, [resetTrigger, onResetDone]);
 
     // ✅ Fetch latest cookie inside query function
     const fetchProducts = async ({ queryKey }) => {
@@ -51,8 +60,9 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize }) {
     const handleSelectProduct = (item) => {
         setSelectedProduct(item);
         setSearchText(item.name);
-        setHasSelected(true); // skip API
+        setHasSelected(true);
         onCollectBulkItems && onCollectBulkItems(item)
+        onCollectQuickAdd && onCollectQuickAdd(item)
     };
 
     const handleInputChange = (e) => {
