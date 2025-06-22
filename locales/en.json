@@ -1,62 +1,174 @@
 {
-    "login": {
-        "title": "ًWelcome Back",
-        "desc": "Please login to continue inside our store",
-        "username": "Username or Email",
-        "password": "Password",
-        "login_btn": "Login",
-        "have_account": "Don't have an account ? ",
-        "register": "Register",
-        "errors": {
-            "username": {
-                "required": "Username or email is required",
-                "invalid": "Username or email is invalid"
-            },
-            "password": {
-                "required": "Password is required",
-                "min_length": "Password must be at least 6 characters long"
-            }
-        }
-    },
-    "register": {
-        "title": "Create New Account",
-        "desc": "Please enter the required data to create a new account",
-        "full_name": "Full Name",
-        "enter_full_name": "Enter your full name",
-        "username": "Username",
-        "phone_no": "Phone Number",
-        "enter_phone_no": "Enter your phone number",
-        "email": "Email",
-        "store_name": "Store Name",
-        "enter_store_name": "Enter store name",
-        "password": "Password",
-        "register_btn": "Create Account",
-        "have_account": "Already have an account ? ",
-        "login": "Login",
-        "errors": {
-            "full_name": {
-                "required": "Full name is required"
-            },
-            "username": {
-                "required": "Username is required",
-                "invalid": "Username must be lowercase English letters or numbers only"
-            },
-            "phone_no": {
-                "required": "Phone number is required",
-                "invalid": "Phone number is invalid"
-            },
-            "email": {
-                "required": "Email is required",
-                "invalid": "Email is invalid"
-            },
-            "store_name": {
-                "required": "Store name is required",
-                "min_length": "Store name must be at least 3 characters long"
-            },
-            "password": {
-                "required": "Password is required",
-                "min_length": "Password must be at least 6 characters long"
-            }
-        }
+  "login": {
+    "title": "Welcome back!",
+    "desc": "Log in to continue in our store",
+    "username": "Username or Email",
+    "password": "Password",
+    "login_btn": "Log In",
+    "have_account": "Don't have an account?",
+    "register": "Register",
+    "errors": {
+      "username": {
+        "required": "Username or email is required",
+        "invalid": "Invalid username or email"
+      },
+      "password": {
+        "required": "Password is required",
+        "min_length": "Password must be at least 6 characters long"
+      }
     }
+  },
+  "register": {
+    "title": "Create a New Account",
+    "desc": "Enter the required information to create a new account",
+    "full_name": "Full Name",
+    "enter_full_name": "Enter your full name",
+    "username": "Username",
+    "phone_no": "Phone Number",
+    "enter_phone_no": "Enter your phone number",
+    "email": "Email",
+    "store_name": "Store Name",
+    "enter_store_name": "Enter store name",
+    "password": "Password",
+    "register_btn": "Register",
+    "have_account": "Already have an account?",
+    "login": "Log In",
+    "errors": {
+      "full_name": {
+        "required": "Full name is required"
+      },
+      "username": {
+        "required": "Username is required",
+        "invalid": "Username must consist of lowercase English letters or numbers only"
+      },
+      "phone_no": {
+        "required": "Phone number is required",
+        "invalid": "Invalid phone number"
+      },
+      "email": {
+        "required": "Email is required",
+        "invalid": "Invalid email"
+      },
+      "store_name": {
+        "required": "Store name is required",
+        "min_length": "Store name must be at least 3 characters"
+      },
+      "password": {
+        "required": "Password is required",
+        "min_length": "Password must be at least 6 characters"
+      }
+    }
+  },
+  "products": {
+    "sorting": {
+      "default": "Default",
+      "nameFrom": "Name: A to Z",
+      "nameTo": "Name: Z to A",
+      "priceFrom": "Price: Low to High",
+      "priceTo": "Price: High to Low"
+    },
+    "pageSize": {
+      "12": "Show 12 products",
+      "24": "Show 24 products",
+      "36": "Show 36 products",
+      "all": "Show all"
+    },
+    "resultsNotFound": "No results found!"
+  },
+  "home": "Home",
+  "allProducts": "All Products",
+  "brands": "Brands",
+  "newArrivals": "New Arrivals",
+  "offers": "Top Offers",
+  "comingSoon": "Coming Soon",
+  "clearance": "Clearance Offers",
+  "viewMore": "View More",
+  "copyrights": "All rights reserved to Al-Ikhaa Arabia ©",
+  "heroTitle": "Save time and bulk add your products in seconds",
+  "bulkTitle": "Quick Bulk Add",
+  "add": "Add",
+  "addCart": "Add",
+  "qty": "Quantity",
+  "searchProduct": "Search for a product",
+  "viewAllProducts": "View all products",
+  "oneClick": "Add many products with one click",
+  "productNumber": "Product SKU",
+  "name": "Name",
+  "availablity": "Availability",
+  "all": "All",
+  "available": "Available",
+  "notAvailable": "Unavailable",
+  "totalItems": "Total Items",
+  "itemPrice": "Item Price",
+  "totalPrice": "Total Price",
+  "jod": "JOD",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "filterResults": "Filter Results",
+  "priceRange": "Price Range",
+  "sectors": "Departments",
+  "categories": "Categories",
+  "catalogs": "Usages",
+  "apply": "Apply",
+  "clear": "Clear",
+  "resultsFound": "Found",
+  "resultProducts": "product results",
+  "productSpecifications": "Product Specifications",
+  "productFeatures": "Product Features",
+  "productReviews": "Reviews",
+  "addReview": "Add a Review",
+  "viewMoreReviews": "View More Reviews",
+  "reviewQuestion": "How was your experience with this product?",
+  "reviewComment": "Do you have any comment or opinion?",
+  "commentPlaceholder": "Leave your comment here...",
+  "send": "Send",
+  "relatedProducts": "Related Products",
+  "noReviewsTotal": "(No Reviews)",
+  "noReviews": "No reviews yet!",
+  "cart": "Shopping Cart",
+  "addedProducts": "Added Products",
+  "orderNotes": "Order Notes",
+  "shippingAddress": "Shipping Address",
+  "orderSummary": "Order Summary",
+  "itemCount": "Item Count",
+  "shipping": "Shipping",
+  "discount": "Discount",
+  "subtotal": "Subtotal",
+  "total": "Total",
+  "confirmOrder": "Confirm Order",
+  "confirmOrderMessage": "Are you sure you want to place the order?",
+  "yes": "Yes",
+  "no": "No",
+  "congrats": "Congratulations! Your order has been successfully confirmed",
+  "backToHome": "Back to Home",
+  "noProducts": "No products yet!",
+  "backToStore": "Back to Store",
+  "profile": "Profile",
+  "security": "Security",
+  "orders": "My Orders",
+  "logout": "Log Out",
+  "addresses": "Addresses",
+  "fullName": "Full Name",
+  "username": "Username",
+  "phone": "Phone Number",
+  "email": "Email",
+  "storeName": "Store Name",
+  "saveChanges": "Save Changes",
+  "profileUpdated": "Your profile has been successfully updated",
+  "goToProfile": "Go to Profile",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm New Password",
+  "passwordChanged": "Your password has been successfully changed!",
+  "allOrders": "All Orders",
+  "completed": "Completed",
+  "inProgress": "In Progress",
+  "canceled": "Canceled",
+  "orderNumber": "Order Number:",
+  "additionalProducts": "Additional Products",
+  "orderTotal": "Order Total",
+  "noOrders": "You have no orders!",
+  "goToStore": "Go to Store",
+  "logoutConfirmation": "Are you sure you want to log out?",
+  "noAddresses": "You don't have any saved addresses!"
 }
