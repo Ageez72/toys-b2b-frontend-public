@@ -14,21 +14,28 @@ export default function LangSwitcher({top}) {
         // document.documentElement.setAttribute("lang", e);
         window.location.reload();
     };
+    const getLangClass = () => {
+        if(top && state.LANG === "EN"){
+            return "right-0";
+        } else if(top && state.LANG === "AR"){
+            return "left-0";
+        }
+    }
     return (
 
         <>
             <Menu as="div" className={`${top ? 'relative' : ''} inline-block text-left`}>
-                <div>
+                {/* <div> */}
                     <MenuButton className="inline-flex w-full lang-switcher">
                         <span>
                             <i className="icon-global"></i>
                         </span>
                     </MenuButton>
-                </div>
+                {/* </div> */}
 
                 <MenuItems
                     transition
-                    className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in lang-switcher-dropdown ${state.LANG === "en" ? "right-0" : "right-auto left-0"}`}
+                    className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in lang-switcher-dropdown ${top ? "top-12" : "top-16"} ${getLangClass()}`}
                 >
                     <div className="py-1 text-right">
                         <MenuItem>

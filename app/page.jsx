@@ -27,7 +27,7 @@ export default function Home() {
 
   if (isLoading) return <Loader />;
   if (data) {
-    push("/home")
+    // push("/home")
   }
   
   return (

@@ -1,8 +1,8 @@
 'use client';
-
 import { useState } from 'react';
 import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
+import Toast from './Toast';
 
 export default function AddToCart({ item }) {
   const [count, setCount] = useState(1);
@@ -51,9 +51,7 @@ export default function AddToCart({ item }) {
     <>
       {/* ✅ Toast Message */}
       {popupMessage && (
-        <div className="fixed bottom-16 right-6 z-[99999] bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow-lg transition-all py-4">
-          {popupMessage}
-        </div>
+        <Toast message={popupMessage} type='success' />
       )}
 
       <div className="add-to-cart flex items-center gap-3 w-full">

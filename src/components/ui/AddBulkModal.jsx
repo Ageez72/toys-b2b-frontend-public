@@ -8,6 +8,7 @@ import {
 } from '@headlessui/react';
 import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
+import Toast from './Toast';
 
 export default function AddBulkModal({ open, onClose }) {
   const [bulkItems, setBulkItems] = useState([
@@ -99,15 +100,11 @@ export default function AddBulkModal({ open, onClose }) {
   return (
     <>
       {popupMessage && (
-        <div className="fixed bottom-16 right-6 z-[99999] bg-red-100 text-red-800 px-4 py-2 rounded-lg shadow-lg transition-all">
-          {popupMessage}
-        </div>
+        <Toast message={popupMessage} type='error' />
       )}
 
       {popupMessageDone && (
-        <div className="fixed bottom-16 right-6 z-[99999] bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow-lg transition-all py-4">
-          {popupMessageDone}
-        </div>
+        <Toast message={popupMessageDone} type='success' />
       )}
 
       <Dialog open={open} onClose={onClose} className="relative z-9999">

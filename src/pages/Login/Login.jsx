@@ -24,7 +24,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
-  const translation = state.LANG === "en" ? en : ar;
+  const translation = state.LANG === "EN" ? en : ar;
   const router = useRouter()
 
   useEffect(() => {

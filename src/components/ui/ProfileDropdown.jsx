@@ -55,7 +55,7 @@ export default function ProfileDropdown() {
 
                 <MenuItems
                     transition
-                    className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in profile-dropdown ${state.LANG === "en" ? "right-0" : "right-auto left-0"}`}
+                    className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in profile-dropdown ${state.LANG === "EN" ? "right-0" : "right-auto left-0"}`}
                 >
                     <div className="py-1 text-right">
                         <div className="flex profile-dropdown-header px-4 py-2">

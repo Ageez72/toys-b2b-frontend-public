@@ -26,7 +26,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [isUsernameValid, setIsUsernameValid] = useState(false);
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
-  const translation = state.LANG === "en" ? en : ar;
+  const translation = state.LANG === "EN" ? en : ar;
 
   useEffect(() => {
     setIsLoading(false);

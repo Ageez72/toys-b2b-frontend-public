@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
-import SearchInput from './SearchInput'
+import SearchInput from './SearchInput';
+import Toast from './Toast';
 
 export default function QuickAdd({ openSidebar }) {
     const [count, setCount] = useState("");
@@ -70,14 +71,10 @@ export default function QuickAdd({ openSidebar }) {
         <>
             {/* ✅ Toast Message */}
             {popupMessage && (
-                <div className="fixed bottom-16 right-6 z-[99999] bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow-lg transition-all py-4">
-                    {popupMessage}
-                </div>
+                <Toast message={popupMessage} type='success' />
             )}
             {popupMessageError && (
-                <div className="fixed bottom-16 right-6 z-[99999] bg-red-100 text-red-800 px-4 py-2 rounded-lg shadow-lg transition-all">
-                    {popupMessageError}
-                </div>
+                <Toast message={popupMessageError} type='error' />
             )}
             <div className="quick-add-container flex">
                 <div className='search-input form-group mb-0'>
