@@ -9,7 +9,8 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 
 async function fetchBrandsFilters() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.brandsFilters}`, {
+    const lang = Cookies.get('lang') || 'AR';
+    const res = await axios.get(`${BASE_API}${endpoints.products.brandsFilters}&lang=${lang}`, {
         headers: {
             Authorization: `Bearer ${Cookies.get('token')}`,
         }

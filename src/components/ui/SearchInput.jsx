@@ -14,6 +14,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [hasSelected, setHasSelected] = useState(false);
     const debouncedSearchText = useDebounce(searchText, 500);
+    const lang = Cookies.get('lang') || 'AR';
 
     // ✅ Clear cookie once on first render
     useEffect(() => {
@@ -35,7 +36,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
         const filterItems = Cookies.get('store_filters') || '';
         const token = Cookies.get('token');
 
-        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize ? pageSize : 3}&${filterItems}&itemStatus=INSTOCK&lang=AR`;
+        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize ? pageSize : 3}&${filterItems}&itemStatus=INSTOCK&lang=${lang}`;
 
         const res = await axios.get(url, {
             headers: {

@@ -67,7 +67,8 @@ const displayOptions = [
 
 
 export default function Page() {
-
+  const lang = Cookies.get('lang') || 'AR';
+  // Get search params from URL
   const searchParams = useSearchParams();
 
   // Convert URLSearchParams to plain object
@@ -113,7 +114,7 @@ export default function Page() {
   }, [apiParams]);
 
   async function fetchProducts() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&itemStatus=INSTOCK&lang=AR`, {
+    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&itemStatus=INSTOCK&lang=${lang}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }

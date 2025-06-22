@@ -8,10 +8,10 @@ import ProductCard from './ProductCard';
 import VerticalLoader from './Loaders/VerticalLoader';
 
 export default function RelatedProducts({ items }) {
-
+    const lang = Cookies.get('lang') || 'AR';
     const { push } = useRouter();
     async function fetchRelatedProducts() {
-        const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=AR&id=${items.join(',')}`, {
+        const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${items.join(',')}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
             }
@@ -25,7 +25,7 @@ export default function RelatedProducts({ items }) {
 
 
     //   if (isLoading) return <VerticalLoader />;
-      if (error instanceof Error) return push("/");
+    if (error instanceof Error) return push("/");
 
     return (
         <>

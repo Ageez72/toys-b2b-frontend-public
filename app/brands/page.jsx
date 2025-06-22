@@ -11,7 +11,8 @@ import { BASE_API, endpoints } from '../../constant/endpoints';
 import Placeholder from "../../src/assets/imgs/200x100.svg"
 
 async function fetchBrandsPage() {
-  const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}`, {
+  const lang = Cookies.get('lang') || 'AR';
+  const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}`, {
     headers: {
       Authorization: `Bearer ${Cookies.get('token')}`,
     }

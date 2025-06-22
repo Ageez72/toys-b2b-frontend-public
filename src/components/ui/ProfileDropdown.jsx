@@ -12,8 +12,9 @@ import Loader from './Loaders/Loader';
 export default function ProfileDropdown() {
     const { push } = useRouter();
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const lang = Cookies.get('lang') || 'AR';
     async function fetchProfile() {
-        const res = await axios.get(`${BASE_API}${endpoints.user.profile}`, {
+        const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
             }

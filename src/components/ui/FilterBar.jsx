@@ -56,6 +56,7 @@ const itemTypeOptions = [
 export default function FilterBar({ isProductsPage, close, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm }) {
     const router = useRouter();
     const useParams = useSearchParams();
+    const lang = Cookies.get('lang') || 'AR';
 
     const [fromPrice, setFromPrice] = useState(useParams.get('fromPrice') || 0); // نطاق السعر
     const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 1000); // نطاق السعر
@@ -161,7 +162,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
     // get all options
     const fetchCategoriesOptions = async () => {
-        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brand.join(',')}&lang=AR`, {
+        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brand.join(',')}&lang=${lang}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
             }
@@ -181,7 +182,8 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     }
 
     const fetchCatalogsOptions = async () => {
-        const res = await axios.get(`${BASE_API}${catalogEndpoint}`, {
+        const lang = Cookies.get('lang') || 'AR';
+        const res = await axios.get(`${BASE_API}${catalogEndpoint}&lang=${lang}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
             }

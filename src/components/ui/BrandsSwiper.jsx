@@ -14,7 +14,8 @@ import CardLoader from './Loaders/CardLoader';
 
 
 async function fetchHomeBrands() {
-    const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}`, {
+    const lang = Cookies.get('lang') || 'AR';
+    const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}`, {
         headers: {
             Authorization: `Bearer ${Cookies.get('token')}`,
         }

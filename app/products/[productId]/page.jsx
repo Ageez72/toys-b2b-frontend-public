@@ -20,11 +20,12 @@ let breadcrumbItems = [];
 export default function Page() {
   const [refresh, setRefresh] = useState(false);
   const { productId } = useParams();
+  const lang = Cookies.get('lang') || 'AR';
 
   const { push } = useRouter();
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   async function fetchProductDetails() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=AR&id=${productId}`, {
+    const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${productId}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }

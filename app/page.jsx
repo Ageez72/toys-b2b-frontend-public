@@ -12,7 +12,8 @@ export default function Home() {
   const { push } = useRouter();
 
   async function fetchProfile() {
-    const res = await axios.get(`${BASE_API}${endpoints.user.profile}`, {
+    const lang = Cookies.get('lang') || 'AR';
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }
@@ -27,7 +28,7 @@ export default function Home() {
 
   if (isLoading) return <Loader />;
   if (data) {
-    // push("/home")
+    push("/home")
   }
   
   return (
