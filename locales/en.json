@@ -175,5 +175,7 @@
   "noAddresses": "You don't have any saved addresses!",
   "addedToCart": "Added to cart",
   "productAlreadyAdded": "This product is already added",
-  "quantityExceeded": "Quantity cannot exceed "
+  "quantityExceeded": "Quantity cannot exceed ",
+  "warning": "Warning",
+  "success": "Success"
 }

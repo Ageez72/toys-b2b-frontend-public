@@ -5,6 +5,8 @@ import { useAppContext } from '../../../context/AppContext';
 import Toast from './Toast';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
+import WarningModal from './WarningModal';
+import SuccessToast from './SuccessToast';
 
 export default function AddToCart({ item }) {
   const [count, setCount] = useState(1);
@@ -20,6 +22,8 @@ export default function AddToCart({ item }) {
 
   // ✅ Toast state and function
   const [popupMessage, setPopupMessage] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [warningPopupMessage, setWarningPopupMessage] = useState('');
 
   const showToast = (message) => {
     setPopupMessage(message);
@@ -28,6 +32,14 @@ export default function AddToCart({ item }) {
     }, 3000);
   };
 
+  const showToastError = (message) => {
+    setWarningPopupMessage(message);
+    setIsModalOpen(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setWarningPopupMessage('');
+    }, 4000);
+  };
   const increase = () => setCount((prev) => prev + 1);
   const decrease = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
 
@@ -37,7 +49,7 @@ export default function AddToCart({ item }) {
   };
 
   const handleAddToCart = () => {
-    addToCart({
+    const result = addToCart({
       item: item.id,
       qty: count.toString(),
       image: item.images['800'].main,
@@ -46,23 +58,37 @@ export default function AddToCart({ item }) {
       avlqty: item.avlqty
     });
 
-    setCount(1);
+    if (!result.success) {
+      showToastError(result.message);
+    } else {
+      setCount(1);
+      const storedCart = getCart();
+      if (storedCart) {
+        dispatch({ type: 'STORED-ITEMS', payload: storedCart });
+      }
 
-    const storedCart = getCart();
-    if (storedCart) {
-      dispatch({ type: 'STORED-ITEMS', payload: storedCart });
+      // ✅ Show success toast
+      showToast(translation.addedToCart);
     }
-
-    // ✅ Show success toast
-    showToast(translation.addedToCart);
   };
 
   return (
     <>
       {/* ✅ Toast Message */}
-      {popupMessage && (
-        <Toast message={popupMessage} type='success' />
-      )}
+      <div className="fixed bottom-6 right-6 z-9999">
+        {popupMessage && (
+          <SuccessToast
+            open={isModalOpen}
+            message={popupMessage}
+          />
+        )}
+        {warningPopupMessage && (
+          <WarningModal
+            open={isModalOpen}
+            message={warningPopupMessage}
+          />
+        )}
+      </div>
 
       <div className="add-to-cart flex items-center gap-3 w-full">
         <div className="product-card-quantity flex items-center gap-1 w-1/2">

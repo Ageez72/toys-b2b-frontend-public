@@ -39,8 +39,8 @@ export default function Home() {
     {
       title: translation.commingSoon,
       badgeType: "yellow",
-      type: "COMING SOON",
-      route: "/products?itemType=COMING SOON",
+      type: "COMMING SOON",
+      route: "/products?itemType=COMMING SOON",
       id: "coming-soon",
     },
     {

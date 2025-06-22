@@ -176,5 +176,7 @@
     "addedToCart": "تمت الإضافة إلى السلة",
     "productAlreadyAdded": "هذا المنتج مضاف بالفعل",
     "quantityExceeded": "الكمية لا يمكن أن تتجاوز ",
-    "noResults": "لا توجد نتائج"
+    "noResults": "لا توجد نتائج",
+    "warning": "تحذير",
+    "success": "نجاح"
 }

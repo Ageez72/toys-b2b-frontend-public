@@ -1,4 +1,7 @@
 import Cookies from 'js-cookie';
+let lang = Cookies.get('lang') ? Cookies.get('lang') : "AR";
+import en from "../../locales/en.json";
+import ar from "../../locales/ar.json";
 
 // Function to update the cart
 export function addToCart(newItem) {
@@ -9,7 +12,7 @@ export function addToCart(newItem) {
     if (requestedQty > availableQty) {
         return {
             success: false,
-            message: `Only ${availableQty} item(s) are available. You requested ${requestedQty}.`
+            message: lang === "EN" ? `Only ${availableQty} item(s) are available in total.` : `متوفر فقط ${availableQty} قطعة من هذا المنتج.`
         };
     }
 
@@ -27,7 +30,7 @@ export function addToCart(newItem) {
         if (totalQty > availableQty) {
             return {
                 success: false,
-                message: `Only ${availableQty} item(s) are available in total. You already have ${currentQty} in the cart.`
+                message: lang === "EN" ? `Only ${availableQty} item(s) are available in total. You already have ${currentQty} in the cart.` : `متوفر فقط ${availableQty} قطعة من هذا المنتج. لديك بالفعل ${currentQty} في السلة.`
             };
         }
 
