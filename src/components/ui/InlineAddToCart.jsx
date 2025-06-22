@@ -7,7 +7,7 @@ import { useAppContext } from '../../../context/AppContext';
 
 export default function InlineAddToCart({ itemId, onQtyChange }) {
     const [count, setCount] = useState(0);
-    const { state, dispatch } = useAppContext();
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
 
     useEffect(() => {
         const cart = getCart();

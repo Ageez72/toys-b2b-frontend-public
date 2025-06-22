@@ -8,7 +8,7 @@ import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
 
 export default function SureOrderModal({ open, setOpen, openConfim }) {
-  const { state, dispatch } = useAppContext();
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
 
     const handleSubmit = async () => {
         Cookies.set("cart", "[]")

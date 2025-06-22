@@ -15,7 +15,7 @@ export default function AddBulkModal({ open, onClose }) {
   ]);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupMessageDone, setPopupMessageDone] = useState('');
-  const { state, dispatch } = useAppContext();
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
 
   const showToast = (message) => {
     setPopupMessage(message);

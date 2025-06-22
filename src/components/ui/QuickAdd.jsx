@@ -9,15 +9,22 @@ export default function QuickAdd({ openSidebar }) {
     const [count, setCount] = useState("");
     const [selectedItem, setSelectedItem] = useState([]);
     const [resetSearch, setResetSearch] = useState(false);
-    const { state, dispatch } = useAppContext();
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
 
     // ✅ Toast state and function
     const [popupMessage, setPopupMessage] = useState('');
+    const [popupMessageError, setPopupMessageError] = useState('');
 
     const showToast = (message) => {
         setPopupMessage(message);
         setTimeout(() => {
             setPopupMessage('');
+        }, 3000);
+    };
+    const showToastError = (message) => {
+        setPopupMessageError(message);
+        setTimeout(() => {
+            setPopupMessageError('');
         }, 3000);
     };
     const handleQuantityChange = (e) => {
@@ -31,7 +38,7 @@ export default function QuickAdd({ openSidebar }) {
     const handleAddToCart = () => {
         if (!selectedItem?.id || !count) return;
 
-        addToCart({
+        const result = addToCart({
             item: selectedItem.id,
             qty: count.toString(),
             image: selectedItem.images['800'].main,
@@ -40,18 +47,23 @@ export default function QuickAdd({ openSidebar }) {
             avlqty: selectedItem.avlqty
         });
 
-        setCount(""); // Reset quantity
-        setSelectedItem([]); // Reset selected product
+        if (!result.success) {
+            showToastError(result.message); // or show toast
+        } else {
+            setCount(""); // Reset quantity
+            setSelectedItem([]); // Reset selected product
 
-        // Trigger search input reset
-        setResetSearch(true);
+            // Trigger search input reset
+            setResetSearch(true);
 
-        const storedCart = getCart();
-        if (storedCart) {
-            dispatch({ type: 'STORED-ITEMS', payload: storedCart });
+            const storedCart = getCart();
+            if (storedCart) {
+                dispatch({ type: 'STORED-ITEMS', payload: storedCart });
+            }
+
+            showToast('تمت الإضافة إلى السلة');
         }
 
-        showToast('تمت الإضافة إلى السلة');
     };
 
     return (
@@ -60,6 +72,11 @@ export default function QuickAdd({ openSidebar }) {
             {popupMessage && (
                 <div className="fixed bottom-16 right-6 z-[99999] bg-green-100 text-green-800 px-4 py-2 rounded-lg shadow-lg transition-all py-4">
                     {popupMessage}
+                </div>
+            )}
+            {popupMessageError && (
+                <div className="fixed bottom-16 right-6 z-[99999] bg-red-100 text-red-800 px-4 py-2 rounded-lg shadow-lg transition-all">
+                    {popupMessageError}
                 </div>
             )}
             <div className="quick-add-container flex">
@@ -75,7 +92,7 @@ export default function QuickAdd({ openSidebar }) {
                             <i className="icon-setting-4"></i>
                         </div>
                         <SearchInput bulk={false} onCollectQuickAdd={getSelectedProduct} resetTrigger={resetSearch}
-  onResetDone={() => setResetSearch(false)} />
+                            onResetDone={() => setResetSearch(false)} />
                     </div>
                 </div>
                 <div className='quantatity-container flex items-center gap-2 card'>

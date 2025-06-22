@@ -6,7 +6,7 @@ import { useAppContext } from '../../../context/AppContext';
 
 export default function AddToCart({ item }) {
   const [count, setCount] = useState(1);
-  const { state, dispatch } = useAppContext();
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
 
   // ✅ Toast state and function
   const [popupMessage, setPopupMessage] = useState('');

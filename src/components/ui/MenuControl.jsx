@@ -6,7 +6,7 @@ import ProfileDropdown from './ProfileDropdown';
 import Link from 'next/link';
 
 export default function MenuControl() {
-  const { state } = useAppContext();
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   let cartLength = state.STOREDITEMS.length;
 
   useEffect(()=>{
