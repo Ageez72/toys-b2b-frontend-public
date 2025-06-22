@@ -7,30 +7,37 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../context/AppContext';
 
-const MultiRangeSlider = ({ min, max, selectedFrom ,selectedTo, title, initiallyOpen = false, handlePriceFrom, handlePriceTo }) => {
-  const [open, setOpen] = useState(selectedFrom && selectedTo ? true : false);
-  let saved = {
-    minVal: selectedFrom,
-    maxVal: selectedTo
-  }
+const MultiRangeSlider = ({ min, max, selectedFrom, selectedTo, title, initiallyOpen = false, handlePriceFrom, handlePriceTo }) => {
+  const STORAGE_KEY = "price_range";
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const [translation, setTranslation] = useState(ar); // default fallback
+  useEffect(() => {
+    setTranslation(state.LANG === "EN" ? en : ar);
+  }, [state.LANG]);
 
+  const [open, setOpen] = useState(initiallyOpen);
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef(null);
 
   const [minVal, setMinVal] = useState(() => {
-    // const saved = JSON.parse(localStorage?.getItem(STORAGE_KEY));
+    const cookieValue = Cookies?.get(STORAGE_KEY);
+    const saved = cookieValue ? JSON.parse(cookieValue) : {};
     return saved?.minVal ?? min;
   });
 
   const [maxVal, setMaxVal] = useState(() => {
-    // const saved = JSON.parse(localStorage?.getItem(STORAGE_KEY));
+    const cookieValue = Cookies?.get(STORAGE_KEY);
+    const saved = cookieValue ? JSON.parse(cookieValue) : {};
     return saved?.maxVal ?? max;
   });
 
   useEffect(() => {
-    // localStorage?.setItem(STORAGE_KEY, JSON.stringify({ minVal, maxVal }));
+    Cookies?.set(STORAGE_KEY, JSON.stringify({ minVal, maxVal }));
     minValRef.current = minVal;
     maxValRef.current = maxVal;
   }, [minVal, maxVal]);
@@ -74,15 +81,14 @@ const MultiRangeSlider = ({ min, max, selectedFrom ,selectedTo, title, initially
           >
             <span className="title">{title}</span>
             <i
-              className={`icon-arrow-down-01-round arrow-down ${
-                isOpen ? "rotate-180" : ""
-              }`}
+              className={`icon-arrow-down-01-round arrow-down ${isOpen ? "rotate-180" : ""
+                }`}
             ></i>
           </DisclosureButton>
 
           <DisclosurePanel className="text-gray-500">
             <div className="slider-container">
-            <input
+              <input
                 type="range"
                 min={min}
                 max={max}
@@ -108,7 +114,7 @@ const MultiRangeSlider = ({ min, max, selectedFrom ,selectedTo, title, initially
                     Number(event.target.value),
                     minVal + 1
                   );
-                  setMaxVal(value);                  
+                  setMaxVal(value);
                   handlePriceTo(event.target.value)
                 }}
                 className="thumb thumb--right"
@@ -119,11 +125,11 @@ const MultiRangeSlider = ({ min, max, selectedFrom ,selectedTo, title, initially
                 <div ref={range} className="slider__range" />
                 <div className="slider__right-value">
                   <span>{maxVal}</span>
-                  <span> دينار</span>
+                  <span> {translation.jod}</span>
                 </div>
                 <div className="slider__left-value">
                   <span>{minVal}</span>
-                  <span> دينار</span>
+                  <span> {translation.jod}</span>
                 </div>
               </div>
             </div>

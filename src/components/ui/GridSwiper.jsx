@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Grid } from 'swiper/modules';
 import Link from 'next/link';
@@ -11,6 +11,8 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import HorizontalLoader from './Loaders/HorizontalLoader';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
 
 export default ({ title, route, badgeType, type, id }) => {
     const { push } = useRouter();
@@ -24,6 +26,12 @@ export default ({ title, route, badgeType, type, id }) => {
         return res;
     }
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // default fallback
+
+    useEffect(() => {
+        setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
+
     const { data, isLoading, error } = useQuery({
         queryKey: [type],
         queryFn: fetchHomeProducts,
@@ -46,9 +54,18 @@ export default ({ title, route, badgeType, type, id }) => {
                     <div className="grid-card-container" id={id}>
                         <div className="grid-header w-full flex items-center justify-between">
                             <h2 className='grid-header-title'>{title}</h2>
-                            <Link href={route} className="outline-btn flex items-center justify-between gap-2">
-                                <span>اكتشف المزيد</span>
-                                <i className="icon-arrow-left-01-round"></i>
+                            <Link href={route} className="outline-btn flex items-center gap-2">
+                                {state.LANG === "EN" ? (
+                                    <>
+                                        <i className="icon-arrow-right-01-round"></i>
+                                        <span>{translation.viewMore}</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>{translation.viewMore}</span>
+                                        <i className="icon-arrow-left-01-round"></i>
+                                    </>
+                                )}
                             </Link>
                         </div>
                         <Swiper

@@ -7,6 +7,8 @@ import {
   DialogPanel
 } from '@headlessui/react';
 import { addToCart, getCart } from '@/actions/utils';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 import Toast from './Toast';
 
@@ -17,6 +19,7 @@ export default function AddBulkModal({ open, onClose }) {
   const [popupMessage, setPopupMessage] = useState('');
   const [popupMessageDone, setPopupMessageDone] = useState('');
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const translation = state.LANG === "EN" ? en : ar;
 
   const showToast = (message) => {
     setPopupMessage(message);
@@ -34,7 +37,7 @@ export default function AddBulkModal({ open, onClose }) {
   const handleProductSelect = (selectedItem, index) => {
     const exists = bulkItems.find(item => item.id === selectedItem.id);
     if (exists) {
-      showToast('هذا المنتج مضاف بالفعل');
+      showToast(translation.productAlreadyAdded);
       return;
     }
 
@@ -55,7 +58,7 @@ export default function AddBulkModal({ open, onClose }) {
     const maxQty = updated[index].avlqty;
 
     if (parsedQty > maxQty) {
-      showToast(`الكمية لا يمكن أن تتجاوز ${maxQty}`);
+      showToast(`${translation.quantityExceeded} ${maxQty}`);
       parsedQty = maxQty;
     }
 
@@ -89,7 +92,7 @@ export default function AddBulkModal({ open, onClose }) {
     if (storedCart) {
       dispatch({ type: 'STORED-ITEMS', payload: storedCart });
     }
-    showDoneToast('تمت الإضافة إلى السلة');
+    showDoneToast(translation.addedToCart);
     // reset selected items
     setBulkItems([
       { isConfirmed: false }
@@ -120,19 +123,19 @@ export default function AddBulkModal({ open, onClose }) {
               className="relative add-bulk-modal transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 data-closed:sm:translate-y-0 data-closed:sm:scale-95"
             >
               <div className="p-32">
-                <h2 className="modal-title">أضف الكثير من المنتجات بضغطة واحدة</h2>
+                <h2 className="modal-title">{translation.oneClick}</h2>
                 <div className="add-bulk-table">
                   <div className="table-head flex gap-4">
                     <div className="name-qty flex items-center justify-between">
-                      <div className="name">الاسم</div>
-                      <div className="qty">الكمية</div>
+                      <div className="name">{translation.name}</div>
+                      <div className="qty">{translation.qty}</div>
                     </div>
                     <div className="info flex items-center justify-between">
-                      <div className="item flex-2">رقم المنتج SKU</div>
-                      <div className="item flex-1">حالة التوفر</div>
-                      <div className="item flex-1">إجمالي القطع</div>
-                      <div className="item flex-1">سعر القطعة</div>
-                      <div className="item flex-1">إجمالي السعر</div>
+                      <div className="item flex-2">{translation.productNumber}</div>
+                      <div className="item flex-1">{translation.availablity}</div>
+                      <div className="item flex-1">{translation.totalItems}</div>
+                      <div className="item flex-1">{translation.itemPrice}</div>
+                      <div className="item flex-1">{translation.totalPrice}</div>
                       <div className="item delete"></div>
                     </div>
                   </div>
@@ -142,7 +145,7 @@ export default function AddBulkModal({ open, onClose }) {
                       <div key={index} className="product-row flex items-center gap-4">
                         <div className="name-qty flex items-center justify-between">
                           <div className="name">
-                            <label className="mobile-title hidden">الاسم</label>
+                            <label className="mobile-title hidden">{translation.name}</label>
                             {item.isConfirmed ? (
                               <input
                                 type="text"
@@ -161,11 +164,11 @@ export default function AddBulkModal({ open, onClose }) {
                             )}
                           </div>
                           <div className="qty">
-                            <label className="mobile-title hidden">الكمية</label>
+                            <label className="mobile-title hidden">{translation.qty}</label>
                             <input
                               type="number"
                               min="0"
-                              placeholder="الكمية"
+                              placeholder={translation.qty}
                               value={item.qty || ''}
                               onChange={(e) =>
                                 updateQty(index, parseInt(e.target.value || '0'))
@@ -179,27 +182,27 @@ export default function AddBulkModal({ open, onClose }) {
                         {item.isConfirmed && (
                           <div className="info flex items-center justify-between">
                             <div className="item flex-2">
-                              <label className="mobile-title hidden">رقم المنتج SKU</label>
+                              <label className="mobile-title hidden">{translation.productNumber}</label>
                               <span className="mobile-box">{item.id}</span>
                             </div>
                             <div className="item flex-1">
-                              <label className="mobile-title hidden">حالة التوفر</label>
+                              <label className="mobile-title hidden">{translation.availablity}</label>
                               <span className="mobile-box">{item.status}</span>
                             </div>
                             <div className="item flex-1">
-                              <label className="mobile-title hidden">اجمالي القطع</label>
+                              <label className="mobile-title hidden">{translation.totalItems}</label>
                               <span className="mobile-box">{item.avlqty}</span>
                             </div>
                             <div className="item flex-1">
-                              <label className="mobile-title hidden">سعر القطعة</label>
+                              <label className="mobile-title hidden">{translation.itemPrice}</label>
                               <span className="mobile-box">
-                                {item.price?.toFixed(2)} دينار
+                                {item.price?.toFixed(2)} {translation.jod}
                               </span>
                             </div>
                             <div className="item flex-1">
-                              <label className="mobile-title hidden">إجمالي السعر</label>
+                              <label className="mobile-title hidden">{translation.totalPrice}</label>
                               <span className="mobile-box">
-                                {item.total?.toFixed(2)} دينار
+                                {item.total?.toFixed(2)} {translation.jod}
                               </span>
                             </div>
                             <div className="item delete">
@@ -208,7 +211,7 @@ export default function AddBulkModal({ open, onClose }) {
                                 onClick={() => removeRow(index)}
                               >
                                 <i className="icon-minus"></i>
-                                <span className="mobile-title hidden">حذف</span>
+                                <span className="mobile-title hidden">{translation.delete}</span>
                               </button>
                             </div>
                           </div>
@@ -219,10 +222,10 @@ export default function AddBulkModal({ open, onClose }) {
 
                   <div className="action-btns flex gap-3 mt-4">
                     <button className="primary-btn" onClick={handleSubmit}>
-                      إضافة
+                      {translation.add}
                     </button>
                     <button className="gray-btn" onClick={onClose}>
-                      إلغاء
+                      {translation.cancel}
                     </button>
                   </div>
                 </div>

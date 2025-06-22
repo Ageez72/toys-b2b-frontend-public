@@ -1,14 +1,20 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
 
 export default function SureOrderModal({ open, setOpen, openConfim }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // default fallback
+    useEffect(() => {
+      setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
 
     const handleSubmit = async () => {
         Cookies.set("cart", "[]")
@@ -53,21 +59,21 @@ export default function SureOrderModal({ open, setOpen, openConfim }) {
                             <path d="M97.9499 71.1H52.0799C51.1799 71.1 50.2499 71.07 49.3799 70.86L53.1599 93.9C53.9999 99.06 56.2499 105 66.2399 105H83.0699C93.1799 105 94.9799 99.93 96.0599 94.26L100.59 70.86C99.7499 71.04 98.8499 71.1 97.9499 71.1ZM70.8299 90.48C70.8299 91.65 69.8999 92.58 68.7299 92.58C67.5599 92.58 66.6299 91.65 66.6299 90.48V80.58C66.6299 79.41 67.5599 78.48 68.7299 78.48C69.8999 78.48 70.8299 79.41 70.8299 80.58V90.48ZM83.6699 90.48C83.6699 91.65 82.7399 92.58 81.5699 92.58C80.3999 92.58 79.4699 91.65 79.4699 90.48V80.58C79.4699 79.41 80.3999 78.48 81.5699 78.48C82.7399 78.48 83.6699 79.41 83.6699 80.58V90.48Z" fill="#8D1A14" />
                         </svg>
 
-                        <h3 className="sub-title mt-5 mb-7">هل انت متأكد من اتمام الطلب ؟</h3>
+                        <h3 className="sub-title mt-5 mb-7">{translation.confirmOrderMessage}</h3>
                         <div className="bg-gray-50 flex gap-4 flex-wrap">
                             <button
                                 type="button"
                                 onClick={handleSubmit}
                                 className="primary-btn flex-1 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 sm:w-auto text-white"
                             >
-                                نعم
+                                {translation.yes}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setOpen(false)}
                                 className="gray-btn flex-1 mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 shadow-xs sm:mt-0 sm:w-auto"
                             >
-                                لا
+                                {translation.no}
                             </button>
                         </div>
                     </DialogPanel>

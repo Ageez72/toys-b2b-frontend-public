@@ -7,6 +7,9 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../context/AppContext';
 
 async function fetchBrandsFilters() {
     const lang = Cookies.get('lang') || 'AR';
@@ -19,7 +22,12 @@ async function fetchBrandsFilters() {
 }
 
 export default function BrandsFilters({ selected = [], parentOptions }) {
-    const [selectedMap, setSelectedMap] = useState({}); // key: brandCode, value: array of selected brandIDs
+    const [selectedMap, setSelectedMap] = useState({});
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // default fallback
+    useEffect(() => {
+        setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['brandsFilters'],
@@ -49,7 +57,7 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
                         <DisclosureButton
                             className="accordion-item w-full flex items-center justify-between cursor-pointer"
                         >
-                            <span className="title">العلامات التجارية</span>
+                            <span className="title">{translation.brands}</span>
                             <i className={`icon-arrow-down-01-round arrow-down ${isOpen ? 'rotate-180' : ''}`}></i>
                         </DisclosureButton>
 

@@ -1,21 +1,29 @@
 'use client'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import RateModal from './RateModal'
 import Rate from './Rate'
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../context/AppContext';
 
 export default function RateCard({ reviews, id, onRefresh }) {
     const [open, setOpen] = useState(false)
+    const { state = {} } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // default fallback
+    useEffect(() => {
+        setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
 
     return (
         <>
             <div className='card mt-12'>
                 <div className="flex justify-between">
-                    <h3 className="sub-title">التقييمات</h3>
+                    <h3 className="sub-title">{translation.productReviews}</h3>
                     {
                         reviews.length ? (
                             <button onClick={() => setOpen(true)} type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none cursor-pointer rounded border border-gray-200 bg-gray-100 hover:bg-white hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-100 transition-all">
                                 <i className="icon-add"></i>
-                                <span>اضف تقييمًا</span>
+                                <span>{translation.addReview}</span>
                             </button>
                         ) : null
                     }
@@ -41,12 +49,12 @@ export default function RateCard({ reviews, id, onRefresh }) {
                                         </linearGradient>
                                     </defs>
                                 </svg>
-                                <h2 className='sub-title mb-4'>لا يوجد تقييمات حتى الآن!</h2>
+                                <h2 className='sub-title mb-4'>{translation.noReviews}</h2>
                                 {
                                     !reviews.length ? (
                                         <button onClick={() => setOpen(true)} type="button" className="primary-btn">
                                             <i className="icon-add"></i>
-                                            <span>اضف تقييمًا</span>
+                                            <span>{translation.addReview}</span>
                                         </button>
                                     ) : null
                                 }

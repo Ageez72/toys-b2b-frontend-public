@@ -75,9 +75,17 @@
 
     .pagination-container {
         direction: ltr;
+
         .next,
         .prev {
             transform: rotate(180deg);
         }
+    }
+
+    .slider__right-value,
+    .slider__left-value {
+        display: flex;
+        gap: 5px;
+        flex-direction: row-reverse;
     }
 }

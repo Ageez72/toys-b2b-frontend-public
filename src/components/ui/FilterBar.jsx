@@ -1,59 +1,66 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import FilterSingleItem from './FilterSingleItem';
-import FilterMultiItem from './FilterMultiItem';
 import Select2Form from './Select2Form';
 import MultiRangeSlider from './MultiRangeSlider';
 import BrandsFilters from './BrandsFilters';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { BASE_API } from '../../../constant/endpoints';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../context/AppContext';
 
-const StatusOptions = [
-    {
-        id: 1,
-        title: "الكل",
-        value: ""
-    },
-    {
-        id: 2,
-        title: "متوفر",
-        value: "INSTOCK"
-    },
-    {
-        id: 3,
-        title: "غير متوفر",
-        value: "OUTOFSTOCK"
-    },
-]
-
-const itemTypeOptions = [
-    {
-        id: 1,
-        title: "وصل حديثاً",
-        value: "NEW ARRIVAL"
-    },
-    {
-        id: 2,
-        title: "منتجات قادمة",
-        value: "COMMING SOON"
-    },
-    {
-        id: 3,
-        title: "عروض",
-        value: "GIVEAWAY"
-    },
-    {
-        id: 4,
-        title: "تصفيات",
-        value: "CLEARANCE"
-    },
-]
 
 
 export default function FilterBar({ isProductsPage, close, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm }) {
+    const { state = {}, dispatch = () => {} } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // default fallback
+    useEffect(() => {
+        setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
+    
+    const StatusOptions = [
+        {
+            id: 1,
+            title: translation.all,
+            value: ""
+        },
+        {
+            id: 2,
+            title: translation.available,
+            value: "INSTOCK"
+        },
+        {
+            id: 3,
+            title: translation.notAvailable,
+            value: "OUTOFSTOCK"
+        },
+    ]
+    
+    const itemTypeOptions = [
+        {
+            id: 1,
+            title: translation.newArrivals,
+            value: "NEW ARRIVAL"
+        },
+        {
+            id: 2,
+            title: translation.commingSoon,
+            value: "COMMING SOON"
+        },
+        {
+            id: 3,
+            title: translation.offers,
+            value: "GIVEAWAY"
+        },
+        {
+            id: 4,
+            title: translation.clearance,
+            value: "CLEARANCE"
+        },
+    ]
     const router = useRouter();
     const useParams = useSearchParams();
     const lang = Cookies.get('lang') || 'AR';
@@ -211,7 +218,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                 <div className="filter-header flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <i className="icon-filter-search"></i>
-                        <span className='filter-title'>تصفية النتائج</span>
+                        <span className='filter-title'>{translation.filterResults}</span>
                     </div>
                     {
                         <div className="close-filter">
@@ -230,16 +237,16 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                     }
                 </div>
                 <div className="filter-body">
-                    <MultiRangeSlider title={`نطاق السعر`} min={0} max={1000} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
-                    <FilterSingleItem title={`الأقسام`} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
+                    <MultiRangeSlider title={translation.priceRange} min={0} max={1000} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                    <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
                     <BrandsFilters selected={brand} parentOptions={parentOptions} />
-                    <Select2Form title={`التصنيفات`} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} />
-                    <Select2Form title={`الاستخدامات`} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} />
-                    <FilterSingleItem title={`حالة التوفر`} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+                    <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} />
+                    <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} />
+                    <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
 
                     <div className="action-btns flex gap-3 mt-4">
-                        <button className="primary-btn flex-1" onClick={handleApplyFilters}>تطبيق</button>
-                        <button className="gray-btn flex-1" onClick={handleClearFilter}>مسح</button>
+                        <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button>
+                        <button className="gray-btn flex-1" onClick={handleClearFilter}>{translation.clear}</button>
                     </div>
                 </div>
             </div>

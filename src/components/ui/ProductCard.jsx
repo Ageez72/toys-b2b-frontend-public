@@ -1,12 +1,25 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StarsRate from './StarsRate';
 import Badge from "./Badge";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import AddToCart from './AddToCart';
+import { useAppContext } from '../../../context/AppContext';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
 
 export default function ProductCard({ type, badgeType, related, item }) {
+      const { state = {}, dispatch = () => {} } = useAppContext() || {};
+      const [translation, setTranslation] = useState(ar); // fallback to Arabic
+    
+      useEffect(() => {
+        if (state.LANG === "EN") {
+          setTranslation(en);
+        } else {
+          setTranslation(ar);
+        }
+      }, [state.LANG]);
     const router = useRouter();
 
     const handleClick = () => {
@@ -61,13 +74,13 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 <div className="price flex items-center gap-3">
                     <span className="product-card-price">
                         <span className="price-number">{item?.price} </span>
-                        <span className="price-unit">دينار</span>
+                        <span className="price-unit">{translation.jod}</span>
                     </span>
                     {
                         item?.itemdisc ? (
                             <span className='flex gap-1 discount'>
                                 <span>{item?.itemdisc}.00</span>
-                                <span>دينار</span>
+                                <span>{translation.jod}</span>
                             </span>
                         ) : ""
                     }
@@ -76,7 +89,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     item?.status === "INSTOCK" ? (
                         <AddToCart item={item} />
                     ) : (
-                        <p className='out-stock-btn'>غير متوفر</p>
+                        <p className='out-stock-btn'>{translation.notAvailable}</p>
                     )
                 }
 

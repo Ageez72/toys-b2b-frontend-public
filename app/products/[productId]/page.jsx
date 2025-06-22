@@ -15,15 +15,21 @@ import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Link from 'next/link';
 import Loader from '@/components/ui/Loaders/Loader';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
 
 let breadcrumbItems = [];
 export default function Page() {
   const [refresh, setRefresh] = useState(false);
   const { productId } = useParams();
   const lang = Cookies.get('lang') || 'AR';
+      const { state = {}, dispatch = () => {} } = useAppContext() || {};
+      const [translation, setTranslation] = useState(ar); // default fallback
+      useEffect(() => {
+          setTranslation(state.LANG === "EN" ? en : ar);
+      }, [state.LANG]);
 
   const { push } = useRouter();
-  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   async function fetchProductDetails() {
     const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${productId}`, {
       headers: {
@@ -50,7 +56,7 @@ export default function Page() {
   if (error instanceof Error) return push("/");
 
   breadcrumbItems = [
-    { label: 'الرئيسية', href: '/home' },
+    { label: translation.home, href: '/home' },
     { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}` },
     { label: `${details?.name}`}
   ]
@@ -65,7 +71,7 @@ export default function Page() {
       <div className="card mt-5">
         <p className="product-description" dangerouslySetInnerHTML={{ __html: details?.description }} />
 
-        <h3 className="sub-title mb-3">الاستخدامات</h3>
+        <h3 className="sub-title mb-3">{translation.catalogs}</h3>
         <div className="badges flex gap-2">
           {
             details?.catalogs?.map(b => (
@@ -77,7 +83,7 @@ export default function Page() {
         </div>
       </div>
       <RateCard reviews={details.reviews.reviews} id={details.id} onRefresh={() => setRefresh(true)} />
-      <h3 className="sub-title mb-3 mt-10">منتجات ذات صلة</h3>
+      <h3 className="sub-title mb-3 mt-10">{translation.relatedProducts}</h3>
       <RelatedProducts items={details.relatedItems} />
     </div>
   ) : null;

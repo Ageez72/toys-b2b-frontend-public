@@ -1,9 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../context/AppContext';
 
 const Star = ({ filled, onClick, onMouseEnter, onMouseLeave }) => {
     return (
@@ -29,18 +32,31 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
     const [rating, setRating] = useState(0);
     const [hovered, setHovered] = useState(0);
     const [comment, setComment] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [rateValidationError, setRateValidationError] = useState(false);
+    const { state = {} } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // default fallback
+
+    useEffect(() => {
+        setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
 
     const handleSubmit = async () => {
+        if (rating === 0) {
+            setRateValidationError(true);
+            return;
+        }
+        setRateValidationError(false);
         try {
             setLoading(true);
             const response = await axios.post(`${BASE_API}${endpoints.products.review}&itemID=${itemId}&review=${comment}&rate=${rating}`, {}, {
-                  headers: {
+                headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
-                  }
-                });
+                }
+            });
             console.log('Response:', response.data);
             setOpen(false);
+            setRating(0);
+            setComment('');
             if (onRefresh) onRefresh();
         } catch (error) {
             console.error('Failed to submit rating:', error);
@@ -50,7 +66,12 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
     };
 
     return (
-        <Dialog open={open} onClose={setOpen} className="relative z-10">
+        <Dialog open={open} onClose={() => {
+            setOpen(false);
+            setRating(0);
+            setComment('');
+            setRateValidationError(false);
+        }} className="relative z-10">
             <DialogBackdrop
                 transition
                 className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
@@ -61,7 +82,7 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
                         transition
                         className="relative transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl px-4 py-5"
                     >
-                        <h3 className="sub-title">كيف كانت تجربتك مع هذا المنتج ؟</h3>
+                        <h3 className="sub-title">{translation.reviewQuestion}</h3>
                         <div className="mt-5">
                             <div className="flex gap-2">
                                 {[...Array(totalStars)].map((_, index) => {
@@ -77,9 +98,14 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
                                     );
                                 })}
                             </div>
+                            {rateValidationError && (
+                                <span className="text-red-500 block mt-2">
+                                    {translation.rateRequired}
+                                </span>
+                            )}
                         </div>
                         <label htmlFor="rate-comment" className="block mt-6 mb-3 rate-comment-title">
-                            هل لديك تعليق أو رأي معين ؟
+                            {translation.reviewComment}:
                         </label>
                         <textarea
                             name="rate-comment"
@@ -96,14 +122,19 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
                                 onClick={handleSubmit}
                                 className="primary-btn flex-1 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 sm:w-auto text-white"
                             >
-                                إرسال
+                                {translation.send}
                             </button>
                             <button
                                 type="button"
-                                onClick={() => setOpen(false)}
+                                onClick={() => {
+                                    setOpen(false);
+                                    setRating(0);
+                                    setComment('');
+                                    setRateValidationError(false); 
+                                }}
                                 className="gray-btn flex-1 mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 shadow-xs sm:mt-0 sm:w-auto"
                             >
-                                إلغاء
+                                {translation.cancel}
                             </button>
                         </div>
                     </DialogPanel>

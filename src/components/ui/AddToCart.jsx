@@ -1,12 +1,22 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
 import Toast from './Toast';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
 
 export default function AddToCart({ item }) {
   const [count, setCount] = useState(1);
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const [translation, setTranslation] = useState(ar); // default fallback
+  useEffect(() => {
+    if (state.LANG === "EN") {
+      setTranslation(en);
+    } else {
+      setTranslation(ar);
+    }
+  }, [state.LANG]);
 
   // ✅ Toast state and function
   const [popupMessage, setPopupMessage] = useState('');
@@ -44,7 +54,7 @@ export default function AddToCart({ item }) {
     }
 
     // ✅ Show success toast
-    showToast('تمت الإضافة إلى السلة');
+    showToast(translation.addedToCart);
   };
 
   return (
@@ -71,7 +81,7 @@ export default function AddToCart({ item }) {
           </button>
         </div>
         <button onClick={handleAddToCart} className="primary-btn w-1/2 add-to-cart-btn">
-          اضف
+          {translation.addCart}
         </button>
       </div>
     </>

@@ -6,6 +6,9 @@ import { getCart, getProfile } from "@/actions/utils";
 import ConfirmOrderModal from "@/components/ui/ConfirmOrderModal";
 import SureOrderModal from "@/components/ui/SureOrderModal";
 import Link from "next/link";
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../context/AppContext';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -14,6 +17,12 @@ function Cart() {
   const [notes, setNotes] = useState('');
   const [openSureOrder, setOpenSureOrder] = useState(false)
   const [openConfirmOrder, setOpenConfirmOrder] = useState(false)
+
+  const { state = {} } = useAppContext() || {};
+  const [translation, setTranslation] = useState(ar); // default fallback
+  useEffect(() => {
+    setTranslation(state.LANG === "EN" ? en : ar);
+  }, [state.LANG]);
 
   const loadCart = () => {
     const items = getCart();
@@ -31,8 +40,8 @@ function Cart() {
 
 
   const breadcrumbItems = [
-    { label: 'الرئيسية', href: '/home' },
-    { label: `سلة المشتريات` }
+    { label: translation.home, href: '/home' },
+    { label: translation.cart }
   ];
 
   return (
@@ -41,7 +50,7 @@ function Cart() {
       <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">
         <div className="order-side">
           <div className="flex justify-between items-center mb-5">
-            <h3 className="sub-title">المنتجات المضافة </h3>
+            <h3 className="sub-title">{translation.addedProducts}</h3>
             <div className="items-count flex justify-center items-center">{cartItems.length}</div>
           </div>
 
@@ -58,7 +67,7 @@ function Cart() {
                         <p className="name font-medium">{item.name}</p>
                         <p className="price flex items-center gap-1 mb-0 text-sm text-gray-700">
                           <span>{Number(item.price).toFixed(2)}</span>
-                          <span>دينار</span>
+                          <span>{translation.jod}</span>
                         </p>
                       </div>
                       <div className="actions w-48">
@@ -71,11 +80,11 @@ function Cart() {
                   </div>
                 ))
               }
-              <h3 className="sub-title mb-4 mt-8">ملاحظات حول الطلب</h3>
+              <h3 className="sub-title mb-4 mt-8">{translation.orderNotes}</h3>
               <div className="card">
-                <textarea className="w-full h-full notes-text" name="notes" placeholder="قم بإضافة ملاحظاتك .." value={notes} onChange={(e) => setNotes(e.target.value)}></textarea>
+                <textarea className="w-full h-full notes-text" name="notes" placeholder={translation.addNotes} value={notes} onChange={(e) => setNotes(e.target.value)}></textarea>
               </div>
-              <h3 className="sub-title mb-4 mt-8">عنوان الشحن</h3>
+              <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress}</h3>
               <div className="addresses">
                 {
                   addressesItems.map((add, index) => (
@@ -110,10 +119,10 @@ function Cart() {
                   </defs>
                 </svg>
                 <h2 className='sub-title my-4 text-center'>
-                  لا يوجد منتجات حتى الآن!
+                  {translation.noProducts}
                 </h2>
                 <Link href="/home" className="primary-btn inline-flex">
-                  العودة إلى المتجر
+                  {translation.backToStore}
                 </Link>
               </div>
             </div>
@@ -123,47 +132,47 @@ function Cart() {
 
         <div className="order-summary">
           <div className="card p-4">
-            <h3 className="sub-title mb-3">ملخص الطلب</h3>
+            <h3 className="sub-title mb-3">{translation.orderSummary}</h3>
             <div className="order-item flex justify-between items-center mb-4">
-              <p className="mb-0">عدد المنتجات</p>
+              <p className="mb-0">{translation.itemCount}</p>
               <p className="mb-0">{cartItems.length}</p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
-              <p className="mb-0">التوصيل</p>
+              <p className="mb-0">{translation.shipping}</p>
               <p className="mb-0 flex items-center gap-1">
                 <span>{cartItems.length ? Number(20.62).toFixed(2) : 0}</span>
-                <span>دينار</span>
+                <span>{translation.jod}</span>
               </p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
-              <p className="mb-0">المجموع الفرعي</p>
+              <p className="mb-0">{translation.subtotal}</p>
               <p className="mb-0 flex items-center gap-1">
                 <span>{cartItems.length ? Number(10).toFixed(2) : 0}</span>
-                <span>دينار</span>
+                <span>{translation.jod}</span>
               </p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
-              <p className="mb-0">الخصم</p>
+              <p className="mb-0">{translation.discount}</p>
               <p className="mb-0 flex items-center gap-1">
                 <span>{cartItems.length ? Number(80).toFixed(2) : 0}</span>
-                <span>دينار</span>
+                <span>{translation.jod}</span>
               </p>
             </div>
             <hr />
             <div className="order-item flex justify-between items-center mb-4">
-              <h3 className="sub-title">المجموع الكلي</h3>
+              <h3 className="sub-title">{translation.total}</h3>
               <p className="mb-0 flex items-center gap-1 price">
                 <span>{cartItems.length ? Number(110.62).toFixed(2) : 0}</span>
-                <span>دينار</span>
+                <span>{translation.jod}</span>
               </p>
             </div>
-            <button className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`} onClick={() => setOpenSureOrder(true)}>تأكيد الطلب</button>
+            <button className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`} onClick={() => setOpenSureOrder(true)}>{translation.confirmOrder}</button>
           </div>
         </div>
       </div>
 
-          <SureOrderModal setOpen={() => setOpenSureOrder(false)} open={openSureOrder} openConfim={() => setOpenConfirmOrder(true)} />
-          <ConfirmOrderModal setOpen={() => setOpenConfirmOrder(true)} open={openConfirmOrder} />
+      <SureOrderModal setOpen={() => setOpenSureOrder(false)} open={openSureOrder} openConfim={() => setOpenConfirmOrder(true)} />
+      <ConfirmOrderModal setOpen={() => setOpenConfirmOrder(true)} open={openConfirmOrder} />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 'use client'
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { useMemo } from 'react';
 import FilterBar from "@/components/ui/FilterBar";
 import ProductCard from "@/components/ui/ProductCard";
@@ -12,61 +12,69 @@ import axios from 'axios';
 import { BASE_API, endpoints } from '../../constant/endpoints';
 import { useSearchParams } from 'next/navigation';
 import VerticalLoader from '@/components/ui/Loaders/VerticalLoader';
+import en from "../../locales/en.json";
+import ar from "../../locales/ar.json";
+import { useAppContext } from '../../context/AppContext';
 
 
-const sortingOptions = [
-  {
-    id: 1,
-    title: "افتراضي",
-    value: ""
-  },
-  {
-    id: 2,
-    title: "الاسم: من أ إلى ي",
-    value: "NAMEA"
-  },
-  {
-    id: 3,
-    title: "الاسم: من ي إلى أ",
-    value: "NAMED"
-  },
-  {
-    id: 4,
-    title: "السعر: من الأقل إلى الأعلى",
-    value: "PRICEA"
-  },
-  {
-    id: 5,
-    title: "السعر: من الأعلى إلى الأقل",
-    value: "PRICED"
-  },
-]
-
-const displayOptions = [
-  {
-    id: 1,
-    title: "عرض 12 منتج",
-    value: 12
-  },
-  {
-    id: 2,
-    title: "عرض 24 منتج",
-    value: 24
-  },
-  {
-    id: 3,
-    title: "عرض 36 منتج",
-    value: 36
-  },
-  {
-    id: 4,
-    title: "عرض الكل",
-    value: ""
-  },
-]
 
 
 export default function Page() {
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const [translation, setTranslation] = useState(ar); // default fallback
+  useEffect(() => {
+    setTranslation(state.LANG === "EN" ? en : ar);
+  }, [state.LANG]);
+  const sortingOptions = [
+    {
+      id: 1,
+      title: translation.products.sorting.default,
+      value: ""
+    },
+    {
+      id: 2,
+      title: translation.products.sorting.nameFrom,
+      value: "NAMEA"
+    },
+    {
+      id: 3,
+      title: translation.products.sorting.nameTo,
+      value: "NAMED"
+    },
+    {
+      id: 4,
+      title: translation.products.sorting.priceFrom,
+      value: "PRICEA"
+    },
+    {
+      id: 5,
+      title: translation.products.sorting.priceTo,
+      value: "PRICED"
+    },
+  ]
+  
+  const displayOptions = [
+    {
+      id: 1,
+      title: translation.products.pageSize["12"],
+      value: 12
+    },
+    {
+      id: 2,
+      title: translation.products.pageSize["24"],
+      value: 24
+    },
+    {
+      id: 3,
+      title: translation.products.pageSize["36"],
+      value: 36
+    },
+    {
+      id: 4,
+      title: translation.products.pageSize["all"],
+      value: ""
+    },
+  ]
   const lang = Cookies.get('lang') || 'AR';
   // Get search params from URL
   const searchParams = useSearchParams();
@@ -195,7 +203,7 @@ export default function Page() {
         <div className="w-3/4 products-list">
           {
             queryString !== '' && data?.data?.itemCount ? (
-              <h2 className="products-results-title">تم العثور على {data?.data?.itemCount} نتيجة من المنتجات</h2>
+              <h2 className="products-results-title">{translation.resultsFound} {data?.data?.itemCount} {translation.resultProducts}</h2>
             ) : ''
           }
           <div className="products-header-filters flex">
@@ -204,7 +212,7 @@ export default function Page() {
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                   <i className="icon-search-normal"></i>
                 </div>
-                <input className='w-full h-full ps-10 p-2.5' type='text' placeholder='البحث عن منتج' value={searchTerm} onChange={handleSearchChange} />
+                <input className='w-full h-full ps-10 p-2.5' type='text' placeholder={translation.searchProduct} value={searchTerm} onChange={handleSearchChange} />
               </div>
             </div>
             <div className="filters-sort-display flex gap-3">
