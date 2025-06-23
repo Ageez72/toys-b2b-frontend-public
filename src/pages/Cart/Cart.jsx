@@ -241,7 +241,7 @@ function Cart() {
               <p className="mb-0">{cartItems.length}</p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
-              <p className="mb-0">{translation.shipping}</p>
+              <p className="mb-0">{translation.tax}</p>
               <p className="mb-0 flex items-center gap-1">
                 <span>{cartItems.length ? Number(orderSummary?.TAX).toFixed(2) : 0}</span>
                 <span>{translation.jod}</span>
