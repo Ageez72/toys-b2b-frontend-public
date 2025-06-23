@@ -11,33 +11,42 @@ import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 import Toast from './Toast';
+import SuccessToast from './SuccessToast';
+import WarningModal from './WarningModal';
 
 export default function AddBulkModal({ open, onClose }) {
   const [bulkItems, setBulkItems] = useState([
-    { isConfirmed: false } // Start with one empty row
+    { isConfirmed: false }
   ]);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupMessageDone, setPopupMessageDone] = useState('');
-  const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [warningPopupMessage, setWarningPopupMessage] = useState('');
+  const { state = {}, dispatch = () => {} } = useAppContext() || {};
   const translation = state.LANG === "EN" ? en : ar;
 
-  const showToast = (message) => {
-    setPopupMessage(message);
+  const showToastError = (message) => {
+    setWarningPopupMessage(message);
+    setIsModalOpen(true);
     setTimeout(() => {
-      setPopupMessage('');
-    }, 3000);
+      setIsModalOpen(false);
+      setWarningPopupMessage('');
+    }, 4000);
   };
+
   const showDoneToast = (message) => {
     setPopupMessageDone(message);
+    setIsModalOpen(true);
     setTimeout(() => {
       setPopupMessageDone('');
+      setIsModalOpen(false);
     }, 3000);
   };
 
   const handleProductSelect = (selectedItem, index) => {
     const exists = bulkItems.find(item => item.id === selectedItem.id);
     if (exists) {
-      showToast(translation.productAlreadyAdded);
+      showToastError(translation.productAlreadyAdded);
       return;
     }
 
@@ -58,7 +67,7 @@ export default function AddBulkModal({ open, onClose }) {
     const maxQty = updated[index].avlqty;
 
     if (parsedQty > maxQty) {
-      showToast(`${translation.quantityExceeded} ${maxQty}`);
+      showToastError(`${translation.quantityExceeded} ${maxQty}`);
       parsedQty = maxQty;
     }
 
@@ -74,8 +83,20 @@ export default function AddBulkModal({ open, onClose }) {
   };
 
   const handleSubmit = () => {
+    const hasInvalidItem = bulkItems.some(item =>
+      item.isConfirmed &&
+      (
+        !item.qty || item.qty <= 0 || item.qty > item.avlqty
+      )
+    );
+
+    if (hasInvalidItem) {
+      showToastError(translation.quantityValidationFailed || "Please check quantities before submitting.");
+      return;
+    }
+
     const selectedItems = bulkItems.filter(item => item.isConfirmed);
-    console.log('Selected Items:', selectedItems);
+
     for (let i = 0; i < selectedItems.length; i++) {
       const selectedItem = selectedItems[i];
       addToCart({
@@ -92,36 +113,41 @@ export default function AddBulkModal({ open, onClose }) {
     if (storedCart) {
       dispatch({ type: 'STORED-ITEMS', payload: storedCart });
     }
+
     showDoneToast(translation.addedToCart);
-    // reset selected items
-    setBulkItems([
-      { isConfirmed: false }
-    ])
+    setBulkItems([{ isConfirmed: false }]);
     onClose();
   };
 
+  const isSubmitDisabled = bulkItems.some(item =>
+    item.isConfirmed &&
+    (
+      !item.qty || item.qty <= 0 || item.qty > item.avlqty
+    )
+  );
+
   return (
     <>
-      {popupMessage && (
-        <Toast message={popupMessage} type='error' />
+      {warningPopupMessage && (
+        <WarningModal
+          open={isModalOpen}
+          message={warningPopupMessage}
+        />
       )}
 
       {popupMessageDone && (
-        <Toast message={popupMessageDone} type='success' />
+        <SuccessToast
+          open={isModalOpen}
+          message={popupMessageDone}
+        />
       )}
 
       <Dialog open={open} onClose={onClose} className="relative z-9999">
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
-        />
+        <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 w-full">
-            <DialogPanel
-              transition
-              className="relative add-bulk-modal transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 data-closed:sm:translate-y-0 data-closed:sm:scale-95"
-            >
+            <DialogPanel className="relative add-bulk-modal transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all sm:my-8">
               <div className="p-32">
                 <h2 className="modal-title">{translation.oneClick}</h2>
                 <div className="add-bulk-table">
@@ -167,7 +193,7 @@ export default function AddBulkModal({ open, onClose }) {
                             <label className="mobile-title hidden">{translation.qty}</label>
                             <input
                               type="number"
-                              min="0"
+                              min="1"
                               placeholder={translation.qty}
                               value={item.qty || ''}
                               onChange={(e) =>
@@ -187,7 +213,9 @@ export default function AddBulkModal({ open, onClose }) {
                             </div>
                             <div className="item flex-1">
                               <label className="mobile-title hidden">{translation.availablity}</label>
-                              <span className="mobile-box">{item.status}</span>
+                              <span className="mobile-box">
+                                {item.status === 'INSTOCK' ? translation.available : translation.notAvailable}
+                              </span>
                             </div>
                             <div className="item flex-1">
                               <label className="mobile-title hidden">{translation.totalItems}</label>
@@ -221,7 +249,11 @@ export default function AddBulkModal({ open, onClose }) {
                   </div>
 
                   <div className="action-btns flex gap-3 mt-4">
-                    <button className="primary-btn" onClick={handleSubmit}>
+                    <button
+                      className={`primary-btn ${isSubmitDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      onClick={handleSubmit}
+                      disabled={isSubmitDisabled}
+                    >
                       {translation.add}
                     </button>
                     <button className="gray-btn" onClick={onClose}>

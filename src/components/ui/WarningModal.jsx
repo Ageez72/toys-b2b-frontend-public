@@ -21,7 +21,7 @@ export default function WarningModal({ message }) {
     if (!mounted) return null;
 
     return createPortal(
-        <div className="fixed bottom-6 right-6 z-9999 w-auto max-w-sm bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded shadow-lg animate-slide-in">
+        <div className={`fixed bottom-6 ${state.LANG === 'EN' ? 'left-6' : 'right-6'} z-9999 w-auto max-w-sm bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded shadow-lg animate-slide-in`}>
             <div className="flex items-start gap-3">
                 <div className="mt-1">
                     <i className="icon-warning-2 text-yellow-500 text-lg"></i>
