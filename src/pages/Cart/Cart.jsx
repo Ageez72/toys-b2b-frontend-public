@@ -9,16 +9,24 @@ import Link from "next/link";
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
+import axios from 'axios';
+import { BASE_API, endpoints } from '../../../constant/endpoints';
+import Cookies from 'js-cookie';
+import Toast from "@/components/ui/Toast";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [addressesItems, setAddressesItems] = useState([]);
-  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [selectedAddressId, setSelectedAddressId] = useState("");
   const [notes, setNotes] = useState('');
   const [openSureOrder, setOpenSureOrder] = useState(false)
   const [openConfirmOrder, setOpenConfirmOrder] = useState(false)
+  const [openErrorMessage, setOpenErrorMessage] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [orderSummary, setOrderSummary] = useState(null);
 
-  const { state = {} } = useAppContext() || {};
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar); // default fallback
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
@@ -38,6 +46,88 @@ function Cart() {
     loadAddresses();
   }, []);
 
+  useEffect(() => {
+    handleGetOrder()
+  }, [refresh])
+
+  const handleGetOrder = async () => {
+    const items = getCart();
+    try {
+      // setLoading(true);
+      const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}`, items, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        }
+      });
+      setOrderSummary(response.data);
+    } catch (error) {
+      console.error('Failed to submit rating:', error);
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  const handleSubmitChecker = () => {
+    const storedCart = getCart();
+
+    if (!storedCart.length) {
+      setOpenErrorMessage(true);
+      setTimeout(() => {
+        setOpenErrorMessage(false);
+      }, 4000);
+      return;
+    }
+
+    if (!selectedAddressId) {
+      setOpenErrorMessage(true);
+      setTimeout(() => {
+        setOpenErrorMessage(false);
+      }, 4000);
+      return;
+    }
+
+    console.log('Proceeding to order confirmation');
+    setOpenSureOrder(true);
+  }
+
+  const handleSubmitOrder = async () => {
+    const storedCart = getCart();
+    const data = {
+      notes: notes,
+      deliveryDate: "",
+      location: selectedAddressId,
+      items: storedCart.map(item => ({
+        item: item.id,
+        qty: item.qty
+      }))
+    }
+    try {
+      setLoading(true);
+      const response = await axios.post(`${BASE_API}${endpoints.products.order}`, data, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        }
+      });
+      if (response.data && !response.data.ERROR) {
+        console.log('Response:', response.data);
+        Cookies.set('cart', "[]", { expires: 7, path: '/' }); 
+        dispatch({ type: 'STORED-ITEMS', payload: [] });
+        setOpenSureOrder(false);
+        setOpenConfirmOrder(true)
+        handleRefresh();
+      } else {
+        console.log('Error in ADD ORDER:', response.data);
+      }
+    } catch (error) {
+      console.error('Failed to submit rating:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    setRefresh(prev => !prev);
+  };
 
   const breadcrumbItems = [
     { label: translation.home, href: '/home' },
@@ -46,6 +136,9 @@ function Cart() {
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page">
+      {
+        openErrorMessage && <Toast type="error" message={translation.completeErrorMessage} />
+      }
       <Breadcrumb items={breadcrumbItems} />
       <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">
         <div className="order-side">
@@ -57,23 +150,33 @@ function Cart() {
           {cartItems.length ? (
             <>
               {
-                cartItems.map((item) => (
-                  <div key={item.item} className="card space-y-4 mb-5">
+                orderSummary?.ITEMS?.map((item) => (
+                  <div key={item.id} className="card space-y-4 mb-5">
                     <div className="cart-item flex items-center">
                       <div className="image-container flex justify-center items-center w-16">
-                        <img src={item.image} width={52} height={52} alt={item.name || "Product"} />
+                        <Link href={`/products/${item.id}`} className="w-full h-full flex justify-center items-center">
+                          <img src={item.images["800"].main} width={52} height={52} alt={item.name || "Product"} />
+                        </Link>
                       </div>
                       <div className="info flex-1 px-4">
-                        <p className="name font-medium">{item.name}</p>
-                        <p className="price flex items-center gap-1 mb-0 text-sm text-gray-700">
-                          <span>{Number(item.price).toFixed(2)}</span>
-                          <span>{translation.jod}</span>
-                        </p>
+                        <p className="name font-medium"><Link href={`/products/${item.id}`}>{item.name}</Link></p>
+                        <div className="flex items-center gap-2">
+                          <p className="price flex items-center gap-1 mb-0 text-sm text-gray-700">
+                            <span>{Number(item.NET).toFixed(2)}</span>
+                            <span>{translation.jod}</span>
+                          </p>
+                          <p className="flex gap-1 discount sm mb-0">
+                            <span>{Number(item.SUBTOTAL).toFixed(2)}</span>
+                            <span>{translation.jod}</span>
+                          </p>
+                        </div>
                       </div>
                       <div className="actions w-48">
                         <InlineAddToCart
-                          itemId={item.item}
-                          onQtyChange={loadCart} // Refresh cart when qty changes
+                          itemId={item.id}
+                          avlqty={item.avlqty}
+                          onQtyChange={loadCart}
+                          onRefresh={handleRefresh}
                         />
                       </div>
                     </div>
@@ -84,7 +187,7 @@ function Cart() {
               <div className="card">
                 <textarea className="w-full h-full notes-text" name="notes" placeholder={translation.addNotes} value={notes} onChange={(e) => setNotes(e.target.value)}></textarea>
               </div>
-              <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress}</h3>
+              <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress} <span className="required">*</span></h3>
               <div className="addresses">
                 {
                   addressesItems.map((add, index) => (
@@ -140,21 +243,21 @@ function Cart() {
             <div className="order-item flex justify-between items-center mb-4">
               <p className="mb-0">{translation.shipping}</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>{cartItems.length ? Number(20.62).toFixed(2) : 0}</span>
+                <span>{cartItems.length ? Number(orderSummary?.TAX).toFixed(2) : 0}</span>
                 <span>{translation.jod}</span>
               </p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
               <p className="mb-0">{translation.subtotal}</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>{cartItems.length ? Number(10).toFixed(2) : 0}</span>
+                <span>{cartItems.length ? Number(orderSummary?.SUBTOTAL).toFixed(2) : 0}</span>
                 <span>{translation.jod}</span>
               </p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
               <p className="mb-0">{translation.discount}</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>{cartItems.length ? Number(80).toFixed(2) : 0}</span>
+                <span>{cartItems.length ? Number(orderSummary?.DISCOUNT).toFixed(2) : 0}</span>
                 <span>{translation.jod}</span>
               </p>
             </div>
@@ -162,16 +265,16 @@ function Cart() {
             <div className="order-item flex justify-between items-center mb-4">
               <h3 className="sub-title">{translation.total}</h3>
               <p className="mb-0 flex items-center gap-1 price">
-                <span>{cartItems.length ? Number(110.62).toFixed(2) : 0}</span>
+                <span>{cartItems.length ? Number(orderSummary?.TOTAL).toFixed(2) : 0}</span>
                 <span>{translation.jod}</span>
               </p>
             </div>
-            <button className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`} onClick={() => setOpenSureOrder(true)}>{translation.confirmOrder}</button>
+            <button className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`} onClick={() => handleSubmitChecker()}>{translation.confirmOrder}</button>
           </div>
         </div>
       </div>
 
-      <SureOrderModal setOpen={() => setOpenSureOrder(false)} open={openSureOrder} openConfim={() => setOpenConfirmOrder(true)} />
+      <SureOrderModal setOpen={() => setOpenSureOrder(false)} open={openSureOrder} onHandleSubmit={handleSubmitOrder} />
       <ConfirmOrderModal setOpen={() => setOpenConfirmOrder(true)} open={openConfirmOrder} />
     </div>
   );

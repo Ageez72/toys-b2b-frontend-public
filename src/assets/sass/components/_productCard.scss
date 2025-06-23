@@ -6,6 +6,7 @@
         flex-wrap: wrap;
         margin-bottom: 32px;
         gap: 15px;
+
         .grid-header-title {
             font-size: 28px;
             color: #000;
@@ -13,22 +14,27 @@
         }
     }
 }
+
 .product-card {
     &.grid-card {
         @media screen and (max-width: 650px) {
             flex-wrap: wrap;
+
             .product-card-image {
                 margin: auto;
                 // img {}
             }
         }
     }
+
     .product-card-image {
         min-width: 250px;
         max-width: 250px;
         overflow: hidden;
+
         img {
             transition: all 0.4s ease-in-out;
+
             &:hover {
                 transform: scale(1.15);
             }
@@ -91,7 +97,7 @@
         text-decoration: line-through;
     }
 
-    
+
     .out-stock-btn {
         color: #666876;
         font-size: 16px;
@@ -117,6 +123,7 @@
         border-radius: 6px;
         font-size: 16px;
         color: #4A4A49;
+
         @media screen and (max-width: 380px) {
             width: 100%;
         }
@@ -137,16 +144,34 @@
             }
         }
     }
+
     .add-to-cart-btn {
         @media screen and (max-width: 380px) {
             width: 100%;
         }
     }
 }
+
 .products-page-listing {
     .product-card .product-card-image {
         min-width: auto;
         max-width: 250px;
         margin: 0 auto 15px;
     }
+}
+
+.discount {
+    font-size: 16px;
+    font-weight: 700;
+    color: #C2C5D2;
+    text-decoration: line-through;
+    &.sm {
+        font-size: 14px;
+    }
+}
+
+.required {
+    color: red;
+    font-size: 16px;
+    margin: 0;
 }

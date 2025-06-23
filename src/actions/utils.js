@@ -8,14 +8,6 @@ export function addToCart(newItem) {
     const requestedQty = parseInt(newItem.qty);
     const availableQty = parseInt(newItem.avlqty);
 
-    // Check if requested quantity is greater than available quantity
-    if (requestedQty > availableQty) {
-        return {
-            success: false,
-            message: lang === "EN" ? `Only ${availableQty} item(s) are available in total.` : `متوفر فقط ${availableQty} قطعة من هذا المنتج.`
-        };
-    }
-
     // Step 1: Get cart from cookie or initialize as empty array
     let cart = Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : [];
 
@@ -26,18 +18,30 @@ export function addToCart(newItem) {
         const currentQty = parseInt(existingItem.qty);
         const totalQty = currentQty + requestedQty;
 
-        // Check again in case combining exceeds available quantity
+        // Step 3: Check if total quantity exceeds available
         if (totalQty > availableQty) {
             return {
                 success: false,
-                message: lang === "EN" ? `Only ${availableQty} item(s) are available in total. You already have ${currentQty} in the cart.` : `متوفر فقط ${availableQty} قطعة من هذا المنتج. لديك بالفعل ${currentQty} في السلة.`
+                message: lang === "EN"
+                    ? `Only ${availableQty} item(s) are available in total. You already have ${currentQty} in the cart.`
+                    : `متوفر فقط ${availableQty} قطعة من هذا المنتج. لديك بالفعل ${currentQty} في السلة.`
             };
         }
 
-        // Step 3: Increase quantity
+        // Step 4: Update quantity in cart
         existingItem.qty = totalQty.toString();
     } else {
-        // Step 4: Add new item
+        // Step 5: Check if requested qty alone exceeds available
+        if (requestedQty > availableQty) {
+            return {
+                success: false,
+                message: lang === "EN"
+                    ? `Only ${availableQty} item(s) are available in total.`
+                    : `متوفر فقط ${availableQty} قطعة من هذا المنتج.`
+            };
+        }
+
+        // Step 6: Add new item to cart
         cart.push({
             item: newItem.item,
             qty: newItem.qty.toString(),
@@ -48,9 +52,15 @@ export function addToCart(newItem) {
         });
     }
 
-    // Step 5: Save updated cart to cookie (7-day expiry)
+    // Step 7: Save updated cart to cookie (7-day expiry)
     Cookies.set('cart', JSON.stringify(cart), { expires: 7, path: '/' });
-    return { success: true, message: "Item added to cart." };
+
+    return {
+        success: true,
+        message: lang === "EN"
+            ? "Item added to cart."
+            : "تمت إضافة المنتج إلى السلة."
+    };
 }
 
 // Function to get cart from cookie

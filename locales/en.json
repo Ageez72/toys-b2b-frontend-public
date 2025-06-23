@@ -177,5 +177,6 @@
   "productAlreadyAdded": "This product is already added",
   "quantityExceeded": "Quantity cannot exceed ",
   "warning": "Warning",
-  "success": "Success"
+  "success": "Success",
+  "completeErrorMessage": "Please fill in all required fields."
 }

@@ -178,5 +178,6 @@
     "quantityExceeded": "الكمية لا يمكن أن تتجاوز ",
     "noResults": "لا توجد نتائج",
     "warning": "تحذير",
-    "success": "نجاح"
+    "success": "نجاح",
+    "completeErrorMessage": "يرجى ملئ جميع الحقول المطلوبة."
 }

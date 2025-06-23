@@ -19,6 +19,8 @@ export const endpoints = {
     catalogList: "?action=CATALOGS",
     brandsFilters: "?action=GET.BRANDS&grouped=1",
     review: "?action=ADD.REVIEW",
+    checkout: "?action=CHECKOUT",
+    order: "?action=ADDORDER"
   },
 
 };

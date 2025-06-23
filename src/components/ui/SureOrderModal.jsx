@@ -1,45 +1,16 @@
 'use client';
 import React, { useState, useEffect  } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
-import Cookies from 'js-cookie';
-import axios from 'axios';
-import { BASE_API, endpoints } from '../../../constant/endpoints';
-import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 
-export default function SureOrderModal({ open, setOpen, openConfim }) {
+export default function SureOrderModal({ open, setOpen, onHandleSubmit }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
     useEffect(() => {
       setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
-
-    const handleSubmit = async () => {
-        Cookies.set("cart", "[]")
-        const storedCart = getCart();
-        if (storedCart) {
-            dispatch({ type: 'STORED-ITEMS', payload: [] });
-        }
-        setOpen(false);
-        openConfim()
-        // try {
-        //     setLoading(true);
-        //     const response = await axios.post(`${BASE_API}${endpoints.products.review}&itemID=${itemId}&review=${comment}&rate=${rating}`, {}, {
-        //           headers: {
-        //             Authorization: `Bearer ${Cookies.get('token')}`,
-        //           }
-        //         });
-        //     console.log('Response:', response.data);
-        //     setOpen(false);
-        //     if (onRefresh) onRefresh();
-        // } catch (error) {
-        //     console.error('Failed to submit rating:', error);
-        // } finally {
-        //     setLoading(false);
-        // }
-    };
 
     return (
         <Dialog open={open} onClose={setOpen} className="relative z-10">
@@ -63,7 +34,7 @@ export default function SureOrderModal({ open, setOpen, openConfim }) {
                         <div className="bg-gray-50 flex gap-4 flex-wrap">
                             <button
                                 type="button"
-                                onClick={handleSubmit}
+                                onClick={onHandleSubmit}
                                 className="primary-btn flex-1 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 sm:w-auto text-white"
                             >
                                 {translation.yes}
