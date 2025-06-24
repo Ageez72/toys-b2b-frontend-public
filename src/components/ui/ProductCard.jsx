@@ -78,9 +78,9 @@ export default function ProductCard({ type, badgeType, related, item }) {
                         <span className="price-unit">{translation.jod}</span>
                     </span>
                     {
-                        item?.itemdisc ? (
+                        item?.priceAfterDisc ? (
                             <span className='flex gap-1 discount'>
-                                <span>{item?.itemdisc}.00</span>
+                                <span>{item?.priceAfterDisc}.00</span>
                                 <span>{translation.jod}</span>
                             </span>
                         ) : ""

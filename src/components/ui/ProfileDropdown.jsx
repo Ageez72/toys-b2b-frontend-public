@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAppContext } from "../../../context/AppContext";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
@@ -13,18 +15,38 @@ export default function ProfileDropdown() {
     const { push } = useRouter();
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const lang = Cookies.get('lang') || 'AR';
-    async function fetchProfile() {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    // Manage <html> overflow & padding when menu is open
+    useEffect(() => {
+        const html = document.documentElement;
+        if (menuOpen) {
+            html.style.overflow = 'visible';
+            html.style.padding = '0';
+        } else {
+            html.style.overflow = '';
+            html.style.padding = '';
+        }
+
+        return () => {
+            html.style.overflow = '';
+            html.style.padding = '';
+        };
+    }, [menuOpen]);
+
+    const fetchProfile = async () => {
         const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
             }
         });
         return res;
-    }
+    };
+
     const { data, isLoading, error } = useQuery({
         queryKey: ['profile'],
         queryFn: fetchProfile,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: 1000 * 60 * 5,
         retry: (failureCount, error) => {
             if (error?.response?.status === 401) return false;
             return failureCount < 3;
@@ -39,91 +61,91 @@ export default function ProfileDropdown() {
         return [first.toUpperCase(), last.toUpperCase()];
     };
 
-
     const [firstInitial, lastInitial] = getInitials(data?.data?.name);
-    
-    if(data?.data){
-        Cookies.set('profile', JSON?.stringify(data?.data))
+
+    if (data?.data) {
+        Cookies.set('profile', JSON.stringify(data?.data));
     }
 
     if (isLoading) return <Loader />;
     if (error instanceof Error) return push("/");
-    return (
-        <>
-            <Menu as="div" className="relative inline-block text-left">
-                <div>
-                    <MenuButton className="inline-flex w-full lang-switcher">
-                        <span>
-                            <i className="icon-user"></i>
-                        </span>
-                    </MenuButton>
-                </div>
 
-                <MenuItems
-                    transition
-                    className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in profile-dropdown ${state.LANG === "EN" ? "right-0" : "right-auto left-0"}`}
-                >
-                    <div className="py-1 text-right">
-                        <div className="flex profile-dropdown-header px-4 py-2">
-                            <div className="me-3 shrink-0">
-                                <span className="profile-img block p-2 bg-gray-100 rounded-lg dark:bg-gray-700">
-                                    <span>{firstInitial}</span>
-                                    <span>.</span>
-                                    <span>{lastInitial}</span>
+    return (
+        <Menu as="div" className="relative inline-block text-left">
+            {({ open }) => {
+                useEffect(() => {
+                    setMenuOpen(open);
+                }, [open]);
+
+                return (
+                    <>
+                        <div>
+                            <MenuButton className="inline-flex w-full lang-switcher">
+                                <span>
+                                    <i className="icon-user"></i>
                                 </span>
-                            </div>
-                            <div>
-                                <p className="mb-0 username text-base leading-none text-gray-900 dark:text-white">
-                                    {data?.data?.name}
-                                </p>
-                                <p className="user-email mb-0 mt-2 text-sm font-normal">
-                                    {data?.data?.email}
-                                </p>
-                            </div>
+                            </MenuButton>
                         </div>
-                        <MenuItem>
-                            <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                <i className="icon-user"></i>
-                                <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                    الملف الشخصي
-                                </span>
-                            </Link>
-                        </MenuItem>
-                        <MenuItem>
-                            <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                <i className="icon-shield-security"></i>
-                                <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                    الحماية والأمان
-                                </span>
-                            </Link>
-                        </MenuItem>
-                        <MenuItem>
-                            <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                <i className="icon-task"></i>
-                                <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                    طلباتي
-                                </span>
-                            </Link>
-                        </MenuItem>
-                        <MenuItem>
-                            <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                <i className="icon-location"></i>
-                                <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                    العناوين
-                                </span>
-                            </Link>
-                        </MenuItem>
-                        <MenuItem>
-                            <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                <i className="icon-user"></i>
-                                <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                    تسجيل الخروج
-                                </span>
-                            </Link>
-                        </MenuItem>
-                    </div>
-                </MenuItems>
-            </Menu>
-        </>
-    )
+
+                        <MenuItems
+                            className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none profile-dropdown ${state.LANG === "EN" ? "right-0" : "right-auto left-0"}`}
+                        >
+                            <div className="py-1 text-right">
+                                <div className="flex profile-dropdown-header px-4 py-2">
+                                    <div className="me-3 shrink-0">
+                                        <span className="profile-img block p-2 bg-gray-100 rounded-lg dark:bg-gray-700">
+                                            <span>{firstInitial}</span>
+                                            <span>.</span>
+                                            <span>{lastInitial}</span>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p className="mb-0 username text-base leading-none text-gray-900 dark:text-white">
+                                            {data?.data?.name}
+                                        </p>
+                                        <p className="user-email mb-0 mt-2 text-sm font-normal">
+                                            {data?.data?.email}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <MenuItem>
+                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <i className="icon-user"></i>
+                                        <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
+                                            الملف الشخصي
+                                        </span>
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem>
+                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <i className="icon-shield-security"></i>
+                                        <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">الحماية والأمان</span>
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem>
+                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <i className="icon-task"></i>
+                                        <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">طلباتي</span>
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem>
+                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <i className="icon-location"></i>
+                                        <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">العناوين</span>
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem>
+                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <i className="icon-user"></i>
+                                        <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">تسجيل الخروج</span>
+                                    </Link>
+                                </MenuItem>
+                            </div>
+                        </MenuItems>
+                    </>
+                );
+            }}
+        </Menu>
+    );
 }

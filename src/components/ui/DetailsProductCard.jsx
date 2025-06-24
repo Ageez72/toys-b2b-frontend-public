@@ -61,17 +61,18 @@ export default function DetailsProductCard({ item }) {
                         <span className="price-unit">{translation.jod}</span>
                     </span>
                     {
-                        item?.itemdisc ? (
+                        item?.priceAfterDisc ? (
                             <span className='flex gap-1 discount'>
-                                <span>{item?.itemdisc}.00</span>
+                                <span>{item?.priceAfterDisc}.00</span>
                                 <span>{translation.jod}</span>
                             </span>
                         ) : ""
                     }
                 </div>
 
-                <div className="stars flex items-center gap-1">
+                <div className="stars flex items-center gap-2">
                     <StarsRate rate={rate} />
+                    <span className="rate-number">{`(${item?.reviews?.reviews?.length || 0} ${translation.reviews})`}</span>
                 </div>
                 <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description }} />
                 {
