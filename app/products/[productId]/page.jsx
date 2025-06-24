@@ -75,7 +75,7 @@ export default function Page() {
         <div className="badges flex gap-2">
           {
             details?.catalogs?.map(b => (
-              <Link href={`/products?catalog=${b?.id}`} key={b.id}>
+              <Link href={`/products?catalog=${encodeURIComponent(b?.id)}`} key={b.id}>
                 <Badge type={"catalog-details"} text={b?.description} />
               </Link>
             ))
