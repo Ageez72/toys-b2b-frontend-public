@@ -1,7 +1,41 @@
+"use client"
 import React from 'react'
 import Register from "@/pages/Register/Register.jsx"
+import { BASE_API, endpoints } from "../../constant/endpoints";
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import Loader from "@/components/ui/Loaders/Loader";
 
 export default function page() {
+    const { push } = useRouter();
+
+  async function fetchProfile() {
+    const lang = Cookies.get('lang') || 'AR';
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      }
+    });
+    return res.data;
+  }
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['profile'],
+    queryFn: fetchProfile,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: (failureCount, error) => {
+      if (error?.response?.status === 401) return false;
+      return failureCount < 3;
+    },
+  });
+
+  if (isLoading) return <Loader />;
+  if (data) {
+    push("/home")
+  }
+
   return (
     <div>
       <Register />

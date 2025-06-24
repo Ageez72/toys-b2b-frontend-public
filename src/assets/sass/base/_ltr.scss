@@ -88,4 +88,15 @@
         gap: 5px;
         flex-direction: row-reverse;
     }
+
+    .phone-input {
+        text-align: left;
+        padding-inline-start: calc(var(--spacing) * 10);
+        padding-inline-end: 0;
+    }
+    .contact-tools .socials {
+        left: auto;
+        right: 0;
+    }
+    
 }

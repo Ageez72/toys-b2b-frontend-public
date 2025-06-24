@@ -54,22 +54,30 @@ const ContactTools = () => {
       {
         profile && (
           <div className="socials">
-            <a
-              href={`mailto:${profile?.contactEmail}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className='contact-link circle-icon-container mb-2 contact-email'
-            >
-              <i className="icon-sms"></i>
-            </a>
-            <a
-              href={`https://wa.me/${profile?.contactPhone}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className='contact-link circle-icon-container contact-whatsapp'
-            >
-              <i className="icon-whatsapp-brands"></i>
-            </a>
+            {
+              profile?.contactEmail && (
+                <a
+                  href={`mailto:${profile?.contactEmail}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className='contact-link circle-icon-container mb-2 contact-email'
+                >
+                  <i className="icon-sms"></i>
+                </a>
+              )
+            }
+            {
+              profile?.contactPhone && (
+                <a
+                  href={`tel:${profile?.contactPhone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className='contact-link circle-icon-container mb-2 contact-phone'
+                >
+                  <i className="icon-phone"></i>
+                </a>
+              )
+            }
           </div>
         )
       }

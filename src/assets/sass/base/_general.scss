@@ -1,7 +1,7 @@
 .circle-icon-container,
 .lang-switcher {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,10 +15,10 @@
     }
 
     span {
-        height: 28px;
+        height: 22px;
 
         i {
-            font-size: 28px;
+            font-size: 22px;
 
             &:before {
                 color: #292D32;
@@ -492,8 +492,36 @@
         transform: translate(-50%, -50%);
     }
 }
+
 .empty-state {
     svg {
         max-width: 100%;
+    }
+}
+
+.success-toast {
+    min-width: 250px;
+}
+
+.rate-button {
+    border: none;
+    background: #C2C5D233;
+    transition: all 0.3s ease-in-out;
+
+    &:focus,
+    &:focus-visible {
+        outline: none;
+        box-shadow: none;
+    }
+    i::before {
+        transition: all 0.3s ease-in-out;
+    }
+    &:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+
+        i::before {
+            color: #fff;
+        }
     }
 }

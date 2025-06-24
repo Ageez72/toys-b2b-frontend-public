@@ -138,6 +138,13 @@
                 padding: 20px;
                 border-radius: 16px;
                 border: 1px solid transparent;
+                position: relative;
+                transition: all 0.3s ease-in-out;
+
+                &:hover {
+                    border-color: var(--primary-color);
+                    background-color: #8D1A141F;
+                }
 
                 .location {
                     font-size: 20px;

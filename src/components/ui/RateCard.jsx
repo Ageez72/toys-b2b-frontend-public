@@ -21,7 +21,7 @@ export default function RateCard({ reviews, id, onRefresh }) {
                     <h3 className="sub-title">{translation.productReviews}</h3>
                     {
                         reviews.length ? (
-                            <button onClick={() => setOpen(true)} type="button" className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none cursor-pointer rounded border border-gray-200 bg-gray-100 hover:bg-white hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-100 transition-all">
+                            <button onClick={() => setOpen(true)} type="button" className="rate-button py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none cursor-pointer rounded border border-gray-200 bg-gray-100 hover:bg-white hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-100 transition-all">
                                 <i className="icon-add"></i>
                                 <span>{translation.addReview}</span>
                             </button>

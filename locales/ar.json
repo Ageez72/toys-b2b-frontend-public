@@ -118,7 +118,7 @@
     "productReviews": "التقييمات",
     "addReview": "اضف تقييمًا",
     "viewMoreReviews": "عرض المزيد من التقييمات",
-    "reviewQuestion": "كيف كانت تجربتك مع هذا المنتج ؟",
+    "reviewQuestion": "كيف كانت تجربتك مع هذا المنتج؟",
     "reviewComment": "هل لديك تعليق او رأي معين ؟",
     "rateRequired": "التقييم مطلوب",
     "commentPlaceholder": "اترك تعليقك هنا ..",
@@ -180,5 +180,13 @@
     "noResults": "لا توجد نتائج",
     "warning": "تحذير",
     "success": "نجاح",
-    "completeErrorMessage": "يرجى ملئ جميع الحقول المطلوبة."
+    "completeErrorMessage": "يرجى اختيار عنوان الشحن.",
+    "error": "خطأ!",
+    "success2": "تم إنشاء حسابك بنجاح!",
+    "only": "متبقي",
+    "pieces": "قطعة فقط",
+    "discount2": "خصم",
+    "percentage": "%",
+    "soon": "قريباً",
+    "new": "جديد"
 }

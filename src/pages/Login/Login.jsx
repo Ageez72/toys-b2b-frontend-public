@@ -43,7 +43,7 @@ function Login() {
 
       if (res.data.error) {
         setIsModalOpen(true);
-        setModalMessage(res.data.message)
+        setModalMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR)
       } else {
         Cookies.set('token', res.data.token);
         router.push('/home')
@@ -55,10 +55,11 @@ function Login() {
   };
 
   return (
-    <div className="container">
+    <div className="container auth-wrapper">
       <ErrorModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        title={translation.error}
         message={modalMessage}
       />
       {isLoading && <Loader />}
@@ -134,8 +135,8 @@ function Login() {
           </form>
 
           <div className='form-blow'>
-            <span>{translation.login.have_account}</span>
-            <Link href="/register">{translation.login.register}</Link>
+            <span className=''>{translation.login.have_account}</span>
+            <Link className='ms-1' href="/register">{translation.login.register}</Link>
           </div>
         </div>
         <div className='image-side md:flex-1 flex-12 hidden lg:block'>

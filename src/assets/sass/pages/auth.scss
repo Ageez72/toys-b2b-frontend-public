@@ -1,4 +1,5 @@
 .auth-container {
+    width: 100%;
     min-height: 700px;
     padding: 1.5rem 0;
 
@@ -65,4 +66,14 @@
             }
         }
     }
+}
+
+.phone-input {
+    direction: ltr;
+    text-align: right;
+}
+
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
 }

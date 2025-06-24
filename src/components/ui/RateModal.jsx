@@ -105,7 +105,7 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
                             )}
                         </div>
                         <label htmlFor="rate-comment" className="block mt-6 mb-3 rate-comment-title">
-                            {translation.reviewComment}:
+                            {translation.reviewComment}
                         </label>
                         <textarea
                             name="rate-comment"

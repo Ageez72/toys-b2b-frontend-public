@@ -1,7 +1,7 @@
 'use client'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 
-export default function ErrorModal({ open, onClose, message }) {
+export default function ErrorModal({title, open, onClose, message }) {
 
     return (
         <Dialog open={open} onClose={onClose} className="relative z-10">
@@ -24,7 +24,7 @@ export default function ErrorModal({ open, onClose, message }) {
                                     </div>
                                     <div className="text-start w-auto">
                                         <DialogTitle as="h3" className="text-base font-semibold text-gray-900 dialog-title">
-                                        خطأ!
+                                        {title}
                                         </DialogTitle>
                                         <p className="text-sm text-gray-500 dialog-desc">
                                             {

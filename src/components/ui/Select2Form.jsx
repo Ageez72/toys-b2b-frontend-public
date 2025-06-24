@@ -57,8 +57,8 @@ export default function Select2Form({ title, name, initiallyOpen = false, option
           <DisclosurePanel className="text-gray-500 pp">
             <Select
               className="multi-select"
-              placeholder={state.LANG === 'ar' ? 'اختر' : 'Select'}
-              isRtl={state.LANG === 'ar'}
+              placeholder={state.LANG === 'AR' ? 'اختر' : 'Select'}
+              isRtl={state.LANG === 'AR'}
               isMulti
               options={newOptions}
               value={selectedOptions}

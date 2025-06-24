@@ -1,7 +1,7 @@
 'use client'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 
-export default function SuccessModal({ open, onClose }) {
+export default function SuccessModal({ open, onClose, message, title }) {
 
     return (
         <Dialog open={open} onClose={onClose} className="relative z-10">
@@ -24,10 +24,10 @@ export default function SuccessModal({ open, onClose }) {
                                     </div>
                                     <div className="text-start w-auto">
                                         <DialogTitle as="h3" className="text-base font-semibold text-gray-900 dialog-title">
-                                        تم إنشاء حسابك بنجاح!
+                                        {title}
                                         </DialogTitle>
                                         <p className="text-sm text-gray-500 dialog-desc">
-                                        لقد استقبلنا طلبك ، سيتم اشعارك فور عملية قبولك لدينا في أقرب وقت
+                                            {message}
                                         </p>
                                     </div>
                                 </div>

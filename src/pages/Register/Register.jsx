@@ -22,6 +22,7 @@ export default function Register() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [modalErrorMessage, setModalErrorMessage] = useState('');
+  const [modalSuccessMessage, setModalSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isUsernameValid, setIsUsernameValid] = useState(false);
@@ -54,27 +55,31 @@ export default function Register() {
       if (!res.data.error) {
         setIsModalOpen(true);
         setIsErrorModalOpen(false);
+        setModalSuccessMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
       } else {
-        setModalErrorMessage(res.data.messageAR);
+        setModalErrorMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
         setIsErrorModalOpen(true);
       }
     } catch (err) {
       console.error('Error registering user:', err);
-      setModalErrorMessage(err.response.data.messageAR);
+      setModalErrorMessage(state.LANG === "EN" ? err.response.data.messageEN : err.response.data.messageAR);
       setIsErrorModalOpen(true);
     }
   };
 
   return (
-    <div className="container">
+    <div className="container auth-wrapper">
       <ErrorModal
         open={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
+        title={translation.error}
         message={modalErrorMessage}
       />
       <SuccessModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        title={translation.success2}
+        message={modalSuccessMessage}
       />
       {isLoading && <Loader />}
       <div className="auth-container register-auth-container flex flex-col lg:flex-row gap-4">
@@ -112,7 +117,7 @@ export default function Register() {
                   </svg>
                 </div>
                 <input
-                  placeholder={translation.register.username}
+                  placeholder="username"
                   className='w-full ps-10 p-2.5'
                   {...register('username', {
                     required: translation.register.errors.username.required,
@@ -146,8 +151,8 @@ export default function Register() {
                   <i className="icon-mobile"></i>
                 </div>
                 <input
-                  placeholder={translation.register.enter_phone_no}
-                  className='w-full ps-10 p-2.5'
+                  placeholder={"00962791234567"}
+                  className='w-full pe-10 p-2.5 phone-input'
                   {...register('phone', {
                     required: translation.register.errors.phone_no.required,
                     pattern: {
@@ -155,7 +160,7 @@ export default function Register() {
                       message: translation.register.errors.phone_no.invalid,
                     },
                   })}
-                  type='number'
+                  type='tel'
                 />
               </div>
               {errors.phone && <span className="error-msg text-red-500">{errors.phone.message}</span>}
@@ -169,7 +174,7 @@ export default function Register() {
                   <i className="icon-sms"></i>
                 </div>
                 <input
-                  placeholder={translation.register.email}
+                  placeholder={"email@example.com"}
                   type="email"
                   className='w-full ps-10 p-2.5'
                   {...register('email', {
@@ -234,7 +239,7 @@ export default function Register() {
 
           <div className='form-blow'>
             <span>{translation.register.have_account}</span>
-            <Link href="/">{translation.register.login}</Link>
+            <Link className='ms-1' href="/">{translation.register.login}</Link>
           </div>
         </div>
 

@@ -21,7 +21,7 @@ export default function SuccessToast({ message }) {
     if (!mounted) return null;
 
     return createPortal(
-        <div className={`fixed bottom-6 ${state.LANG === 'EN' ? 'left-6' : 'right-6'} z-9999 w-auto max-w-sm bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg animate-slide-in`}>
+        <div className={`success-toast fixed bottom-6 ${state.LANG === 'EN' ? 'left-6' : 'right-6'} z-9999 w-auto max-w-sm bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg animate-slide-in`}>
             <div className="flex items-start gap-3">
                 <div className="mt-1">
                     <i className="icon-warning-2 text-green-500 text-lg"></i>

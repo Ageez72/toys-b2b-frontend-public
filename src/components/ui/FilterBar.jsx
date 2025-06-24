@@ -79,6 +79,8 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     const [catalogsAllOptions, setCatalogsAllOptions] = useState([])
     const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([])
     const [selectedCatalogsOptions, setSelectedCatalogsOptions] = useState([])
+    const [categoryOpen, setCategoryOpen] = useState(false)
+    const [catalogOpen, setCatalogOpen] = useState(false)
 
     const handleApplyFilters = () => {
 
@@ -184,8 +186,8 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                 value: item.categoryId
             })
         ))
+        setCategoryOpen(true)
         setSelectedCategoriesOptions(selected)
-
     }
 
     const fetchCatalogsOptions = async () => {
@@ -204,13 +206,14 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                 value: item.categoryId
             })
         ))
+        setCatalogOpen(true)
         setSelectedCatalogsOptions(selected)
     }
 
     useEffect(() => {
         fetchCategoriesOptions()
         fetchCatalogsOptions()
-    }, [])
+    }, [])    
 
     return (
         <>
@@ -240,8 +243,16 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                     <MultiRangeSlider title={translation.priceRange} min={0} max={1000} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
                     <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
                     <BrandsFilters selected={brand} parentOptions={parentOptions} />
-                    <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} />
-                    <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} />
+                    {
+                        categoryOpen && (
+                            <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0} />
+                        )
+                    }
+                    {
+                        catalogOpen && (
+                            <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} initiallyOpen={selectedCatalogsOptions.length > 0} />
+                        )
+                    }
                     <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
 
                     <div className="action-btns flex gap-3 mt-4">

@@ -10,64 +10,65 @@ import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 
 export default function ProductCard({ type, badgeType, related, item }) {
-      const { state = {}, dispatch = () => {} } = useAppContext() || {};
-      const [translation, setTranslation] = useState(ar); // fallback to Arabic
-    
-      useEffect(() => {
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // fallback to Arabic
+
+    useEffect(() => {
         if (state.LANG === "EN") {
-          setTranslation(en);
+            setTranslation(en);
         } else {
-          setTranslation(ar);
+            setTranslation(ar);
         }
-      }, [state.LANG]);
+    }, [state.LANG]);
     const router = useRouter();
 
     const handleClick = () => {
         router.push(`/products/${item.id}`);
     };
 
-    const handleBadgeType = (item) => {
-        let type = "";
-        if (item.status === "OUTOFSTOCK") {
-            type = "red"
-        } else if (item.status === "INSTOCK" && item.isNew) {
-            type = "blue"
-        } else if (item.status === "INSTOCK" && !item.isNew) {
-            type = "new"
-        } else if (item.commingSoon) {
-            type = "yellow"
-        }
-        return type
-    }
-
-    const handleBadgeText = (item) => {
-        let text = "";
-        if (item.isNew) {
-            text = "جديد"
-        } else if (item.commingSoon) {
-            text = "قريبا"
-        } else if (item.discountType === 'CLEARANCE') {
-            text = "تصفية"
-        } else if (item.discountType !== 'CLEARANCE' && item.itemdisc > 0) {
-            text = "خصم";
-        }
-
-        return text
-    }
-
     const rate = item?.reviews.rating || 0;
     return (
         <div className={`card product-card ${type === 'grid' ? 'grid-card flex items-center gap-3' : 'list-card'}`}>
             <div className="product-card-image">
-                <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive" />
+                <Link href={`/products/${item.id}`}>
+                    <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive" />
+                </Link>
             </div>
             <div className="product-card-content">
-
-                <Badge type={badgeType || handleBadgeType(item)} text={handleBadgeText(item)} />
-                <h3 className="product-card-title cursor-pointer" onClick={handleClick} >{item.name}</h3>
-                {<Link href={``}>
-                    <p className="product-card-description" dangerouslySetInnerHTML={{ __html: `${item?.type} - ${item?.category?.description}` }} />
-                </Link>}
+                {
+                    item.isNew && (
+                        <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
+                    )
+                }
+                {
+                    item.commingSoon && (
+                        <Badge type={item.commingSoon && 'yellow'} text={`${translation.soon}`} />
+                    )
+                }
+                {
+                    item.itemdisc > 0 && (
+                        <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
+                    )
+                }
+                {
+                    item.discountType === 'CLEARANCE' && (
+                        <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
+                    )
+                }
+                <h3 className="product-card-title cursor-pointer" onClick={handleClick}>
+                    <Link href={`/products/${item.id}`}>
+                        {item.name}
+                    </Link>
+                </h3>
+                <p className='product-card-description'>
+                    <Link href={`/products?brand=${item?.brand?.id}`}>
+                        <span className="product-card-brand">{item?.brand?.description}</span>
+                    </Link>
+                    <span className='mx-1'>-</span>
+                    <Link href={`/products?category=${item?.category?.id}`}>
+                        <span className="product-card-category">{item?.category?.description}</span>
+                    </Link>
+                </p>
                 <div className="stars flex items-center gap-1">
                     <StarsRate rate={rate} />
                 </div>

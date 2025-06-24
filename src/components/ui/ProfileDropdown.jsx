@@ -24,6 +24,11 @@ export default function ProfileDropdown() {
     const { data, isLoading, error } = useQuery({
         queryKey: ['profile'],
         queryFn: fetchProfile,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        retry: (failureCount, error) => {
+            if (error?.response?.status === 401) return false;
+            return failureCount < 3;
+        },
     });
 
     const getInitials = (str) => {

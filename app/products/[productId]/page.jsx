@@ -76,7 +76,7 @@ export default function Page() {
           {
             details?.catalogs?.map(b => (
               <Link href={`/products?catalog=${b?.id}`} key={b.id}>
-                <Badge text={b?.description} />
+                <Badge type={"catalog-details"} text={b?.description} />
               </Link>
             ))
           }

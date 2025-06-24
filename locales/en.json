@@ -179,5 +179,13 @@
   "quantityExceeded": "Quantity cannot exceed ",
   "warning": "Warning",
   "success": "Success",
-  "completeErrorMessage": "Please fill in all required fields."
+  "completeErrorMessage": "Please select a shipping address.",
+  "error": "Error!",
+  "success2": "Your account has been successfully created!",
+  "only": "Only",
+  "pieces": "pieces left",
+  "discount2": "Discount",
+  "percentage": "%",
+  "soon": "Coming Soon",
+  "new": "New"
 }

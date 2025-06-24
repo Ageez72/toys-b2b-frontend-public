@@ -24,13 +24,18 @@ export default function Home() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['profile'],
     queryFn: fetchProfile,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: (failureCount, error) => {
+      if (error?.response?.status === 401) return false;
+      return failureCount < 3;
+    },
   });
 
   if (isLoading) return <Loader />;
   if (data) {
     push("/home")
   }
-  
+
   return (
     <>
       <Login />

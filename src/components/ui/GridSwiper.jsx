@@ -35,6 +35,11 @@ export default ({ title, route, badgeType, type, id }) => {
     const { data, isLoading, error } = useQuery({
         queryKey: [type],
         queryFn: fetchHomeProducts,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        retry: (failureCount, error) => {
+            if (error?.response?.status === 401) return false;
+            return failureCount < 3;
+        },
     });
 
     if (isLoading) return <HorizontalLoader />;

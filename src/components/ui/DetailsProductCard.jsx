@@ -1,29 +1,70 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StarsRate from './StarsRate';
 import Link from 'next/link';
 import AddToCart from './AddToCart';
+import Badge from './Badge';
+import { useAppContext } from '../../../context/AppContext';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
 
 export default function DetailsProductCard({ item }) {
+    const { state = {} } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // fallback to Arabic
+
+    useEffect(() => {
+        if (state.LANG === "EN") {
+            setTranslation(en);
+        } else {
+            setTranslation(ar);
+        }
+    }, [state.LANG]);
+
     const rate = item?.reviews.rating || 0;
     return (
         <div className="card product-card">
             <div className="product-card-content">
-                <h3 className="product-card-title"><Link href={`products/${item?.brand.id}`}>{item.name}</Link></h3>
-                {<Link href={``}>
-                    <p className="product-card-description" dangerouslySetInnerHTML={{ __html: `${item?.type} - ${item?.category?.description}` }} />
-                </Link>}
+                {
+                    item.isNew && (
+                        <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
+                    )
+                }
+                {
+                    item.commingSoon && (
+                        <Badge type={item.commingSoon && 'yellow'} text={`${translation.soon}`} />
+                    )
+                }
+                {
+                    item.itemdisc > 0 && (
+                        <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
+                    )
+                }
+                {
+                    item.discountType === 'CLEARANCE' && (
+                        <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
+                    )
+                }
+                <h3 className="product-card-title">{item.name}</h3>
+                <p className="product-card-description">
+                    <Link href={`/products?brand=${item?.brand?.id}`}>
+                        <span className="product-card-brand">{item?.brand?.description}</span>
+                    </Link>
+                    <span className='mx-1'>-</span>
+                    <Link href={`/products?category=${item?.category?.id}`}>
+                        <span className="product-card-category">{item?.category?.description}</span>
+                    </Link>
+                </p>
 
                 <div className="price flex items-center gap-3">
                     <span className="product-card-price">
                         <span className="price-number">{item?.price} </span>
-                        <span className="price-unit">دينار</span>
+                        <span className="price-unit">{translation.jod}</span>
                     </span>
                     {
                         item?.itemdisc ? (
                             <span className='flex gap-1 discount'>
                                 <span>{item?.itemdisc}.00</span>
-                                <span>دينار</span>
+                                <span>{translation.jod}</span>
                             </span>
                         ) : ""
                     }
@@ -32,12 +73,12 @@ export default function DetailsProductCard({ item }) {
                 <div className="stars flex items-center gap-1">
                     <StarsRate rate={rate} />
                 </div>
-                <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description}} />
+                <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description }} />
                 {
                     item?.status === "INSTOCK" ? (
                         <AddToCart item={item} />
                     ) : (
-                        <p className='out-stock-btn'>غير متوفر</p>
+                        <p className='out-stock-btn'>{translation.notAvailable}</p>
                     )
                 }
 
