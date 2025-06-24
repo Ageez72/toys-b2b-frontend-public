@@ -61,12 +61,12 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     </Link>
                 </h3>
                 <p className='product-card-description'>
-                    <Link href={`/products?brand=${item?.brand?.id}`}>
-                        <span className="product-card-brand">{item?.brand?.description}</span>
-                    </Link>
-                    <span className='mx-1'>-</span>
                     <Link href={`/products?category=${item?.category?.id}`}>
                         <span className="product-card-category">{item?.category?.description}</span>
+                    </Link>
+                    <span className='mx-1'>-</span>
+                    <Link href={`/products?brand=${item?.brand?.id}`}>
+                        <span className="product-card-brand">{item?.brand?.description}</span>
                     </Link>
                 </p>
                 <div className="stars flex items-center gap-1">
