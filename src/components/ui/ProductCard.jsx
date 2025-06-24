@@ -80,7 +80,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     {
                         item?.priceAfterDisc ? (
                             <span className='flex gap-1 discount'>
-                                <span>{item?.priceAfterDisc}.00</span>
+                                <span>{Number(item?.priceAfterDisc).toFixed(2)}</span>
                                 <span>{translation.jod}</span>
                             </span>
                         ) : ""
