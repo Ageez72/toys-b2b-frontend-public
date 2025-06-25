@@ -31,7 +31,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
         <div className={`card product-card ${type === 'grid' ? 'grid-card flex items-center gap-3' : 'list-card'}`}>
             <div className="product-card-image">
                 <Link href={`/products/${item.id}`}>
-                    <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive" />
+                    <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive"  title={item.name}/>
                 </Link>
             </div>
             <div className="product-card-content">
@@ -55,18 +55,18 @@ export default function ProductCard({ type, badgeType, related, item }) {
                         <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
                     )
                 }
-                <h3 className="product-card-title cursor-pointer" onClick={handleClick}>
+                <h3 className="product-card-title cursor-pointer short-title" title={item.name}>
                     <Link href={`/products/${item.id}`}>
                         {item.name}
                     </Link>
                 </h3>
                 <p className='product-card-description'>
-                    <Link href={`/products?category=${item?.category?.id}`}>
-                        <span className="product-card-category">{item?.category?.description}</span>
-                    </Link>
-                    <span className='mx-1'>-</span>
                     <Link href={`/products?brand=${item?.brand?.id}`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>
+                    </Link>
+                    <span className='mx-1'>-</span>
+                    <Link href={`/products?category=${item?.category?.id}`}>
+                        <span className="product-card-category">{item?.category?.description}</span>
                     </Link>
                 </p>
                 <div className="stars flex items-center gap-1">
@@ -87,7 +87,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     }
                 </div>
                 {
-                    item?.status === "INSTOCK" ? (
+                    item?.status === "AVAILABLE" ? (
                         <AddToCart item={item} />
                     ) : (
                         <p className='out-stock-btn'>{translation.notAvailable}</p>

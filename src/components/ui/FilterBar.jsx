@@ -30,7 +30,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
         {
             id: 2,
             title: translation.available,
-            value: "INSTOCK"
+            value: "AVAILABLE"
         },
         {
             id: 3,
@@ -74,7 +74,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     }); // العلامات التجارية
     const [category, setCategory] = useState(useParams.get('category') ? useParams.get('category').split(',') : ""); // التصنيفات
     const [catalog, setCatalog] = useState(useParams.get('catalog') ? useParams.get('catalog').split(',') : ""); // الاستخدامات
-    const [itemStatus, setItemStatus] = useState(useParams.get('itemStatus') || "INSTOCK"); // حالة التوفر
+    const [itemStatus, setItemStatus] = useState(useParams.get('itemStatus') || "AVAILABLE"); // حالة التوفر
     const [categoriesAllOptions, setCategoriesAllOptions] = useState([])
     const [catalogsAllOptions, setCatalogsAllOptions] = useState([])
     const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([])

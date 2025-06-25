@@ -43,7 +43,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
         const [_key, searchText] = queryKey;
         const filterItems = Cookies.get('store_filters') || '';
         const token = Cookies.get('token');
-        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize || 3}&${filterItems}&itemStatus=INSTOCK&lang=${lang}`;
+        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize || 3}&${filterItems}&itemStatus=AVAILABLE&lang=${lang}`;
 
         const res = await axios.get(url, {
             headers: { Authorization: `Bearer ${token}` }
@@ -110,7 +110,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
                         <>
                             <hr />
                             <Link
-                                href={`/products?search=${searchText}&pageSize=3&${filterItems}&itemStatus=INSTOCK&lang=EN`}
+                                href={`/products?search=${searchText}&pageSize=3&${filterItems}&itemStatus=AVAILABLE&lang=EN`}
                                 className='flex items-center gap-2 all-products'
                             >
                                 <span>{translation.viewAllProducts}</span>

@@ -44,7 +44,7 @@ export default function DetailsProductCard({ item }) {
                         <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
                     )
                 }
-                <h3 className="product-card-title">{item.name}</h3>
+                <h3 className="product-card-title" title={item.name}>{item.name}</h3>
                 <p className="product-card-description">
                     <Link href={`/products?brand=${item?.brand?.id}`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>
@@ -61,7 +61,7 @@ export default function DetailsProductCard({ item }) {
                         <span className="price-unit">{translation.jod}</span>
                     </span>
                     {
-                        item?.priceAfterDisc ? (
+                        item?.itemdisc ? (
                             <span className='flex gap-1 discount'>
                                 <span>{item?.priceAfterDisc}.00</span>
                                 <span>{translation.jod}</span>
@@ -76,7 +76,7 @@ export default function DetailsProductCard({ item }) {
                 </div>
                 <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description }} />
                 {
-                    item?.status === "INSTOCK" ? (
+                    item?.status === "AVAILABLE" ? (
                         <AddToCart item={item} />
                     ) : (
                         <p className='out-stock-btn'>{translation.notAvailable}</p>

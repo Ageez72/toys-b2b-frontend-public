@@ -78,3 +78,20 @@ footer {
         font-size: 20px;
     }
 }
+
+header {
+    .circle-icon-container, .lang-switcher  {
+        transition: all 0.3s ease-in-out;
+        
+        i::before {
+            transition: all 0.3s ease-in-out;
+        }
+
+        &:hover {
+            background-color: var(--primary-color);
+            i::before {
+                color: #fff;
+            }
+        }
+    }
+}

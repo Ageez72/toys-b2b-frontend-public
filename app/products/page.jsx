@@ -122,7 +122,7 @@ export default function Page() {
   }, [apiParams]);
 
   async function fetchProducts() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&itemStatus=INSTOCK&lang=${lang}`, {
+    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&itemStatus=AVAILABLE&lang=${lang}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }

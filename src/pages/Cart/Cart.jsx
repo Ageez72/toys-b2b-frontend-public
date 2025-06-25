@@ -235,22 +235,22 @@ function Cart() {
 
         <div className="order-summary">
           <div className="card p-4">
-            <h3 className="sub-title mb-3">{translation.orderSummary}</h3>
+            <h3 className="sub-title mb-6">{translation.orderSummary}</h3>
             <div className="order-item flex justify-between items-center mb-4">
               <p className="mb-0">{translation.itemCount}</p>
               <p className="mb-0">{cartItems.length}</p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
-              <p className="mb-0">{translation.tax}</p>
+              <p className="mb-0">{translation.subtotal}</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>{cartItems.length ? Number(orderSummary?.TAX).toFixed(2) : 0}</span>
+                <span>{cartItems.length ? Number(orderSummary?.SUBTOTAL).toFixed(2) : 0}</span>
                 <span>{translation.jod}</span>
               </p>
             </div>
             <div className="order-item flex justify-between items-center mb-4">
-              <p className="mb-0">{translation.subtotal}</p>
+              <p className="mb-0">{translation.tax}</p>
               <p className="mb-0 flex items-center gap-1">
-                <span>{cartItems.length ? Number(orderSummary?.SUBTOTAL).toFixed(2) : 0}</span>
+                <span>{cartItems.length ? Number(orderSummary?.TAX).toFixed(2) : 0}</span>
                 <span>{translation.jod}</span>
               </p>
             </div>

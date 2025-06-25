@@ -214,7 +214,7 @@ export default function AddBulkModal({ open, onClose }) {
                             <div className="item flex-1">
                               <label className="mobile-title hidden">{translation.availablity}</label>
                               <span className="mobile-box">
-                                {item.status === 'INSTOCK' ? translation.available : translation.notAvailable}
+                                {item.status === 'AVAILABLE' ? translation.available : translation.notAvailable}
                               </span>
                             </div>
                             <div className="item flex-1">
