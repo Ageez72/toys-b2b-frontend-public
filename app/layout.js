@@ -8,6 +8,7 @@ import AppProvider from "../context/AppContext";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import Cookies from 'js-cookie';
 import "./globals.scss";
+import ContactTools from "@/components/ui/ContactTools";
 
 
 // export const metadata = {
@@ -53,7 +54,6 @@ export default function RootLayout({ children }) {
         <body
           className={`antialiased ${!isAuthPage ? "header-padding" : ""}`}
         >
-
           <AppProvider>
             {!isAuthPage && (
               <>
@@ -72,8 +72,9 @@ export default function RootLayout({ children }) {
               </>
             )}
 
-            {children}
 
+            {children}
+            {!isAuthPage && <ContactTools />}
             {!isAuthPage && <Footer />}
           </AppProvider>
         </body>

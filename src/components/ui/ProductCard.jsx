@@ -55,11 +55,11 @@ export default function ProductCard({ type, badgeType, related, item }) {
                         <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
                     )
                 }
-                <h3 className="product-card-title cursor-pointer short-title" title={item.name}>
+                <h1 className="product-card-title cursor-pointer short-title" title={item.name}>
                     <Link href={`/products/${item.id}`}>
                         {item.name}
                     </Link>
-                </h3>
+                </h1>
                 <p className='product-card-description'>
                     <Link href={`/products?brand=${item?.brand?.id}`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>

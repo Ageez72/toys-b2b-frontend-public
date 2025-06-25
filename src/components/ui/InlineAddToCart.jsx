@@ -57,6 +57,7 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
 
         setCount(0);
         if (onQtyChange) onQtyChange();
+        onRefresh && onRefresh();
     };
 
     const increase = () => {

@@ -44,9 +44,11 @@
                 width: 70%;
                 margin-top: 15px;
             }
+
             @media (max-width: 500px) {
                 width: 100%;
             }
+
             @media (max-width: 380px) {
                 flex-direction: row;
             }
@@ -56,20 +58,30 @@
                 height: 48px;
                 border-radius: 6px;
                 background-color: #9B92A529;
+                transition: all 0.3s ease-in-out;
+
+                &:hover {
+                    background-color: var(--primary-color);
+
+                    i::before {
+                        color: #fff;
+                    }
+                }
 
                 i {
                     font-size: 24px;
 
                     &::before {
                         color: var(--primary-color);
+                        transition: all 0.3s ease-in-out;
                     }
                 }
             }
 
             @media screen and (max-width: 380px) {
-                 .product-card-quantity {
+                .product-card-quantity {
                     width: 90%;
-                 }
+                }
             }
         }
     }

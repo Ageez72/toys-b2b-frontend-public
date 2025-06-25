@@ -167,11 +167,12 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
     const parentOptions = (options) => {
         setBrand(options)
+        fetchCategoriesOptions(true, options)
     }
 
     // get all options
-    const fetchCategoriesOptions = async () => {
-        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brand.join(',')}&lang=${lang}`, {
+    const fetchCategoriesOptions = async (ch, brands=[]) => {        
+        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
             }
@@ -186,7 +187,9 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                 value: item.categoryId
             })
         ))
-        setCategoryOpen(true)
+        if(!ch){
+            setCategoryOpen(true)
+        }
         setSelectedCategoriesOptions(selected)
     }
 

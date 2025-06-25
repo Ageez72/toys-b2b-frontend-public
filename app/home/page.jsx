@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import "../../src/assets/js/main";
 import BrandsSwiper from "@/components/ui/BrandsSwiper";
 import GridSwiper from "@/components/ui/GridSwiper";
-import ContactTools from "@/components/ui/ContactTools";
 import Hero from "@/components/ui/Hero";
 import { useAppContext } from "../../context/AppContext";
 import en from "../../locales/en.json";
@@ -70,7 +69,6 @@ export default function Home() {
             id={grid.id}
           />
         ))}
-        <ContactTools />
       </div>
     </>
   );

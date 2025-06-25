@@ -48,6 +48,7 @@ function Cart() {
 
   useEffect(() => {
     handleGetOrder()
+    loadCart();
   }, [refresh])
 
   const handleGetOrder = async () => {
@@ -137,7 +138,7 @@ function Cart() {
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page">
       {
-        openErrorMessage && <Toast type="error" message={translation.completeErrorMessage} address={true}/>
+        openErrorMessage && <Toast type="error" message={translation.completeErrorMessage}/>
       }
       <Breadcrumb items={breadcrumbItems} />
       <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">

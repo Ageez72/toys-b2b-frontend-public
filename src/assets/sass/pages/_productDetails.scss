@@ -1,13 +1,18 @@
 .product-details {
     padding: 60px 0;
 
+    .product-card-title {
+        font-size: 22px !important;
+        font-weight: 700 !important;
+    }
+
     .product-description {
         color: #666876;
         margin-bottom: 25px;
         font-size: 12px;
     }
 
-   .details-card .add-to-cart {
+    .details-card .add-to-cart {
         align-items: center;
         display: flex;
         width: 60%;
@@ -47,6 +52,7 @@
     font-size: 16px;
     color: #424242;
 }
+
 #rate-comment,
 textarea {
     border-color: #CCD3D9;

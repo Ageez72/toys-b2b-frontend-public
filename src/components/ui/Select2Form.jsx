@@ -63,6 +63,7 @@ export default function Select2Form({ title, name, initiallyOpen = false, option
               options={newOptions}
               value={selectedOptions}
               onChange={handleSelectChange}
+              noOptionsMessage={() => state.LANG === 'AR' ? 'لا يوجد خيارات' : 'No Options'}
             />
           </DisclosurePanel>
         </div>

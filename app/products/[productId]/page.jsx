@@ -71,7 +71,7 @@ export default function Page() {
       <div className="card mt-5">
         <p className="product-description" dangerouslySetInnerHTML={{ __html: details?.description }} />
 
-        <h3 className="sub-title mb-3">{translation.catalogs}</h3>
+        <h3 className="sub-title mb-5">{translation.catalogs}</h3>
         <div className="badges flex gap-2">
           {
             details?.catalogs?.map(b => (

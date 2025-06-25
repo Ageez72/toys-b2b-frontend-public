@@ -44,7 +44,7 @@ export default function DetailsProductCard({ item }) {
                         <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
                     )
                 }
-                <h3 className="product-card-title" title={item.name}>{item.name}</h3>
+                <h1 className="product-card-title" title={item.name}>{item.name}</h1>
                 <p className="product-card-description">
                     <Link href={`/products?brand=${item?.brand?.id}`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>
