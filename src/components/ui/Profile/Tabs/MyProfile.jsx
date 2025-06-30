@@ -1,32 +1,28 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import img1 from "../../assets/imgs/auth-bg.svg";
-import pattern from "../../assets/imgs/pattern.svg";
-import logo from "../../assets/imgs/logo.svg";
 import LangSwitcher from '@/components/ui/LangSwitcher';
 import { useForm } from 'react-hook-form';
-import { useAppContext } from '../../../context/AppContext';
-import en from "../../../locales/en.json";
-import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../../../context/AppContext';
+import en from "../../../../../locales/en.json";
+import ar from "../../../../../locales/ar.json";
 import Loader from '@/components/ui/Loaders/Loader';
 import SuccessModal from '@/components/ui/SuccessModal';
 import ErrorModal from '@/components/ui/ErrorModal';
-import { endpoints } from '../../../constant/endpoints';
-import { BASE_API } from '../../../constant/endpoints';
+import { endpoints, BASE_API } from '../../../../../constant/endpoints';
 import axios from 'axios';
 
-export default function Register() {
+export default function MyProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [modalErrorMessage, setModalErrorMessage] = useState('');
   const [modalSuccessMessage, setModalSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
   const [isUsernameValid, setIsUsernameValid] = useState(false);
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
-  const translation = state.LANG === "EN" ? en : ar;
+  const [translation, setTranslation] = useState(ar);
+  useEffect(() => {
+    setTranslation(state.LANG === "EN" ? en : ar);
+  }, [state.LANG]);
 
   useEffect(() => {
     setIsLoading(false);
@@ -41,33 +37,31 @@ export default function Register() {
   const onSubmit = async (data) => {
     const userData = {
       username: data.username,
-      password: data.password,
       email: data.email,
       mobile: data.phone,
       name: data.fullName,
       businessname: data.storeName
     }
 
-    try {
-      const res = await axios.post(`${BASE_API + endpoints.auth.register}`, userData)
+    // try {
+    //   const res = await axios.post(`${BASE_API + endpoints.auth.register}`, userData)
 
-      if (!res.data.error) {
-        setIsModalOpen(true);
-        setIsErrorModalOpen(false);
-        setModalSuccessMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
-      } else {
-        setModalErrorMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
-        setIsErrorModalOpen(true);
-      }
-    } catch (err) {
-      console.error('Error registering user:', err);
-      setModalErrorMessage(state.LANG === "EN" ? err.response.data.messageEN : err.response.data.messageAR);
-      setIsErrorModalOpen(true);
-    }
+    //   if (!res.data.error) {
+    //     setIsModalOpen(true);
+    //     setIsErrorModalOpen(false);
+    //     setModalSuccessMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
+    //   } else {
+    //     setModalErrorMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
+    //     setIsErrorModalOpen(true);
+    //   }
+    // } catch (err) {
+    //   console.error('Error registering user:', err);
+    //   setModalErrorMessage(state.LANG === "EN" ? err.response.data.messageEN : err.response.data.messageAR);
+    //   setIsErrorModalOpen(true);
+    // }
   };
-
   return (
-    <div className="container auth-wrapper">
+    <div className="">
       <ErrorModal
         open={isErrorModalOpen}
         onClose={() => setIsErrorModalOpen(false)}
@@ -81,16 +75,9 @@ export default function Register() {
         message={modalSuccessMessage}
       />
       {isLoading && <Loader />}
-      <div className="auth-container register-auth-container flex flex-col lg:flex-row gap-4">
+      <div className='py-3'>
         <div className='form-side md:flex-1 flex-12'>
-          <div className='image-logo flex-12 block lg:hidden'>
-            <Image className='pattern-img' src={pattern} alt="Pattern" />
-            <Image className='logo-img' src={logo} width={252} alt="Logo" />
-          </div>
-
-          <LangSwitcher />
-          <h2 className='section-title'>{translation.register.title}</h2>
-          <p>{translation.register.desc}</p>
+          <h2 className='sub-title mb-6'>{translation.profile}</h2>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Full Name */}
@@ -200,55 +187,14 @@ export default function Register() {
               {errors.storeName && <span className="error-msg text-red-500">{errors.storeName.message}</span>}
             </div>
 
-            {/* Password */}
-            <div className='form-group'>
-              <label className='block mb-2'>{translation.register.password} <span className='required'>*</span></label>
-              <div className='relative'>
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <i className="icon-shield-security"></i>
-                </div>
-                <input
-                  placeholder={translation.register.password}
-                  type={showPassword ? 'text' : 'password'}
-                  className='w-full ps-10 pe-10 p-2.5'
-                  {...register('password', {
-                    required: translation.register.errors.password.required,
-                    minLength: {
-                      value: 3,
-                      message: translation.register.errors.password.min_length,
-                    },
-                  })}
-                />
-                <div
-                  className='absolute inset-y-0 end-0 flex items-center pe-3 cursor-pointer'
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <i className="icon-view-on"></i>
-                  ) : (
-                    <i className="icon-view-off"></i>
-                  )}
-                </div>
-              </div>
-              {errors.password && <span className="error-msg text-red-500">{errors.password.message}</span>}
+            <div className="text-end">
+              <button type='submit' className='primary-btn w-auto'>
+                {translation.saveChanges}
+              </button>
             </div>
-
-            <button type='submit' className='primary-btn w-full'>{translation.register.register_btn}</button>
           </form>
-
-          <div className='form-blow'>
-            <span>{translation.register.have_account}</span>
-            <Link className='ms-1' href="/">{translation.register.login}</Link>
-          </div>
-        </div>
-
-        <div className='image-side md:flex-1 flex-12 hidden lg:block'>
-          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-            <Image src={img1} alt="Register Background" fill priority style={{ objectFit: 'contain' }} />
-          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
-

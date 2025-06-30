@@ -4,7 +4,14 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { profileTabs } from './tabs';
 import TabPanel from './TabPanel';
+import MyProfile from './Tabs/MyProfile';
+import MyOrders from './Tabs/MyOrders';
+import Adressess from './Tabs/Adressess';
+import Security from './Tabs/Security';
 import { getProfile, logout } from '@/actions/utils';
+import { useAppContext } from '../../../../context/AppContext';
+import en from "../../../../locales/en.json";
+import ar from "../../../../locales/ar.json";
 
 export default function ProfileTabs() {
     const searchParams = useSearchParams();
@@ -12,6 +19,11 @@ export default function ProfileTabs() {
 
     const [activeTab, setActiveTab] = useState('personal');
     const [profileData, setProfileData] = useState(null);
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar);
+    useEffect(() => {
+        setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
 
     useEffect(() => {
         const queryTab = searchParams?.keys().next().value;
@@ -38,9 +50,8 @@ export default function ProfileTabs() {
     const [firstInitial, lastInitial] = getInitials(profileData?.name);
 
     return (
-        <div className="flex flex-col md:flex-row gap-4">
-            {/* Sidebar */}
-            <aside className="w-full md:w-1/4 profile-side-bar">
+        <div className="flex flex-col lg:flex-row gap-4 mt-5 lg:mt-10">
+            <aside className="w-full lg:w-1/4 profile-side-bar">
                 <div className="bg-white p-4 rounded-lg p-4 mb-4">
                     <div className="flex profile-dropdown-header px-4 py-2">
                         <div className="me-3 shrink-0">
@@ -64,41 +75,44 @@ export default function ProfileTabs() {
                             <li key={tab.id}>
                                 <button
                                     onClick={() => handleTabClick(tab.id)}
-                                    className={`flex items-center w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'
+                                    className={`flex items-center justify-between w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'
                                         }`}
                                 >
-                                    <i className={tab.icon}></i>
-                                    <span className="flex items-center justify-between block px-2 py-2">
-                                        {tab.label}
+                                    <span className='flex items-center'>
+                                        <i className={`${tab.icon} type`}></i>
+                                        <span className="flex items-center justify-between block px-2 py-2">
+                                            {tab.label}
+                                        </span>
                                     </span>
+                                    <i className={`icon-arrow-${state.LANG === 'AR' ? 'left' : 'right'}-01-round text-sm`}></i>
                                 </button>
                             </li>
                         ))}
                     </ul>
                 </div>
-                <div className="bg-white rounded-lg p-2">
-                    <button className="w-full logout flex items-center gap-2 cursor-pointer" onClick={logout}>
-                        <i className="icon-logout-03"></i>
+                <div className="bg-white rounded-lg py-2 px-4">
+                    <button className="w-full logout flex items-center cursor-pointer" onClick={logout}>
+                        <i className="icon-logout-03 type"></i>
                         <span className="flex items-center justify-between block px-2 py-2">
-                            تسجيل الخروج
+                            {translation.logout}
                         </span>
                     </button>
                 </div>
             </aside>
 
             {/* Tab Content */}
-            <div className="w-full md:w-3/4">
+            <div className="w-full lg:w-3/4">
                 <TabPanel id="personal" activeTab={activeTab}>
-                    <p className="text-gray-600">محتوى الملف الشخصي هنا...</p>
+                    <MyProfile />
                 </TabPanel>
                 <TabPanel id="security" activeTab={activeTab}>
-                    <p className="text-gray-600">إعدادات الأمان وكلمة المرور.</p>
+                    <Security />
                 </TabPanel>
                 <TabPanel id="orders" activeTab={activeTab}>
-                    <p className="text-gray-600">قائمة الطلبات الخاصة بك.</p>
+                    <MyOrders />
                 </TabPanel>
                 <TabPanel id="addresses" activeTab={activeTab}>
-                    <p className="text-gray-600">العناوين المحفوظة.</p>
+                    <Adressess />
                 </TabPanel>
             </div>
         </div>

@@ -29,7 +29,7 @@ function Cart() {
   const [orderSummary, setOrderSummary] = useState(null);
 
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
-  const [translation, setTranslation] = useState(ar); // default fallback
+  const [translation, setTranslation] = useState(ar);
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);

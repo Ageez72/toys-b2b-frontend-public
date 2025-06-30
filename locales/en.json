@@ -33,6 +33,7 @@
     "register_btn": "Register",
     "have_account": "Already have an account?",
     "login": "Log In",
+    "confirm_password": "Confirm Password",
     "errors": {
       "full_name": {
         "required": "Full name is required"
@@ -55,7 +56,8 @@
       },
       "password": {
         "required": "Password is required",
-        "min_length": "Password must be at least 6 characters"
+        "min_length": "Password must be at least 6 characters",
+        "confirm_not_match": "Passwords do not match"
       }
     }
   },

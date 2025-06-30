@@ -143,4 +143,7 @@ hr {
 .max-w-screen-xl {
     width: 90%;
     max-width: 1920px;
+    @media (max-width: 600px) {
+        width: 100%;
+    }
 }
