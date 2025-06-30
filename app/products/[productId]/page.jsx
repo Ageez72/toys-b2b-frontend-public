@@ -60,6 +60,10 @@ export default function Page() {
     { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}` },
     { label: `${details?.name}`}
   ]
+  const getAge = (str) => {    
+    const match = str[0].match(/\d+/);
+    return match ? match[0] : null;
+  }
 
   return data ? (
     <div className="max-w-screen-xl mx-auto p-4 product-details">
@@ -69,7 +73,35 @@ export default function Page() {
         <DetailsProductCard item={details} />
       </div>
       <div className="card mt-5">
-        <p className="product-description" dangerouslySetInnerHTML={{ __html: details?.description }} />
+        <h3 className="sub-title mb-5">{translation.productSpecifications}</h3>
+        <div className="specifications-table lg:w-1/2 mb-10">
+         <div className="item flex w-full">
+            <div className="title w-1/2"><strong>{translation.brand}</strong></div>
+            <div className="info w-1/2">{details.brand.description}</div>
+          </div>
+          <div className="item flex w-full">
+            <div className="title w-1/2"><strong>{translation.type}</strong></div>
+            <div className="info w-1/2">{details.category.description}</div>
+          </div>
+          <div className="item flex w-full">
+            <div className="title w-1/2"><strong>{translation.dimentions}</strong></div>
+            <div className="info w-1/2">{details.dimentions}</div>
+          </div>
+          <div className="item flex w-full">
+            <div className="title w-1/2"><strong>{translation.weight}</strong></div>
+            <div className="info w-1/2">{details.netWeightKg} {translation.kg}</div>
+          </div>
+          <div className="item flex w-full">
+            <div className="title w-1/2"><strong>{translation.barcode}</strong></div>
+            <div className="info w-1/2">{details.barcode}</div>
+          </div>
+          <div className="item flex w-full">
+            <div className="title w-1/2"><strong>{translation.age}</strong></div>
+            <div className="info w-1/2">+{getAge(details.constants.AGES)} {translation.years}</div>
+          </div>
+        </div>
+        <h3 className="sub-title mb-5">{translation.warnings}</h3>
+        <p className="product-warning" dangerouslySetInnerHTML={{ __html: details?.warning }} />
 
         <h3 className="sub-title mb-5">{translation.catalogs}</h3>
         <div className="badges flex gap-2">

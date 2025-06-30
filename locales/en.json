@@ -178,6 +178,7 @@
   "productAlreadyAdded": "This product is already added",
   "quantityExceeded": "Quantity cannot exceed ",
   "warning": "Warning",
+  "warnings": "Warnings",
   "success": "Success",
   "completeErrorMessage": "Please select a shipping address.",
   "error": "Error!",
@@ -188,5 +189,14 @@
   "percentage": "%",
   "soon": "Coming Soon",
   "new": "New",
-  "reviews": "Reviews"
+  "reviews": "Reviews",
+  "type": "Type",
+  "dimentions": "Dimensions (L.D.H) in cm",
+  "weight": "Weight (kg)",
+  "barcode": "Barcode",
+  "age": "Age",
+  "brand": "Brand",
+  "kg": "KG",
+  "years": "Years",
+  "": ""
 }

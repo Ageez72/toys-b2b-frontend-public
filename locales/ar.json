@@ -179,6 +179,7 @@
     "quantityExceeded": "الكمية لا يمكن أن تتجاوز ",
     "noResults": "لا توجد نتائج",
     "warning": "تحذير",
+    "warnings": "التحذيرات",
     "success": "نجاح",
     "completeErrorMessage": "يرجى اختيار عنوان الشحن.",
     "error": "خطأ!",
@@ -189,5 +190,13 @@
     "percentage": "%",
     "soon": "قريباً",
     "new": "جديد",
-    "reviews": "تقييمات"
+    "reviews": "تقييمات",
+    "type": "النوع",
+    "dimentions": "الأبعاد (ط × ع × أ) سم",
+    "weight": "الوزن (كج)",
+    "barcode": "الباركود",
+    "age": "العمر",
+    "brand": "العلامه التجارية",
+    "kg": "كج",
+    "years": "سنة"
 }

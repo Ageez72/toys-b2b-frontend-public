@@ -22,7 +22,7 @@
         font-size: 12px;
         color: #4A4A49;
         font-weight: 700;
-        padding: 20px 16px;
+        padding: 16px 16px;
         background: #C2C5D233;
         transition: all 0.3s ease-in-out;
 
@@ -43,6 +43,44 @@
 
         &:hover {
             background-color: #d9d9d9;
+        }
+    }
+
+    .product-warning {
+        margin-bottom: 2rem;
+        ul {
+            li {
+                position: relative;
+                margin-bottom: 10px;
+
+                &:before {
+                    content: "\e909";
+                    color: #8d1a14;
+                    font-family: 'icomoon';
+                    margin-inline-end: 5px;
+                    position: relative;
+                    top: 5px;
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    .specifications-table {
+        border-radius: 16px;
+        border: 1px solid #CCD3D9;
+        .item {
+            &:nth-child(odd) {
+                background-color: #C2C5D21F;
+            }
+            div {
+                padding: 15px;
+                font-size: 16px;
+            }
+
+            .info {
+                border-right: 1px solid #CCD3D9
+            }
         }
     }
 

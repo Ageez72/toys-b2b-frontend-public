@@ -13,6 +13,7 @@ import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Cookies from 'js-cookie';
 import Toast from "@/components/ui/Toast";
+import WarningModal from "@/components/ui/WarningModal";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -21,7 +22,8 @@ function Cart() {
   const [notes, setNotes] = useState('');
   const [openSureOrder, setOpenSureOrder] = useState(false)
   const [openConfirmOrder, setOpenConfirmOrder] = useState(false)
-  const [openErrorMessage, setOpenErrorMessage] = useState(false)
+  const [openWarningMessage, setOpenWarningMessage] = useState(false)
+  const [warningPopupMessage, setWarningPopupMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [orderSummary, setOrderSummary] = useState(null);
@@ -71,18 +73,22 @@ function Cart() {
   const handleSubmitChecker = () => {
     const storedCart = getCart();
 
-    if (!storedCart.length) {
-      setOpenErrorMessage(true);
-      setTimeout(() => {
-        setOpenErrorMessage(false);
-      }, 4000);
-      return;
-    }
+    // if (!storedCart.length) {
+    //   setOpenWarningMessage(true);
+    //   setTimeout(() => {
+    //     setOpenWarningMessage(false);
+    //   }, 4000);
+    //   return;
+    // }
 
     if (!selectedAddressId) {
-      setOpenErrorMessage(true);
+      console.log(translation.completeErrorMessage);
+      
+      setOpenWarningMessage(true);
+      setWarningPopupMessage(translation.completeErrorMessage)
       setTimeout(() => {
-        setOpenErrorMessage(false);
+        setOpenWarningMessage(false);
+        setWarningPopupMessage("")
       }, 4000);
       return;
     }
@@ -111,7 +117,7 @@ function Cart() {
       });
       if (response.data && !response.data.ERROR) {
         console.log('Response:', response.data);
-        Cookies.set('cart', "[]", { expires: 7, path: '/' }); 
+        Cookies.set('cart', "[]", { expires: 7, path: '/' });
         dispatch({ type: 'STORED-ITEMS', payload: [] });
         setOpenSureOrder(false);
         setOpenConfirmOrder(true)
@@ -137,9 +143,15 @@ function Cart() {
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page">
-      {
-        openErrorMessage && <Toast type="error" message={translation.completeErrorMessage}/>
-      }
+      {/* {
+        openWarningMessage && <Toast type="error" message={translation.completeErrorMessage}/>
+      } */}
+      {openWarningMessage && (
+        <WarningModal
+          open={openWarningMessage}
+          message={warningPopupMessage}
+        />
+      )}
       <Breadcrumb items={breadcrumbItems} />
       <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">
         <div className="order-side">
