@@ -26,9 +26,19 @@
         .active {
             color: #8D1A14;
             background-color: #8D1A141F;
+
             i::before {
                 color: #8D1A14;
             }
         }
+    }
+
+    i {
+        font-size: 24px;
+    }
+
+    .logout {
+        color: #8d1a14;
+        font-size: 16px;
     }
 }

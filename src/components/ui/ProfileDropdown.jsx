@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Loader from './Loaders/Loader';
+import { logout } from '@/actions/utils';
 
 export default function ProfileDropdown() {
     const { push } = useRouter();
@@ -110,7 +111,7 @@ export default function ProfileDropdown() {
                                 </div>
 
                                 <MenuItem>
-                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                    <Link href="/profile?personal" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                         <i className="icon-user"></i>
                                         <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                             الملف الشخصي
@@ -118,28 +119,28 @@ export default function ProfileDropdown() {
                                     </Link>
                                 </MenuItem>
                                 <MenuItem>
-                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                    <Link href="/profile?security" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                         <i className="icon-shield-security"></i>
                                         <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">الحماية والأمان</span>
                                     </Link>
                                 </MenuItem>
                                 <MenuItem>
-                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                    <Link href="/profile?orders" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                         <i className="icon-task"></i>
                                         <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">طلباتي</span>
                                     </Link>
                                 </MenuItem>
                                 <MenuItem>
-                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                    <Link href="/profile?addresses" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                         <i className="icon-location"></i>
                                         <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">العناوين</span>
                                     </Link>
                                 </MenuItem>
                                 <MenuItem>
-                                    <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                    <button className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full cursor-pointer' onClick={logout}>
                                         <i className="icon-logout-03"></i>
                                         <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">تسجيل الخروج</span>
-                                    </Link>
+                                    </button>
                                 </MenuItem>
                             </div>
                         </MenuItems>

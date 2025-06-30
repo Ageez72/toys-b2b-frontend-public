@@ -58,7 +58,7 @@ export default function DetailsProductCard({ item }) {
                 <div className="price flex items-center gap-3">
                     <span className="product-card-price">
                         <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span>
-                        <span className="price-unit">{translation.jod}</span>
+                        <span className="price-unit mx-1">{translation.jod}</span>
                     </span>
                     {
                         item?.itemdisc ? (

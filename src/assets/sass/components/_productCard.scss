@@ -48,6 +48,12 @@
 
     .product-card-content {
         width: 100%;
+
+        a {
+            &:hover {
+                color: var(--primary-color);
+            }
+        }
     }
 
     .product-card-title {

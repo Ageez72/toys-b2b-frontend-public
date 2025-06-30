@@ -1,11 +1,32 @@
 'use client';
-import { useState } from 'react';
+
+import { useEffect, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { profileTabs } from './tabs';
 import TabPanel from './TabPanel';
-import { getProfile } from '@/actions/utils';
+import { getProfile, logout } from '@/actions/utils';
 
 export default function ProfileTabs() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
     const [activeTab, setActiveTab] = useState('personal');
+    const [profileData, setProfileData] = useState(null);
+
+    useEffect(() => {
+        const queryTab = searchParams?.keys().next().value;
+        if (queryTab && profileTabs.some(t => t.id === queryTab)) {
+            setActiveTab(queryTab);
+        }
+        const profile = getProfile();
+        setProfileData(profile ? profile : []);
+    }, [searchParams]);
+
+    const handleTabClick = (tabId) => {
+        setActiveTab(tabId);
+        router.replace(`/profile?${tabId}`);
+    };
+
     const getInitials = (str) => {
         if (!str) return ['', ''];
         const words = str.trim().split(/\s+/);
@@ -14,52 +35,55 @@ export default function ProfileTabs() {
         return [first.toUpperCase(), last.toUpperCase()];
     };
 
-    const profileData = getProfile();
     const [firstInitial, lastInitial] = getInitials(profileData?.name);
 
     return (
         <div className="flex flex-col md:flex-row gap-4">
-            <aside className="w-full md:w-1/4 bg-white p-4 rounded-lg shadow profile-side-bar">
-                <div className="flex profile-dropdown-header px-4 py-2">
-                    <div className="me-3 shrink-0">
-                        <span className="profile-img block p-2 bg-gray-100 rounded-full">
-                            <span>{firstInitial}</span>
-                            <span>.</span>
-                            <span>{lastInitial}</span>
-                        </span>
+            {/* Sidebar */}
+            <aside className="w-full md:w-1/4 profile-side-bar">
+                <div className="bg-white p-4 rounded-lg p-4 mb-4">
+                    <div className="flex profile-dropdown-header px-4 py-2">
+                        <div className="me-3 shrink-0">
+                            <span className="profile-img block p-2 bg-gray-100 rounded-full">
+                                <span>{firstInitial}</span>
+                                <span>.</span>
+                                <span>{lastInitial}</span>
+                            </span>
+                        </div>
+                        <div>
+                            <p className="mb-0 username text-base leading-none text-gray-900 dark:text-white">
+                                {profileData?.name}
+                            </p>
+                            <p className="user-email mb-0 mt-2 text-sm font-normal">
+                                {profileData?.email}
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <p className="mb-0 username text-base leading-none text-gray-900 dark:text-white">
-                            {profileData?.name}
-                        </p>
-                        <p className="user-email mb-0 mt-2 text-sm font-normal">
-                            {profileData?.email}
-                        </p>
-                    </div>
+                    <ul className="pt-3">
+                        {profileTabs.map((tab) => (
+                            <li key={tab.id}>
+                                <button
+                                    onClick={() => handleTabClick(tab.id)}
+                                    className={`flex items-center w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'
+                                        }`}
+                                >
+                                    <i className={tab.icon}></i>
+                                    <span className="flex items-center justify-between block px-2 py-2">
+                                        {tab.label}
+                                    </span>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-                <ul className="pt-3">
-                    {profileTabs.map((tab) => (
-                        <li key={tab.id}>
-                            <button
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`flex items-center w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'
-                                    }`}
-                            >
-                                <i className={tab.icon}></i>
-                                <span className="flex items-center justify-between block px-2 py-2 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                    {tab.label}
-                                </span>
-
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-                <button className="text-red-600 mt-4 flex items-center gap-2 hover:underline cursor-pointer">
-                    <i className="icon-logout-03"></i>
-                    <span className="flex items-center justify-between block px-2 py-2 text-sm data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                        تسجيل الخروج
-                    </span>
-                </button>
+                <div className="bg-white rounded-lg p-2">
+                    <button className="w-full logout flex items-center gap-2 cursor-pointer" onClick={logout}>
+                        <i className="icon-logout-03"></i>
+                        <span className="flex items-center justify-between block px-2 py-2">
+                            تسجيل الخروج
+                        </span>
+                    </button>
+                </div>
             </aside>
 
             {/* Tab Content */}

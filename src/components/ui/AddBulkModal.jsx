@@ -159,7 +159,7 @@ export default function AddBulkModal({ open, onClose }) {
                     <div className="info flex items-center justify-between">
                       <div className="item flex-2">{translation.productNumber}</div>
                       <div className="item flex-1">{translation.availablity}</div>
-                      <div className="item flex-1">{translation.totalItems}</div>
+                      {/* <div className="item flex-1">{translation.totalItems}</div> */}
                       <div className="item flex-1">{translation.itemPrice}</div>
                       <div className="item flex-1">{translation.totalPrice}</div>
                       <div className="item delete"></div>
@@ -217,10 +217,10 @@ export default function AddBulkModal({ open, onClose }) {
                                 {item.status === 'AVAILABLE' ? translation.available : translation.notAvailable}
                               </span>
                             </div>
-                            <div className="item flex-1">
+                            {/* <div className="item flex-1">
                               <label className="mobile-title hidden">{translation.totalItems}</label>
                               <span className="mobile-box">{item.avlqty}</span>
-                            </div>
+                            </div> */}
                             <div className="item flex-1">
                               <label className="mobile-title hidden">{translation.itemPrice}</label>
                               <span className="mobile-box">

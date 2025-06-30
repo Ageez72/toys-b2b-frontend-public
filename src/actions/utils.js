@@ -70,5 +70,12 @@ export function getCart() {
 
 // Function to get profile from cookie
 export function getProfile() {
-    return Cookies.get('cart') ? JSON.parse(Cookies.get('profile')) : [];
+    return Cookies.get('profile') ? JSON.parse(Cookies.get('profile')) : [];
+}
+
+export function logout() {
+    Cookies.remove('profile');
+    Cookies.remove('token');
+    Cookies.remove('cart');
+    window.location.href = '/';
 }
