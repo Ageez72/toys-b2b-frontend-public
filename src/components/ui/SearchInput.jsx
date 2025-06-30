@@ -100,7 +100,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
                             </span>
                             <span className='title' onClick={() => handleSelectProduct(item)}>{item.name}</span>
                             <span className='price'>{item.priceAfterDisc} {translation.jod}</span>
-                            <Link href="/dd" className='view-details flex items-center'>
+                            <Link href={`products/${item.id}`} className='view-details flex items-center'>
                                 <span className="icon-arrow-left-01-round"></span>
                             </Link>
                         </div>

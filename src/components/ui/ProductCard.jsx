@@ -74,7 +74,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 </div>
                 <div className="price flex items-center gap-3">
                     <span className="product-card-price">
-                        <span className="price-number">{item?.priceAfterDisc} </span>
+                        <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span>
                         <span className="price-unit">{translation.jod}</span>
                     </span>
                     {
