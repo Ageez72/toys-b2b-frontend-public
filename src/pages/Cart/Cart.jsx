@@ -12,8 +12,8 @@ import { useAppContext } from '../../../context/AppContext';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Cookies from 'js-cookie';
-import Toast from "@/components/ui/Toast";
-import WarningModal from "@/components/ui/WarningModal";
+import WarningModal from "@/components/ui/WarningToast";
+import Loader from "@/components/ui/Loaders/Loader";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -56,7 +56,7 @@ function Cart() {
   const handleGetOrder = async () => {
     const items = getCart();
     try {
-      // setLoading(true);
+      setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}`, items, {
         headers: {
           Authorization: `Bearer ${Cookies.get('token')}`,
@@ -66,7 +66,7 @@ function Cart() {
     } catch (error) {
       console.error('Failed to submit rating:', error);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -144,7 +144,7 @@ function Cart() {
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page">
       {/* {
-        openWarningMessage && <Toast type="error" message={translation.completeErrorMessage}/>
+        loading && <Loader />
       } */}
       {openWarningMessage && (
         <WarningModal

@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { getCart } from '@/actions/utils';
-import { useAppContext } from '../../../context/AppContext';
-import WarningModal from './WarningModal';
+import WarningModal from './WarningToast';
+import ErrorToast from './ErrorToast';
+import en from "../../../locales/en.json";
+import ar from "../../../locales/ar.json";
+import { useAppContext } from '../../../context/AppContext'
 
 export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh }) {
     const [count, setCount] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [warningPopupMessage, setWarningPopupMessage] = useState('');
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+    const [errorPopupMessage, setErrorPopupMessage] = useState('');
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const [translation, setTranslation] = useState(ar); // default fallback
+    useEffect(() => {
+        setTranslation(state.LANG === "EN" ? en : ar);
+    }, [state.LANG]);
 
     useEffect(() => {
         const cart = getCart();
@@ -16,12 +25,20 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
         if (item) setCount(parseInt(item.qty));
     }, [itemId]);
 
-    const showToastError = (message) => {
+    const showWarningToast = (message) => {
         setWarningPopupMessage(message);
         setIsModalOpen(true);
         setTimeout(() => {
             setIsModalOpen(false);
             setWarningPopupMessage('');
+        }, 4000);
+    };
+    const showErrorToast = (message) => {
+        setErrorPopupMessage(translation.itemRemoved);
+        setIsErrorModalOpen(true);
+        setTimeout(() => {
+            setIsErrorModalOpen(false);
+            setErrorPopupMessage('');
         }, 4000);
     };
 
@@ -58,12 +75,16 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
         setCount(0);
         if (onQtyChange) onQtyChange();
         onRefresh && onRefresh();
+        // showErrorToast()
+        // setTimeout(() => {
+        //     onRefresh && onRefresh();
+        // }, 3000);
     };
 
     const increase = () => {
         if (count + 1 > avlqty) {
             setIsModalOpen(true);
-            showToastError(state.LANG === "EN" ? `Only ${avlqty} item(s) are available in total.` : `متوفر فقط ${avlqty} قطعة من هذا المنتج.`);
+            showWarningToast(state.LANG === "EN" ? `Only ${avlqty} item(s) are available in total.` : `متوفر فقط ${avlqty} قطعة من هذا المنتج.`);
             setTimeout(() => {
                 setIsModalOpen(false);
             }, 4000);
@@ -80,6 +101,12 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
 
     return (
         <>
+            {isErrorModalOpen && (
+                <ErrorToast
+                    open={isErrorModalOpen}
+                    message={errorPopupMessage}
+                />
+            )}
             {warningPopupMessage && (
                 <WarningModal
                     open={isModalOpen}

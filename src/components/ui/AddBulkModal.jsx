@@ -12,7 +12,7 @@ import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 import Toast from './Toast';
 import SuccessToast from './SuccessToast';
-import WarningModal from './WarningModal';
+import WarningModal from './WarningToast';
 
 export default function AddBulkModal({ open, onClose }) {
   const [bulkItems, setBulkItems] = useState([

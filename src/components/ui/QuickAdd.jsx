@@ -7,7 +7,7 @@ import SearchInput from './SearchInput';
 import Toast from './Toast';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
-import WarningModal from './WarningModal';
+import WarningModal from './WarningToast';
 import SuccessToast from './SuccessToast';
 
 export default function QuickAdd({ openSidebar }) {
