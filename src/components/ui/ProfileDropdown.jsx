@@ -137,7 +137,7 @@ export default function ProfileDropdown() {
                                 </MenuItem>
                                 <MenuItem>
                                     <Link href="/profile" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                        <i className="icon-user"></i>
+                                        <i className="icon-logout-03"></i>
                                         <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">تسجيل الخروج</span>
                                     </Link>
                                 </MenuItem>

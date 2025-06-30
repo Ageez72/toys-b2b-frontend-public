@@ -110,7 +110,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
                         <>
                             <hr />
                             <Link
-                                href={`/products?search=${searchText}&pageSize=3&${filterItems}&itemStatus=AVAILABLE&lang=EN`}
+                                href={`/products?search=${searchText}&${filterItems}`}
                                 className='flex items-center gap-2 all-products'
                             >
                                 <span>{translation.viewAllProducts}</span>

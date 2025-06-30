@@ -68,12 +68,7 @@ export default function Page() {
       id: 3,
       title: translation.products.pageSize["36"],
       value: 36
-    },
-    {
-      id: 4,
-      title: translation.products.pageSize["all"],
-      value: ""
-    },
+    }
   ]
   const lang = Cookies.get('lang') || 'AR';
   // Get search params from URL
