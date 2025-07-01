@@ -60,6 +60,23 @@ export default function ProfileDropdown() {
         },
     });
 
+    
+    if (data?.data) {        
+        const profile = {
+            name: data?.data?.name,
+            email: data?.data?.email,
+            mobile: data?.data?.mobile,
+            contactName: data?.data?.contactName,
+            contactEmail: data?.data?.contactEmail,
+            business: data?.data?.business,
+            contactPhone: data?.data?.contactPhone,
+            username: data?.data?.username,
+        }
+        Cookies.set('profile', JSON.stringify(profile));
+    }
+    if (isLoading) return <Loader />;
+    if (error instanceof Error) return push("/");
+    
     const getInitials = (str) => {
         if (!str) return ['', ''];
         const words = str.trim().split(/\s+/);
@@ -67,15 +84,8 @@ export default function ProfileDropdown() {
         const last = words[words.length - 1]?.[0] || '';
         return [first.toUpperCase(), last.toUpperCase()];
     };
-
     const [firstInitial, lastInitial] = getInitials(data?.data?.name);
 
-    if (data?.data) {
-        Cookies.set('profile', JSON.stringify(data.data));
-    }
-
-    if (isLoading) return <Loader />;
-    if (error instanceof Error) return push("/");
 
     return (
         <Menu as="div" className="relative inline-block text-left">

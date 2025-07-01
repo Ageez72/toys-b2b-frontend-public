@@ -14,6 +14,7 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Cookies from 'js-cookie';
 import WarningModal from "@/components/ui/WarningToast";
 import Loader from "@/components/ui/Loaders/Loader";
+import { useQuery } from '@tanstack/react-query';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -41,19 +42,14 @@ function Cart() {
   const loadAddresses = () => {
     const items = getProfile();
     console.log(items);
-    
+
     setAddressesItems(items.locations);
   };
 
   useEffect(() => {
     loadCart();
-    loadAddresses();
+    // loadAddresses();
   }, []);
-
-  useEffect(() => {
-    handleGetOrder()
-    loadCart();
-  }, [refresh])
 
   const handleGetOrder = async () => {
     const items = getCart();
@@ -72,6 +68,33 @@ function Cart() {
     }
   };
 
+  useEffect(() => {
+    handleGetOrder()
+    loadCart();
+  }, [refresh])
+
+  const fetchProfile = async () => {
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      }
+    });
+    return res;
+  };
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['profile'],
+    queryFn: fetchProfile,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: (failureCount, error) => {
+      if (error?.response?.status === 401) return false;
+      return failureCount < 3;
+    },
+  });
+
+  if (isLoading) return <Loader />;
+  if (error instanceof Error) return push("/");
+
   const handleSubmitChecker = () => {
     const storedCart = getCart();
 
@@ -85,7 +108,7 @@ function Cart() {
 
     if (!selectedAddressId) {
       console.log(translation.completeErrorMessage);
-      
+
       setOpenWarningMessage(true);
       setWarningPopupMessage(translation.completeErrorMessage)
       setTimeout(() => {
@@ -205,7 +228,7 @@ function Cart() {
               <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress} <span className="required">*</span></h3>
               <div className="addresses">
                 {
-                  addressesItems?.map((add, index) => (
+                  data?.data?.locations?.map((add, index) => (
                     <div className="card mb-3" key={add.id}>
                       <div className="address-item">
                         <input type="radio" name="address" id={`address-${index}`} value={add.id} checked={selectedAddressId === add.id} onChange={() => setSelectedAddressId(add.id)} />

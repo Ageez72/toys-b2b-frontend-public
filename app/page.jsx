@@ -33,9 +33,17 @@ export default function Home() {
 
   if (isLoading) return <Loader />;
   if (data) {
-    console.log("dsdsd");
-    
-    Cookies.set('profile', JSON.stringify(data?.data));
+    const profile = {
+      name: data?.data?.name,
+      email: data?.data?.email,
+      mobile: data?.data?.mobile,
+      contactName: data?.data?.contactName,
+      contactEmail: data?.data?.contactEmail,
+      business: data?.data?.business,
+      contactPhone: data?.data?.contactPhone,
+      username: data?.data?.username,
+    }
+    Cookies.set('profile', JSON.stringify(profile));
     push("/home")
   }
 

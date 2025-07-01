@@ -9,7 +9,7 @@ import axios from 'axios';
 import Loader from "@/components/ui/Loaders/Loader";
 
 export default function page() {
-    const { push } = useRouter();
+  const { push } = useRouter();
 
   async function fetchProfile() {
     const lang = Cookies.get('lang') || 'AR';
@@ -33,7 +33,17 @@ export default function page() {
 
   if (isLoading) return <Loader />;
   if (data) {
-    Cookies.set('profile', JSON.stringify(data?.data));
+    const profile = {
+      name: data?.data?.name,
+      email: data?.data?.email,
+      mobile: data?.data?.mobile,
+      contactName: data?.data?.contactName,
+      contactEmail: data?.data?.contactEmail,
+      business: data?.data?.business,
+      contactPhone: data?.data?.contactPhone,
+      username: data?.data?.username,
+    }
+    Cookies.set('profile', JSON.stringify(profile));
     push("/home")
   }
 
