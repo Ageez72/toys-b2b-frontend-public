@@ -9,6 +9,7 @@ import ReactQueryProvider from "../providers/ReactQueryProvider";
 import Cookies from 'js-cookie';
 import "./globals.scss";
 import ContactTools from "@/components/ui/ContactTools";
+import { Toaster } from 'react-hot-toast';
 
 
 // export const metadata = {
@@ -54,6 +55,7 @@ export default function RootLayout({ children }) {
         <body
           className={`antialiased ${!isAuthPage ? "header-padding" : ""}`}
         >
+           <Toaster position={"bottom-left"} toastOptions={{ duration: 40000 }} />
           <AppProvider>
             {!isAuthPage && (
               <>

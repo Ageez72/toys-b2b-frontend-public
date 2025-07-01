@@ -40,6 +40,8 @@ function Cart() {
   };
   const loadAddresses = () => {
     const items = getProfile();
+    console.log(items);
+    
     setAddressesItems(items.locations);
   };
 
@@ -203,7 +205,7 @@ function Cart() {
               <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress} <span className="required">*</span></h3>
               <div className="addresses">
                 {
-                  addressesItems.map((add, index) => (
+                  addressesItems?.map((add, index) => (
                     <div className="card mb-3" key={add.id}>
                       <div className="address-item">
                         <input type="radio" name="address" id={`address-${index}`} value={add.id} checked={selectedAddressId === add.id} onChange={() => setSelectedAddressId(add.id)} />

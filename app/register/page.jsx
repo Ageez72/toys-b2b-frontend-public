@@ -33,6 +33,7 @@ export default function page() {
 
   if (isLoading) return <Loader />;
   if (data) {
+    Cookies.set('profile', JSON.stringify(data?.data));
     push("/home")
   }
 

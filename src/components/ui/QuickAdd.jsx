@@ -4,39 +4,22 @@ import { useState, useEffect } from 'react';
 import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
 import SearchInput from './SearchInput';
-import Toast from './Toast';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
-import WarningModal from './WarningToast';
-import SuccessToast from './SuccessToast';
+import { Toaster } from 'react-hot-toast';
+import { showSuccessToast, showWarningToast, showErrorToast } from '@/actions/toastUtils';
 
 export default function QuickAdd({ openSidebar }) {
     const [count, setCount] = useState('');
     const [selectedItem, setSelectedItem] = useState([]);
     const [resetSearch, setResetSearch] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [popupMessage, setPopupMessage] = useState('');
-    const [warningPopupMessage, setWarningPopupMessage] = useState('');
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
+    const lang = state.LANG;
 
     const [translation, setTranslation] = useState(ar);
     useEffect(() => {
         setTranslation(state.LANG === 'EN' ? en : ar);
     }, [state.LANG]);
-
-    const showToast = (message) => {
-        setPopupMessage(message);
-        setTimeout(() => setPopupMessage(''), 3000);
-    };
-
-    const showToastError = (message) => {
-        setWarningPopupMessage(message);
-        setIsModalOpen(true);
-        setTimeout(() => {
-            setIsModalOpen(false);
-            setWarningPopupMessage('');
-        }, 4000);
-    };
 
     const handleQuantityChange = (e) => {
         const value = parseInt(e.target.value);
@@ -48,15 +31,15 @@ export default function QuickAdd({ openSidebar }) {
     };
 
     const handleAddToCart = () => {
-        // if (!selectedItem?.id || !count) return;
-        if (!selectedItem?.id ) {
-            showToastError(translation.chooseItem);
+        if (!selectedItem?.id) {
+            showWarningToast(translation.chooseItem, lang, translation.warning);
             return;
-        } 
-        if (!count ) {
-            showToastError(translation.chooseQty);
+        }
+
+        if (!count) {
+            showWarningToast(translation.chooseQty, lang, translation.warning);
             return;
-        } 
+        }
 
         const result = addToCart({
             item: selectedItem.id,
@@ -68,7 +51,7 @@ export default function QuickAdd({ openSidebar }) {
         });
 
         if (!result.success) {
-            showToastError(result.message);
+            showErrorToast(result.message || translation.defaultError , lang, translation.error);
         } else {
             setCount('');
             setSelectedItem([]);
@@ -77,27 +60,12 @@ export default function QuickAdd({ openSidebar }) {
             if (storedCart) {
                 dispatch({ type: 'STORED-ITEMS', payload: storedCart });
             }
-            showToast(translation.addedToCart);
+            showSuccessToast(translation.addedToCart, lang, translation.success);
         }
     };
 
     return (
         <>
-            <div className="fixed bottom-6 right-6 z-9999">
-                {popupMessage && (
-                    <SuccessToast
-                        open={isModalOpen}
-                        message={popupMessage}
-                    />
-                )}
-                {warningPopupMessage && (
-                    <WarningModal
-                        open={isModalOpen}
-                        message={warningPopupMessage}
-                    />
-                )}
-            </div>
-
             <div className="quick-add-container flex">
                 <div className="search-input form-group mb-0">
                     <div className="relative h-full">

@@ -71,7 +71,7 @@ export default function ProfileDropdown() {
     const [firstInitial, lastInitial] = getInitials(data?.data?.name);
 
     if (data?.data) {
-        Cookies.set('profile', JSON.stringify(data?.data));
+        Cookies.set('profile', JSON.stringify(data.data));
     }
 
     if (isLoading) return <Loader />;

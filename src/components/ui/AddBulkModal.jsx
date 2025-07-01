@@ -10,37 +10,20 @@ import { addToCart, getCart } from '@/actions/utils';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
-import Toast from './Toast';
-import SuccessToast from './SuccessToast';
-import WarningModal from './WarningToast';
+import { showSuccessToast, showWarningToast } from '@/actions/toastUtils';
 
 export default function AddBulkModal({ open, onClose }) {
-  const [bulkItems, setBulkItems] = useState([
-    { isConfirmed: false }
-  ]);
-  const [popupMessage, setPopupMessage] = useState('');
-  const [popupMessageDone, setPopupMessageDone] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [warningPopupMessage, setWarningPopupMessage] = useState('');
+  const [bulkItems, setBulkItems] = useState([{ isConfirmed: false }]);
   const { state = {}, dispatch = () => {} } = useAppContext() || {};
   const translation = state.LANG === "EN" ? en : ar;
+  const lang = state.LANG || 'EN';
 
   const showToastError = (message) => {
-    setWarningPopupMessage(message);
-    setIsModalOpen(true);
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setWarningPopupMessage('');
-    }, 4000);
+    showWarningToast(message, lang, translation.warning);
   };
 
   const showDoneToast = (message) => {
-    setPopupMessageDone(message);
-    setIsModalOpen(true);
-    setTimeout(() => {
-      setPopupMessageDone('');
-      setIsModalOpen(false);
-    }, 3000);
+    showSuccessToast(message, lang, translation.success);
   };
 
   const handleProductSelect = (selectedItem, index) => {
@@ -125,23 +108,8 @@ export default function AddBulkModal({ open, onClose }) {
       !item.qty || item.qty <= 0 || item.qty > item.avlqty
     )
   );
-
   return (
     <>
-      {warningPopupMessage && (
-        <WarningModal
-          open={isModalOpen}
-          message={warningPopupMessage}
-        />
-      )}
-
-      {popupMessageDone && (
-        <SuccessToast
-          open={isModalOpen}
-          message={popupMessageDone}
-        />
-      )}
-
       <Dialog open={open} onClose={onClose} className="relative z-9999">
         <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
 
