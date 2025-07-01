@@ -48,7 +48,7 @@ function Cart() {
 
   useEffect(() => {
     loadCart();
-    // loadAddresses();
+    fetchProfile();
   }, []);
 
   const handleGetOrder = async () => {
@@ -74,26 +74,22 @@ function Cart() {
   }, [refresh])
 
   const fetchProfile = async () => {
-    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}`, {
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }
     });
+    setAddressesItems(res.data.locations)
     return res;
   };
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['profile'],
-    queryFn: fetchProfile,
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: (failureCount, error) => {
-      if (error?.response?.status === 401) return false;
-      return failureCount < 3;
-    },
-  });
+  // const { data, isLoading, error } = useQuery({
+  //   queryKey: ['profile'],
+  //   queryFn: fetchProfile,
+  // });
 
-  if (isLoading) return <Loader />;
-  if (error instanceof Error) return push("/");
+  // if (isLoading) return <Loader />;
+  // if (error instanceof Error) return push("/");
 
   const handleSubmitChecker = () => {
     const storedCart = getCart();
@@ -228,7 +224,7 @@ function Cart() {
               <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress} <span className="required">*</span></h3>
               <div className="addresses">
                 {
-                  data?.data?.locations?.map((add, index) => (
+                  addressesItems?.map((add, index) => (
                     <div className="card mb-3" key={add.id}>
                       <div className="address-item">
                         <input type="radio" name="address" id={`address-${index}`} value={add.id} checked={selectedAddressId === add.id} onChange={() => setSelectedAddressId(add.id)} />
