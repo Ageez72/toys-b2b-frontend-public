@@ -67,7 +67,7 @@ export default function Menu({ scroll }) {
             <Link href="/" className="block py-2 px-3">{translation.home}</Link>
           </li>
           <li className={isActive("/products")}>
-            <Link href="/products" className="block py-2 px-3">{translation.allProducts}</Link>
+            <Link href="/products?itemStatus=AVAILABLE" className="block py-2 px-3">{translation.allProducts}</Link>
           </li>
           <li className={isActive("/brands")}>
             <Link href="/brands" className="block py-2 px-3">{translation.brands}</Link>

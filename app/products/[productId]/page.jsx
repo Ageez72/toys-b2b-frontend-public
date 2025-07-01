@@ -73,8 +73,20 @@ export default function Page() {
         <DetailsProductCard item={details} />
       </div>
       <div className="card mt-5">
-        <h3 className="sub-title mb-5">{translation.productSpecifications}</h3>
+        {
+          details.brand.description || details.category.description || details.dimentions || details.dimentions || details.netWeightKg || details.barcode || details.constants.AGES || details.constants.GENDER.length || details.constants.MATERIAL.length ? (
+            <h3 className="sub-title mb-5">{translation.productSpecifications}</h3>
+          ) : null
+        }
         <div className="specifications-table lg:w-1/2 mb-10">
+          {
+            details.id && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.productNumber}</strong></div>
+                <div className="info w-1/2">{details.id}</div>
+              </div>
+            )
+          }
           {
             details.brand.description && (
               <div className="item flex w-full">
@@ -123,24 +135,63 @@ export default function Page() {
               </div>
             )
           }
-        </div>
-        <h3 className="sub-title mb-5">{translation.warnings}</h3>
-        <p className="product-warning" dangerouslySetInnerHTML={{ __html: details?.warning }} />
-
-        <h3 className="sub-title mb-5">{translation.catalogs}</h3>
-        <div className="badges flex gap-2">
           {
-            details?.catalogs?.map(b => (
-              <Link href={`/products?catalog=${encodeURIComponent(b?.id)}`} key={b.id}>
-                <Badge type={"catalog-details"} text={b?.description} />
-              </Link>
-            ))
+            details.constants.GENDER && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.gender}</strong></div>
+                <div className="info w-1/2">{
+                  details.constants.GENDER.map((el, index) => (
+                    <span key={index}>{el} {index !== details.constants.GENDER.length - 1 && ','}</span>
+                  ))
+                }</div>
+              </div>
+            )
+          }
+          {
+            details.constants.MATERIAL && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.material}</strong></div>
+                <div className="info w-1/2">{
+                  details.constants.MATERIAL.map((el, index) => (
+                    <span key={index}>{el} {index !== details.constants.MATERIAL.length - 1 && ', '}</span>
+                  ))
+                }</div>
+              </div>
+            )
           }
         </div>
+        {
+          details?.warning && (
+            <>
+              <h3 className="sub-title mb-5">{translation.warnings}</h3>
+              <p className="product-warning" dangerouslySetInnerHTML={{ __html: details?.warning }} />
+            </>
+          )
+        }
+        {
+          details?.catalogs.length && (
+            <>
+              <h3 className="sub-title mb-5">{translation.catalogs}</h3>
+              <div className="badges flex gap-2">
+                {
+                  details?.catalogs?.map(b => (
+                    <Link href={`/products?catalog=${encodeURIComponent(b?.id)}`} key={b.id}>
+                      <Badge type={"catalog-details"} text={b?.description} />
+                    </Link>
+                  ))
+                }
+              </div>
+            </>
+          )
+        }
       </div>
       <RateCard reviews={details.reviews.reviews} id={details.id} onRefresh={() => setRefresh(true)} />
       <h3 className="sub-title mb-3 mt-10">{translation.relatedProducts}</h3>
-      <RelatedProducts items={details.relatedItems} />
+      {
+        details.relatedItems.length && (
+          <RelatedProducts items={details.relatedItems} />
+        )
+      }
     </div>
   ) : null;
 }

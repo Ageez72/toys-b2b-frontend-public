@@ -5,21 +5,19 @@ import { useAppContext } from "../../../context/AppContext";
 
 export default function Dropdown({ options = [], name, defaultValue = null, onChange }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
-    const [selected, setSelected] = useState(options.find(option => option.value === defaultValue) || options[0]);
+    const [selected, setSelected] = useState("");
 
-    // useEffect(() => {
+    useEffect(() => {
         // Notify parent about initial selection
-        // if (selected && onChange) {
-        //     onChange(name, selected);
-        // }
-    // }, [selected]);
+        setSelected(options.find(option => option.value === defaultValue)|| options[0])
+    }, [selected]);
 
     const handleSelect = (option) => {
         setSelected(option);
         if (onChange) {
             onChange(name, option);
         }
-    };
+    };    
 
     return (
         <Menu as="div" className="dropdown-wrapper relative inline-block dropdown-container text-start">

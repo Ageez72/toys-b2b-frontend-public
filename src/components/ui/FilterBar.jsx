@@ -25,7 +25,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
         {
             id: 1,
             title: translation.all,
-            value: ""
+            value: "ALL"
         },
         {
             id: 2,
@@ -138,7 +138,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
         setSelectedCatalogsOptions([]);
 
         // Push clean URL
-        router.push('/products');
+        router.push('/products?itemStatus=AVAILABLE');
     }
 
     const changePriceFrom = (from) => {

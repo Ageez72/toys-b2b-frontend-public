@@ -77,7 +77,7 @@ export default function MobileMenu({ scroll }) {
               <Link href="/">{translation.home}</Link>
             </li>
             <li className={isActive("/products")}>
-              <Link href="/products">{translation.allProducts}</Link>
+              <Link href="/products?itemStatus=AVAILABLE">{translation.allProducts}</Link>
             </li>
             <li className={isActive("/brands")}>
               <Link href="/brands">{translation.brands}</Link>

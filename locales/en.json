@@ -203,5 +203,7 @@
   "itemRemoved": "Item has been removed from the cart",
   "chooseItem": "Please select a product",
   "chooseQty": "Please specify the quantity",
-  "noProductsSelected": "Please add at least one product"
+  "noProductsSelected": "Please add at least one product",
+  "material": "Material",
+  "gender": "Gender"
 }

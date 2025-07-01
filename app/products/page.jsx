@@ -16,16 +16,14 @@ import en from "../../locales/en.json";
 import ar from "../../locales/ar.json";
 import { useAppContext } from '../../context/AppContext';
 
-
-
-
 export default function Page() {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
-  const [translation, setTranslation] = useState(ar); // default fallback
+  const [translation, setTranslation] = useState(ar); 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
-  const sortingOptions = [
+
+  let sortingOptions = [
     {
       id: 1,
       title: translation.products.sorting.default,
@@ -117,7 +115,7 @@ export default function Page() {
   }, [apiParams]);
 
   async function fetchProducts() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&itemStatus=AVAILABLE&lang=${lang}`, {
+    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&lang=${lang}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }
@@ -126,9 +124,9 @@ export default function Page() {
   }
   const { push } = useRouter();
   const [searchTerm, setSearchTerm] = useState(queryObject.search || '');
-  const [sortItem, setSortItem] = useState(queryObject.sort || '');
-  const [pageSizeItem, setPageSizeItem] = useState(queryObject.pageSize || '');
-
+  const [sortItem, setSortItem] = useState(queryObject.sort || sortingOptions[0].value);
+  const [pageSizeItem, setPageSizeItem] = useState(queryObject.pageSize || displayOptions[0].value);
+  
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -215,7 +213,7 @@ export default function Page() {
                 <Dropdown
                   options={sortingOptions}
                   name="sort"
-                  defaultValue={Number(sortItem)}
+                  defaultValue={sortItem}
                   onChange={handleSortChange}
                 />
               </div>
@@ -223,7 +221,7 @@ export default function Page() {
                 <Dropdown
                   options={displayOptions}
                   name="pageSize"
-                  defaultValue={Number(pageSizeItem)}
+                  defaultValue={pageSizeItem}
                   onChange={handlePageSize}
                 />
               </div>
