@@ -47,7 +47,7 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
         }
         setRateValidationError(false);
         try {
-            setLoading(true);
+            // setLoading(true);
             const response = await axios.post(`${BASE_API}${endpoints.products.review}&itemID=${itemId}&review=${comment}&rate=${rating}`, {}, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
@@ -61,7 +61,7 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
         } catch (error) {
             console.error('Failed to submit rating:', error);
         } finally {
-            setLoading(false);
+            // setLoading(false);
         }
     };
 

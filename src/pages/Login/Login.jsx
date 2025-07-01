@@ -39,7 +39,9 @@ function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.get(`${BASE_API + endpoints.auth.login}&username=${data.identifier}&password=${data.password}`)
+      const username = encodeURIComponent(data.identifier);
+      const password = encodeURIComponent(data.password);
+      const res = await axios.get(`${BASE_API + endpoints.auth.login}&username=${username}&password=${password}`)
 
       if (res.data.error) {
         setIsModalOpen(true);

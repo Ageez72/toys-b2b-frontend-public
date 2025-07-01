@@ -23,11 +23,11 @@ export default function Page() {
   const [refresh, setRefresh] = useState(false);
   const { productId } = useParams();
   const lang = Cookies.get('lang') || 'AR';
-      const { state = {}, dispatch = () => {} } = useAppContext() || {};
-      const [translation, setTranslation] = useState(ar); // default fallback
-      useEffect(() => {
-          setTranslation(state.LANG === "EN" ? en : ar);
-      }, [state.LANG]);
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const [translation, setTranslation] = useState(ar); // default fallback
+  useEffect(() => {
+    setTranslation(state.LANG === "EN" ? en : ar);
+  }, [state.LANG]);
 
   const { push } = useRouter();
   async function fetchProductDetails() {
@@ -58,9 +58,9 @@ export default function Page() {
   breadcrumbItems = [
     { label: translation.home, href: '/home' },
     { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}` },
-    { label: `${details?.name}`}
+    { label: `${details?.name}` }
   ]
-  const getAge = (str) => {    
+  const getAge = (str) => {
     const match = str[0].match(/\d+/);
     return match ? match[0] : null;
   }
@@ -75,30 +75,54 @@ export default function Page() {
       <div className="card mt-5">
         <h3 className="sub-title mb-5">{translation.productSpecifications}</h3>
         <div className="specifications-table lg:w-1/2 mb-10">
-         <div className="item flex w-full">
-            <div className="title w-1/2"><strong>{translation.brand}</strong></div>
-            <div className="info w-1/2">{details.brand.description}</div>
-          </div>
-          <div className="item flex w-full">
-            <div className="title w-1/2"><strong>{translation.type}</strong></div>
-            <div className="info w-1/2">{details.category.description}</div>
-          </div>
-          <div className="item flex w-full">
-            <div className="title w-1/2"><strong>{translation.dimentions}</strong></div>
-            <div className="info w-1/2">{details.dimentions}</div>
-          </div>
-          <div className="item flex w-full">
-            <div className="title w-1/2"><strong>{translation.weight}</strong></div>
-            <div className="info w-1/2">{details.netWeightKg} {translation.kg}</div>
-          </div>
-          <div className="item flex w-full">
-            <div className="title w-1/2"><strong>{translation.barcode}</strong></div>
-            <div className="info w-1/2">{details.barcode}</div>
-          </div>
-          <div className="item flex w-full">
-            <div className="title w-1/2"><strong>{translation.age}</strong></div>
-            <div className="info w-1/2">+{getAge(details.constants.AGES)} {translation.years}</div>
-          </div>
+          {
+            details.brand.description && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.brand}</strong></div>
+                <div className="info w-1/2">{details.brand.description}</div>
+              </div>
+            )
+          }
+          {
+            details.category.description && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.type}</strong></div>
+                <div className="info w-1/2">{details.category.description}</div>
+              </div>
+            )
+          }
+          {
+            details.dimentions && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.dimentions}</strong></div>
+                <div className="info w-1/2">{details.dimentions}</div>
+              </div>
+            )
+          }
+          {
+            details.netWeightKg && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.weight}</strong></div>
+                <div className="info w-1/2">{details.netWeightKg} {translation.kg}</div>
+              </div>
+            )
+          }
+          {
+            details.barcode && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.barcode}</strong></div>
+                <div className="info w-1/2">{details.barcode}</div>
+              </div>
+            )
+          }
+          {
+            details.constants.AGES && (
+              <div className="item flex w-full">
+                <div className="title w-1/2"><strong>{translation.age}</strong></div>
+                <div className="info w-1/2">+{getAge(details.constants.AGES)} {translation.years}</div>
+              </div>
+            )
+          }
         </div>
         <h3 className="sub-title mb-5">{translation.warnings}</h3>
         <p className="product-warning" dangerouslySetInnerHTML={{ __html: details?.warning }} />

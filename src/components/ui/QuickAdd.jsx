@@ -48,7 +48,15 @@ export default function QuickAdd({ openSidebar }) {
     };
 
     const handleAddToCart = () => {
-        if (!selectedItem?.id || !count) return;
+        // if (!selectedItem?.id || !count) return;
+        if (!selectedItem?.id ) {
+            showToastError(translation.chooseItem);
+            return;
+        } 
+        if (!count ) {
+            showToastError(translation.chooseQty);
+            return;
+        } 
 
         const result = addToCart({
             item: selectedItem.id,

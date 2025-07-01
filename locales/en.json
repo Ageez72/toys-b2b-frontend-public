@@ -200,5 +200,7 @@
   "brand": "Brand",
   "kg": "KG",
   "years": "Years",
-  "itemRemoved": "Item has been removed from the cart"
+  "itemRemoved": "Item has been removed from the cart",
+  "chooseItem": "Please select a product",
+  "chooseQty": "Please specify the quantity"
 }
