@@ -12,25 +12,23 @@ import { useAppContext } from '../../../context/AppContext';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Cookies from 'js-cookie';
-import WarningModal from "@/components/ui/WarningToast";
 import Loader from "@/components/ui/Loaders/Loader";
-import { useQuery } from '@tanstack/react-query';
+import { showWarningToast } from "@/actions/toastUtils";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [addressesItems, setAddressesItems] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [notes, setNotes] = useState('');
-  const [openSureOrder, setOpenSureOrder] = useState(false)
-  const [openConfirmOrder, setOpenConfirmOrder] = useState(false)
-  const [openWarningMessage, setOpenWarningMessage] = useState(false)
-  const [warningPopupMessage, setWarningPopupMessage] = useState('');
+  const [openSureOrder, setOpenSureOrder] = useState(false);
+  const [openConfirmOrder, setOpenConfirmOrder] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [orderSummary, setOrderSummary] = useState(null);
 
-  const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const { state = {}, dispatch = () => {} } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
+
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
@@ -39,17 +37,15 @@ function Cart() {
     const items = getCart();
     setCartItems(items);
   };
-  const loadAddresses = () => {
-    const items = getProfile();
-    console.log(items);
 
-    setAddressesItems(items.locations);
+  const fetchProfile = async () => {
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      }
+    });
+    setAddressesItems(res.data.locations);
   };
-
-  useEffect(() => {
-    loadCart();
-    fetchProfile();
-  }, []);
 
   const handleGetOrder = async () => {
     const items = getCart();
@@ -62,61 +58,37 @@ function Cart() {
       });
       setOrderSummary(response.data);
     } catch (error) {
-      console.error('Failed to submit rating:', error);
+      console.error('Failed to get order summary:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    handleGetOrder()
     loadCart();
-  }, [refresh])
+    fetchProfile();
+  }, []);
 
-  const fetchProfile = async () => {
-    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    });
-    setAddressesItems(res.data.locations)
-    return res;
-  };
-
-  // const { data, isLoading, error } = useQuery({
-  //   queryKey: ['profile'],
-  //   queryFn: fetchProfile,
-  // });
-
-  // if (isLoading) return <Loader />;
-  // if (error instanceof Error) return push("/");
+  useEffect(() => {
+    handleGetOrder();
+    loadCart();
+  }, [refresh]);
 
   const handleSubmitChecker = () => {
     const storedCart = getCart();
 
-    // if (!storedCart.length) {
-    //   setOpenWarningMessage(true);
-    //   setTimeout(() => {
-    //     setOpenWarningMessage(false);
-    //   }, 4000);
-    //   return;
-    // }
-
-    if (!selectedAddressId) {
-      console.log(translation.completeErrorMessage);
-
-      setOpenWarningMessage(true);
-      setWarningPopupMessage(translation.completeErrorMessage)
-      setTimeout(() => {
-        setOpenWarningMessage(false);
-        setWarningPopupMessage("")
-      }, 4000);
+    if (!storedCart.length) {
+      showWarningToast(translation.noProducts, state.LANG, translation.warning);
       return;
     }
 
-    console.log('Proceeding to order confirmation');
+    if (!selectedAddressId) {
+      showWarningToast(translation.completeErrorMessage, state.LANG, translation.warning);
+      return;
+    }
+
     setOpenSureOrder(true);
-  }
+  };
 
   const handleSubmitOrder = async () => {
     const storedCart = getCart();
@@ -128,7 +100,7 @@ function Cart() {
         item: item.id,
         qty: item.qty
       }))
-    }
+    };
     try {
       setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.order}`, data, {
@@ -137,17 +109,16 @@ function Cart() {
         }
       });
       if (response.data && !response.data.ERROR) {
-        console.log('Response:', response.data);
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
         dispatch({ type: 'STORED-ITEMS', payload: [] });
         setOpenSureOrder(false);
-        setOpenConfirmOrder(true)
+        setOpenConfirmOrder(true);
         handleRefresh();
       } else {
         console.log('Error in ADD ORDER:', response.data);
       }
     } catch (error) {
-      console.error('Failed to submit rating:', error);
+      console.error('Order submission failed:', error);
     } finally {
       setLoading(false);
     }
@@ -164,15 +135,7 @@ function Cart() {
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page">
-      {/* {
-        loading && <Loader />
-      } */}
-      {openWarningMessage && (
-        <WarningModal
-          open={openWarningMessage}
-          message={warningPopupMessage}
-        />
-      )}
+      {/* {loading && <Loader />} */}
       <Breadcrumb items={breadcrumbItems} />
       <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">
         <div className="order-side">
@@ -183,62 +146,71 @@ function Cart() {
 
           {cartItems.length ? (
             <>
-              {
-                orderSummary?.ITEMS?.map((item) => (
-                  <div key={item.id} className="card space-y-4 mb-5">
-                    <div className="cart-item flex items-center">
-                      <div className="image-container flex justify-center items-center w-16">
-                        <Link href={`/products/${item.id}`} className="w-full h-full flex justify-center items-center">
-                          <img src={item.images["800"].main} width={52} height={52} alt={item.name || "Product"} />
-                        </Link>
-                      </div>
-                      <div className="info flex-1 px-4">
-                        <p className="name font-medium"><Link href={`/products/${item.id}`}>{item.name}</Link></p>
-                        <div className="flex items-center gap-2">
-                          <p className="price flex items-center gap-1 mb-0 text-sm text-gray-700">
-                            <span>{Number(item.NET).toFixed(2)}</span>
-                            <span>{translation.jod}</span>
-                          </p>
-                          <p className="flex gap-1 discount sm mb-0">
-                            <span>{Number(item.SUBTOTAL).toFixed(2)}</span>
-                            <span>{translation.jod}</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className="actions w-48">
-                        <InlineAddToCart
-                          itemId={item.id}
-                          avlqty={item.avlqty}
-                          onQtyChange={loadCart}
-                          onRefresh={handleRefresh}
-                        />
+              {orderSummary?.ITEMS?.map((item) => (
+                <div key={item.id} className="card space-y-4 mb-5">
+                  <div className="cart-item flex items-center">
+                    <div className="image-container flex justify-center items-center w-16">
+                      <Link href={`/products/${item.id}`} className="w-full h-full flex justify-center items-center">
+                        <img src={item.images["800"].main} width={52} height={52} alt={item.name || "Product"} />
+                      </Link>
+                    </div>
+                    <div className="info flex-1 px-4">
+                      <p className="name font-medium"><Link href={`/products/${item.id}`}>{item.name}</Link></p>
+                      <div className="flex items-center gap-2">
+                        <p className="price flex items-center gap-1 mb-0 text-sm text-gray-700">
+                          <span>{Number(item.NET).toFixed(2)}</span>
+                          <span>{translation.jod}</span>
+                        </p>
+                        <p className="flex gap-1 discount sm mb-0">
+                          <span>{Number(item.SUBTOTAL).toFixed(2)}</span>
+                          <span>{translation.jod}</span>
+                        </p>
                       </div>
                     </div>
+                    <div className="actions w-48">
+                      <InlineAddToCart
+                        itemId={item.id}
+                        avlqty={item.avlqty}
+                        onQtyChange={loadCart}
+                        onRefresh={handleRefresh}
+                      />
+                    </div>
                   </div>
-                ))
-              }
+                </div>
+              ))}
               <h3 className="sub-title mb-4 mt-8">{translation.orderNotes}</h3>
               <div className="card">
-                <textarea className="w-full h-full notes-text" name="notes" placeholder={translation.addNotes} value={notes} onChange={(e) => setNotes(e.target.value)}></textarea>
+                <textarea
+                  className="w-full h-full notes-text"
+                  name="notes"
+                  placeholder={translation.addNotes}
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
               </div>
               <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress} <span className="required">*</span></h3>
               <div className="addresses">
-                {
-                  addressesItems?.map((add, index) => (
-                    <div className="card mb-3" key={add.id}>
-                      <div className="address-item">
-                        <input type="radio" name="address" id={`address-${index}`} value={add.id} checked={selectedAddressId === add.id} onChange={() => setSelectedAddressId(add.id)} />
-                        <label htmlFor={`address-${index}`} className="flex justify-between items-center">
-                          <span className="flex items-center gap-2">
-                            <i className="icon-location location"></i>
-                            <span>{add.address}</span>
-                          </span>
-                          <i className="icon-tick-circle check"></i>
-                        </label>
-                      </div>
+                {addressesItems?.map((add, index) => (
+                  <div className="card mb-3" key={add.id}>
+                    <div className="address-item">
+                      <input
+                        type="radio"
+                        name="address"
+                        id={`address-${index}`}
+                        value={add.id}
+                        checked={selectedAddressId === add.id}
+                        onChange={() => setSelectedAddressId(add.id)}
+                      />
+                      <label htmlFor={`address-${index}`} className="flex justify-between items-center">
+                        <span className="flex items-center gap-2">
+                          <i className="icon-location location"></i>
+                          <span>{add.address}</span>
+                        </span>
+                        <i className="icon-tick-circle check"></i>
+                      </label>
                     </div>
-                  ))
-                }
+                  </div>
+                ))}
               </div>
             </>
           ) : (
@@ -255,16 +227,13 @@ function Cart() {
                     </linearGradient>
                   </defs>
                 </svg>
-                <h2 className='sub-title my-4 text-center'>
-                  {translation.noProducts}
-                </h2>
+                <h2 className='sub-title my-4 text-center'>{translation.noProducts}</h2>
                 <Link href="/home" className="primary-btn inline-flex">
                   {translation.backToStore}
                 </Link>
               </div>
             </div>
-          )
-          }
+          )}
         </div>
 
         <div className="order-summary">
@@ -303,7 +272,12 @@ function Cart() {
                 <span>{translation.jod}</span>
               </p>
             </div>
-            <button className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`} onClick={() => handleSubmitChecker()}>{translation.confirmOrder}</button>
+            <button
+              className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`}
+              onClick={handleSubmitChecker}
+            >
+              {translation.confirmOrder}
+            </button>
           </div>
         </div>
       </div>

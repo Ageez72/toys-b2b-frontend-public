@@ -94,9 +94,14 @@
         padding-inline-start: calc(var(--spacing) * 10);
         padding-inline-end: 0;
     }
+
     .contact-tools .socials {
         left: auto;
         right: 0;
     }
-    
+
+    .go4109123758 {
+        right: 0 !important;
+        left: 15px !important;
+    }
 }

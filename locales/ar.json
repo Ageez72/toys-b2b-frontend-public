@@ -203,5 +203,6 @@
     "years": "سنة",
     "itemRemoved": "تم حذف المنتج من السلة",
     "chooseItem": "يرجى اضافة منتج", 
-    "chooseQty": "يرجى تحديد الكمية"
+    "chooseQty": "يرجى تحديد الكمية",
+    "noProductsSelected": "يرجى إضافة منتج واحد على الأقل"
 }

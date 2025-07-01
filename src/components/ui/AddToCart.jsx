@@ -37,7 +37,7 @@ export default function AddToCart({ item }) {
     });
 
     if (!result.success) {
-      showWarningToast(result.message || translation.defaultError, lang, translation.error);
+      showErrorToast(result.message || translation.defaultError, lang, translation.error);
     } else {
       setCount(1);
       const storedCart = getCart();

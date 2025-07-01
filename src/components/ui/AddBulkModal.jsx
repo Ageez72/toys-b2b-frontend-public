@@ -10,7 +10,7 @@ import { addToCart, getCart } from '@/actions/utils';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
-import { showSuccessToast, showWarningToast } from '@/actions/toastUtils';
+import { showSuccessToast, showWarningToast, showErrorToast } from '@/actions/toastUtils';
 
 export default function AddBulkModal({ open, onClose }) {
   const [bulkItems, setBulkItems] = useState([{ isConfirmed: false }]);
@@ -29,7 +29,7 @@ export default function AddBulkModal({ open, onClose }) {
   const handleProductSelect = (selectedItem, index) => {
     const exists = bulkItems.find(item => item.id === selectedItem.id);
     if (exists) {
-      showToastError(translation.productAlreadyAdded);
+      showErrorToast(translation.productAlreadyAdded, lang, translation.error);
       return;
     }
 
@@ -50,7 +50,7 @@ export default function AddBulkModal({ open, onClose }) {
     const maxQty = updated[index].avlqty;
 
     if (parsedQty > maxQty) {
-      showToastError(`${translation.quantityExceeded} ${maxQty}`);
+      showErrorToast(`${translation.quantityExceeded} ${maxQty}`, lang, translation.error);
       parsedQty = maxQty;
     }
 
@@ -65,7 +65,7 @@ export default function AddBulkModal({ open, onClose }) {
     setBulkItems(updated);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = () => {    
     const hasInvalidItem = bulkItems.some(item =>
       item.isConfirmed &&
       (
@@ -79,6 +79,11 @@ export default function AddBulkModal({ open, onClose }) {
     }
 
     const selectedItems = bulkItems.filter(item => item.isConfirmed);
+
+    if (selectedItems.length === 0) {
+    showWarningToast(translation.noProductsSelected || "Please add at least one product.", lang, translation.warning);
+    return;
+  }
 
     for (let i = 0; i < selectedItems.length; i++) {
       const selectedItem = selectedItems[i];
@@ -110,7 +115,7 @@ export default function AddBulkModal({ open, onClose }) {
   );
   return (
     <>
-      <Dialog open={open} onClose={onClose} className="relative z-9999">
+      <Dialog open={open} onClose={onClose} className="relative z-999">
         <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">

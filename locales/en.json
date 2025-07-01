@@ -202,5 +202,6 @@
   "years": "Years",
   "itemRemoved": "Item has been removed from the cart",
   "chooseItem": "Please select a product",
-  "chooseQty": "Please specify the quantity"
+  "chooseQty": "Please specify the quantity",
+  "noProductsSelected": "Please add at least one product"
 }
