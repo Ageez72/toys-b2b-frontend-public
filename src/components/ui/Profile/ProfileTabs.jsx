@@ -14,13 +14,19 @@ import en from "../../../../locales/en.json";
 import ar from "../../../../locales/ar.json";
 
 export default function ProfileTabs() {
-    const searchParams = useSearchParams();
-    const router = useRouter();
-
+    const [hasMounted, setHasMounted] = useState(false);
     const [activeTab, setActiveTab] = useState('personal');
     const [profileData, setProfileData] = useState(null);
-    const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
+
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const { state = {}, dispatch = () => {} } = useAppContext() || {};
+
+    useEffect(() => {
+        setHasMounted(true);
+    }, []);
+
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
@@ -33,6 +39,8 @@ export default function ProfileTabs() {
         const profile = getProfile();
         setProfileData(profile ? profile : []);
     }, [searchParams]);
+
+    if (!hasMounted) return null;
 
     const handleTabClick = (tabId) => {
         setActiveTab(tabId);
@@ -52,7 +60,7 @@ export default function ProfileTabs() {
     return (
         <div className="flex flex-col lg:flex-row gap-4 mt-5 lg:mt-10">
             <aside className="w-full lg:w-1/4 profile-side-bar">
-                <div className="bg-white p-4 rounded-lg p-4 mb-4">
+                <div className="bg-white p-4 rounded-lg mb-4">
                     <div className="flex profile-dropdown-header px-4 py-2">
                         <div className="me-3 shrink-0">
                             <span className="profile-img block p-2 bg-gray-100 rounded-full">
@@ -75,10 +83,9 @@ export default function ProfileTabs() {
                             <li key={tab.id}>
                                 <button
                                     onClick={() => handleTabClick(tab.id)}
-                                    className={`flex items-center justify-between w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'
-                                        }`}
+                                    className={`flex items-center justify-between w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'}`}
                                 >
-                                    <span className='flex items-center'>
+                                    <span className="flex items-center">
                                         <i className={`${tab.icon} type`}></i>
                                         <span className="flex items-center justify-between block px-2 py-2">
                                             {tab.label}
@@ -100,7 +107,6 @@ export default function ProfileTabs() {
                 </div>
             </aside>
 
-            {/* Tab Content */}
             <div className="w-full lg:w-3/4">
                 <TabPanel id="personal" activeTab={activeTab}>
                     <MyProfile />
