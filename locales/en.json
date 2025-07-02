@@ -165,6 +165,7 @@
   "newPassword": "New Password",
   "confirmPassword": "Confirm New Password",
   "passwordChanged": "Your password has been successfully changed!",
+  "theOrders": "The Orders",
   "allOrders": "All Orders",
   "completed": "Completed",
   "inProgress": "In Progress",

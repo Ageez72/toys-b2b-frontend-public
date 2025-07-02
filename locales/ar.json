@@ -165,6 +165,7 @@
     "newPassword": "كلمة المرور الجديدة",
     "confirmPassword": "تأكيد كلمة المرور الجديدة",
     "passwordChanged": "تم تغيير كلمة المرور الخاصة بك بنجاح!",
+    "theOrders": "الطلبات",
     "allOrders": "كل الطلبات",
     "completed": "منتهي",
     "inProgress": "قيد التوصيل",
