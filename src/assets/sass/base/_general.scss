@@ -83,6 +83,19 @@
             color: #4A4A49;
             font-size: 16px;
         }
+
+        &.logout {
+            span {
+                color: var(--primary-color);
+            }
+            i {
+
+            &::before {
+                color: var(--primary-color);
+            }
+        }
+
+        }
     }
 }
 

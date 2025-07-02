@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import LangSwitcher from '@/components/ui/LangSwitcher';
 import { useForm } from 'react-hook-form';
 import { useAppContext } from '../../../../../context/AppContext';
 import en from "../../../../../locales/en.json";
@@ -10,6 +9,8 @@ import SuccessModal from '@/components/ui/SuccessModal';
 import ErrorModal from '@/components/ui/ErrorModal';
 import { endpoints, BASE_API } from '../../../../../constant/endpoints';
 import axios from 'axios';
+import { getProfile } from '@/actions/utils';
+import Cookies from 'js-cookie';
 
 export default function MyProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,19 +21,45 @@ export default function MyProfile() {
   const [isUsernameValid, setIsUsernameValid] = useState(false);
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
+
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
 
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
-
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      fullName: '',
+      username: '',
+      phone: '',
+      email: '',
+      storeName: ''
+    }
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      loadAddresses();
+    }, 100);
+  }, []);
+
+  const loadAddresses = async () => {
+    const items = await getProfile();
+    if (items) {
+      reset({
+        fullName: items?.name || '',
+        username: items?.username || '',
+        phone: items?.mobile || '',
+        email: items?.email || '',
+        storeName: items?.business || ''
+      });
+    }
+    setIsLoading(false);
+  };
 
   const onSubmit = async (data) => {
     const userData = {
@@ -41,25 +68,33 @@ export default function MyProfile() {
       mobile: data.phone,
       name: data.fullName,
       businessname: data.storeName
+    };
+console.log(userData);
+
+    // // Example submission
+    try {
+      const res = await axios.post(`${BASE_API + endpoints.auth.updateProfile}`, userData, {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('token')}`,
+            }
+          });
+        console.log(res);
+        
+      // if (!res.data.error) {
+      //   setIsModalOpen(true);
+      //   setIsErrorModalOpen(false);
+      //   setModalSuccessMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
+      // } else {
+      //   setModalErrorMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
+      //   setIsErrorModalOpen(true);
+      // }
+    } catch (err) {
+      console.error('Error update Profile:', err);
+      // setModalErrorMessage(state.LANG === "EN" ? err.response?.data?.messageEN : err.response?.data?.messageAR);
+      // setIsErrorModalOpen(true);
     }
-
-    // try {
-    //   const res = await axios.post(`${BASE_API + endpoints.auth.register}`, userData)
-
-    //   if (!res.data.error) {
-    //     setIsModalOpen(true);
-    //     setIsErrorModalOpen(false);
-    //     setModalSuccessMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
-    //   } else {
-    //     setModalErrorMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
-    //     setIsErrorModalOpen(true);
-    //   }
-    // } catch (err) {
-    //   console.error('Error registering user:', err);
-    //   setModalErrorMessage(state.LANG === "EN" ? err.response.data.messageEN : err.response.data.messageAR);
-    //   setIsErrorModalOpen(true);
-    // }
   };
+
   return (
     <div className="">
       <ErrorModal
@@ -75,126 +110,130 @@ export default function MyProfile() {
         message={modalSuccessMessage}
       />
       {isLoading && <Loader />}
-      <div className='py-3'>
-        <div className='form-side md:flex-1 flex-12'>
-          <h2 className='sub-title mb-6'>{translation.profile}</h2>
+      {!isLoading && (
+        <div className='py-3'>
+          <div className='form-side md:flex-1 flex-12'>
+            <h2 className='sub-title mb-6'>{translation.profile}</h2>
 
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Full Name */}
-            <div className='form-group'>
-              <label className='block mb-2'>{translation.register.full_name} <span className='required'>*</span></label>
-              <div className='relative'>
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <i className="icon-user"></i>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {/* Full Name */}
+              <div className='form-group'>
+                <label className='block mb-2'>{translation.register.full_name} <span className='required'>*</span></label>
+                <div className='relative'>
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <i className="icon-user"></i>
+                  </div>
+                  <input className='w-full ps-10 p-2.5' placeholder={translation.register.enter_full_name} {...register('fullName', { required: 'Full name is required' })} />
                 </div>
-                <input className='w-full ps-10 p-2.5' placeholder={translation.register.enter_full_name} {...register('fullName', { required: 'Full name is required' })} />
+                {errors.fullName && <span className="error-msg text-red-500">{translation.register.errors.full_name.required}</span>}
               </div>
-              {errors.fullName && <span className="error-msg text-red-500">{translation.register.errors.full_name.required}</span>}
-            </div>
 
-            {/* Username */}
-            <div className='form-group'>
-              <label className='block mb-2'>{translation.register.username} <span className='required'>*</span></label>
-              <div className='relative'>
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="#4A4A49" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M16 8.00001V13C16 13.7957 16.3161 14.5587 16.8787 15.1213C17.4413 15.6839 18.2044 16 19 16C19.7957 16 20.5587 15.6839 21.1213 15.1213C21.6839 14.5587 22 13.7957 22 13V12C22 9.74731 21.2394 7.56061 19.8414 5.79418C18.4434 4.02775 16.49 2.78508 14.2975 2.26752C12.1051 1.74996 9.80215 1.98782 7.76178 2.94256C5.72141 3.89731 4.06318 5.513 3.05574 7.52787C2.0483 9.54274 1.75069 11.8387 2.21111 14.0439C2.67154 16.249 3.86303 18.2341 5.59254 19.6775C7.32205 21.1209 9.48825 21.9381 11.7402 21.9966C13.9921 22.0552 16.1979 21.3516 18 20" stroke="#4A4A49" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+              {/* Username */}
+              <div className='form-group'>
+                <label className='block mb-2'>{translation.register.username} <span className='required'>*</span></label>
+                <div className='relative'>
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    {/* Icon */}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="#4A4A49" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M16 8V13C16 13.7957 16.3161 14.5587 16.8787 15.1213C17.4413 15.6839 18.2044 16 19 16C19.7957 16 20.5587 15.6839 21.1213 15.1213C21.6839 14.5587 22 13.7957 22 13V12C22 9.74731 21.2394 7.56061 19.8414 5.79418C18.4434 4.02775 16.49 2.78508 14.2975 2.26752C12.1051 1.74996 9.80215 1.98782 7.76178 2.94256C5.72141 3.89731 4.06318 5.513 3.05574 7.52787C2.0483 9.54274 1.75069 11.8387 2.21111 14.0439C2.67154 16.249 3.86303 18.2341 5.59254 19.6775C7.32205 21.1209 9.48825 21.9381 11.7402 21.9966C13.9921 22.0552 16.1979 21.3516 18 20" stroke="#4A4A49" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                  <input
+                    placeholder="username"
+                    className='w-full ps-10 p-2.5'
+                    {...register('username', {
+                      required: translation.register.errors.username.required,
+                      pattern: {
+                        value: /^[a-zA-Z0-9]+$/,
+                        message: translation.register.errors.username.invalid,
+                      },
+                    })}
+                  />
+                  {
+                    isUsernameValid && (
+                      <div className='absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
+                          <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z" fill="#009941" />
+                        </svg>
+                      </div>
+                    )
+                  }
                 </div>
-                <input
-                  placeholder="username"
-                  className='w-full ps-10 p-2.5'
-                  {...register('username', {
-                    required: translation.register.errors.username.required,
-                    pattern: {
-                      value: /^[a-z0-9]+$/,
-                      message: translation.register.errors.username.invalid,
-                    },
-                  })}
-                />
-                {
-                  isUsernameValid && (
-                    <div
-                      className='absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none'
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z" fill="#009941" />
-                      </svg>
-                    </div>
-                  )
-                }
+                {errors.username && <span className="error-msg text-red-500">{errors.username.message}</span>}
               </div>
-              {errors.username && <span className="error-msg text-red-500">{errors.username.message}</span>}
-              { }
-            </div>
 
-            {/* Phone Number */}
-            <div className='form-group'>
-              <label className='block mb-2'>{translation.register.phone_no} <span className='required'>*</span></label>
-              <div className='relative'>
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <i className="icon-mobile"></i>
+              {/* Phone Number */}
+              <div className='form-group'>
+                <label className='block mb-2'>{translation.register.phone_no} <span className='required'>*</span></label>
+                <div className='relative'>
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <i className="icon-mobile"></i>
+                  </div>
+                  <input
+                    placeholder={"00962791234567"}
+                    className='w-full pe-10 p-2.5 phone-input'
+                    {...register('phone', {
+                      required: translation.register.errors.phone_no.required,
+                      pattern: {
+                        value: /^\+?\d{9,15}$/,
+                        message: translation.register.errors.phone_no.invalid,
+                      },
+                    })}
+                    type='tel'
+                  />
                 </div>
-                <input
-                  placeholder={"00962791234567"}
-                  className='w-full pe-10 p-2.5 phone-input'
-                  {...register('phone', {
-                    required: translation.register.errors.phone_no.required,
-                    pattern: {
-                      value: /^\+?\d{9,15}$/,
-                      message: translation.register.errors.phone_no.invalid,
-                    },
-                  })}
-                  type='tel'
-                />
+                {errors.phone && <span className="error-msg text-red-500">{errors.phone.message}</span>}
               </div>
-              {errors.phone && <span className="error-msg text-red-500">{errors.phone.message}</span>}
-            </div>
 
-            {/* Email */}
-            <div className='form-group'>
-              <label className='block mb-2'>{translation.register.email} <span className='required'>*</span></label>
-              <div className='relative'>
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <i className="icon-sms"></i>
+              {/* Email */}
+              <div className='form-group'>
+                <label className='block mb-2'>{translation.register.email} <span className='required'>*</span></label>
+                <div className='relative'>
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <i className="icon-sms"></i>
+                  </div>
+                  <input
+                    placeholder={"email@example.com"}
+                    type="email"
+                    className='w-full ps-10 p-2.5'
+                    {...register('email', {
+                      required: translation.register.errors.email.required,
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: translation.register.errors.email.invalid,
+                      },
+                    })}
+                  />
                 </div>
-                <input
-                  placeholder={"email@example.com"}
-                  type="email"
-                  className='w-full ps-10 p-2.5'
-                  {...register('email', {
-                    required: translation.register.errors.email.required,
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: translation.register.errors.email.invalid,
-                    },
-                  })}
-                />
+                {errors.email && <span className="error-msg text-red-500">{errors.email.message}</span>}
               </div>
-              {errors.email && <span className="error-msg text-red-500">{errors.email.message}</span>}
-            </div>
 
-            {/* Store Name */}
-            <div className='form-group'>
-              <label className='block mb-2'>{translation.register.store_name} <span className='required'>*</span></label>
-              <div className='relative'>
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <i className="icon-shop"></i>
+              {/* Store Name */}
+              <div className='form-group'>
+                <label className='block mb-2'>{translation.register.store_name} <span className='required'>*</span></label>
+                <div className='relative'>
+                  <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <i className="icon-shop"></i>
+                  </div>
+                  <input
+                    placeholder={translation.register.enter_store_name}
+                    className='w-full ps-10 p-2.5'
+                    {...register('storeName', { required: translation.register.errors.store_name.required })}
+                  />
                 </div>
-                <input placeholder={translation.register.enter_store_name} className='w-full ps-10 p-2.5' {...register('storeName', { required: translation.register.errors.store_name.required })} />
+                {errors.storeName && <span className="error-msg text-red-500">{errors.storeName.message}</span>}
               </div>
-              {errors.storeName && <span className="error-msg text-red-500">{errors.storeName.message}</span>}
-            </div>
 
-            <div className="text-end">
-              <button type='submit' className='primary-btn w-auto'>
-                {translation.saveChanges}
-              </button>
-            </div>
-          </form>
+              <div className="text-end">
+                <button type='submit' className='primary-btn w-auto'>
+                  {translation.saveChanges}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </div>
-  )
+  );
 }

@@ -40,7 +40,7 @@
             },
             "username": {
                 "required": "اسم المستخدم مطلوب",
-                "invalid": "يجب أن يتكون اسم المستخدم من أحرف إنجليزية صغيرة أو أرقام فقط"
+                "invalid": "يجب أن يتكون اسم المستخدم من أحرف إنجليزية أو أرقام فقط"
             },
             "phone_no": {
                 "required": "رقم الهاتف مطلوب",
@@ -170,9 +170,11 @@
     "completed": "منتهي",
     "inProgress": "قيد التوصيل",
     "canceled": "ملغي",
-    "orderNumber": "رقم الطلب:",
+    "orderNumber": "رقم الطلب",
     "additionalProducts": "منتجات اضافية",
     "orderTotal": "إجمالي الطلب",
+    "piece": "قطعة",
+    "orderDetails": "تفاصيل الطلب",
     "noOrders": "لا يوجد لديك أي طلبات!",
     "goToStore": "الذهاب إلى المتجر",
     "logoutConfirmation": "هل أنت متأكد من تسجيل الخروج ؟",

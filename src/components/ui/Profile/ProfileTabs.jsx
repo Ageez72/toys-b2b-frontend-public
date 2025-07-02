@@ -8,16 +8,18 @@ import MyProfile from './Tabs/MyProfile';
 import MyOrders from './Tabs/MyOrders';
 import Adressess from './Tabs/Adressess';
 import Security from './Tabs/Security';
-import { getProfile, logout } from '@/actions/utils';
+import { getProfile } from '@/actions/utils';
 import { useAppContext } from '../../../../context/AppContext';
 import en from "../../../../locales/en.json";
 import ar from "../../../../locales/ar.json";
+import LogoutModal from './LogoutModal';
 
 export default function ProfileTabs() {
     const [hasMounted, setHasMounted] = useState(false);
     const [activeTab, setActiveTab] = useState('personal');
     const [profileData, setProfileData] = useState(null);
     const [translation, setTranslation] = useState(ar);
+    const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -58,69 +60,72 @@ export default function ProfileTabs() {
     const [firstInitial, lastInitial] = getInitials(profileData?.name);
 
     return (
-        <div className="flex flex-col lg:flex-row gap-4 mt-5 lg:mt-10">
-            <aside className="w-full lg:w-1/4 profile-side-bar">
-                <div className="bg-white p-4 rounded-lg mb-4">
-                    <div className="flex profile-dropdown-header px-4 py-2">
-                        <div className="me-3 shrink-0">
-                            <span className="profile-img block p-2 bg-gray-100 rounded-full">
-                                <span>{firstInitial}</span>
-                                <span>.</span>
-                                <span>{lastInitial}</span>
-                            </span>
+        <>
+            <LogoutModal setOpen={() => setOpenLogoutModal(false)} open={openLogoutModal} />
+            <div className="flex flex-col lg:flex-row gap-4 mt-5 lg:mt-10">
+                <aside className="w-full lg:w-1/4 profile-side-bar">
+                    <div className="bg-white p-4 rounded-lg mb-4">
+                        <div className="flex profile-dropdown-header px-4 py-2">
+                            <div className="me-3 shrink-0">
+                                <span className="profile-img block p-2 bg-gray-100 rounded-full">
+                                    <span>{firstInitial}</span>
+                                    <span>.</span>
+                                    <span>{lastInitial}</span>
+                                </span>
+                            </div>
+                            <div>
+                                <p className="mb-0 username text-base leading-none text-gray-900 dark:text-white">
+                                    {profileData?.name}
+                                </p>
+                                <p className="user-email mb-0 mt-2 text-sm font-normal">
+                                    {profileData?.email}
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="mb-0 username text-base leading-none text-gray-900 dark:text-white">
-                                {profileData?.name}
-                            </p>
-                            <p className="user-email mb-0 mt-2 text-sm font-normal">
-                                {profileData?.email}
-                            </p>
-                        </div>
-                    </div>
-                    <ul className="pt-3">
-                        {profileTabs.map((tab) => (
-                            <li key={tab.id}>
-                                <button
-                                    onClick={() => handleTabClick(tab.id)}
-                                    className={`flex items-center justify-between w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'}`}
-                                >
-                                    <span className="flex items-center">
-                                        <i className={`${tab.icon} type`}></i>
-                                        <span className="flex items-center justify-between block px-2 py-2">
-                                            {tab.label}
+                        <ul className="pt-3">
+                            {profileTabs.map((tab) => (
+                                <li key={tab.id}>
+                                    <button
+                                        onClick={() => handleTabClick(tab.id)}
+                                        className={`flex items-center justify-between w-full text-right cursor-pointer px-2 py-2 rounded-md ${activeTab === tab.id ? 'active' : 'hover:bg-gray-100'}`}
+                                    >
+                                        <span className="flex items-center">
+                                            <i className={`${tab.icon} type`}></i>
+                                            <span className="flex items-center justify-between block px-2 py-2">
+                                                {tab.label}
+                                            </span>
                                         </span>
-                                    </span>
-                                    <i className={`icon-arrow-${state.LANG === 'AR' ? 'left' : 'right'}-01-round text-sm`}></i>
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <div className="bg-white rounded-lg py-2 px-4">
-                    <button className="w-full logout flex items-center cursor-pointer" onClick={logout}>
-                        <i className="icon-logout-03 type"></i>
-                        <span className="flex items-center justify-between block px-2 py-2">
-                            {translation.logout}
-                        </span>
-                    </button>
-                </div>
-            </aside>
+                                        <i className={`icon-arrow-${state.LANG === 'AR' ? 'left' : 'right'}-01-round text-sm`}></i>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="bg-white rounded-lg py-2 px-4">
+                        <button className="w-full logout flex items-center cursor-pointer" onClick={() => setOpenLogoutModal(true)}>
+                            <i className="icon-logout-03 type"></i>
+                            <span className="flex items-center justify-between block px-2 py-2">
+                                {translation.logout}
+                            </span>
+                        </button>
+                    </div>
+                </aside>
 
-            <div className="w-full lg:w-3/4">
-                <TabPanel id="personal" activeTab={activeTab}>
-                    <MyProfile />
-                </TabPanel>
-                <TabPanel id="security" activeTab={activeTab}>
-                    <Security />
-                </TabPanel>
-                <TabPanel id="orders" activeTab={activeTab}>
-                    <MyOrders />
-                </TabPanel>
-                <TabPanel id="addresses" activeTab={activeTab}>
-                    <Adressess />
-                </TabPanel>
+                <div className="w-full lg:w-3/4">
+                    <TabPanel id="personal" activeTab={activeTab}>
+                        <MyProfile />
+                    </TabPanel>
+                    <TabPanel id="security" activeTab={activeTab}>
+                        <Security />
+                    </TabPanel>
+                    <TabPanel id="orders" activeTab={activeTab}>
+                        <MyOrders />
+                    </TabPanel>
+                    <TabPanel id="addresses" activeTab={activeTab}>
+                        <Adressess />
+                    </TabPanel>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

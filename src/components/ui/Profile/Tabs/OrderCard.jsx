@@ -17,18 +17,18 @@ export default function OrderCard({ order }) {
 
     return (
         <div className="order-card w-full rounded-xl card">
-            <Link href={`/order-details?id=${order.orderID}`}>
-                <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center justify-between mb-1">
+                <Link href={`/order-details?id=${order.orderID}`}>
                     <div className="order-number text-sm font-semibold">
-                        <span>رقم الطلب:</span> <span className="text-black">#{order.orderID}</span>
+                        <span>{translation.orderNumber}:</span> <span>#{order.orderID}</span>
                     </div>
-                    <span className="order-status closed">
-                        <span>{order.status}</span>
-                    </span>
-                </div>
+                </Link>
+                <span className="order-status closed">
+                    <span>{order.status}</span>
+                </span>
+            </div>
 
-                <span className="order-date block mb-1">{order.date}</span>
-            </Link>
+            <span className="order-date block mb-1">{order.date}</span>
 
             {/* Items */}
             <div className="space-y-4 border-t border-gray-200 pt-4">
@@ -48,7 +48,7 @@ export default function OrderCard({ order }) {
                                 </h4>
                                 <p className="prod-qty text-xs text-red-500 mt-1">
                                     {el.qty || 0}
-                                    <span className='ms-1'>قطعة</span>
+                                    <span className='ms-1'>{translation.piece}</span>
                                 </p>
                             </div>
                         </div>
@@ -72,7 +72,7 @@ export default function OrderCard({ order }) {
 
             {/* Total */}
             <div className="flex justify-between items-center mt-4 font-bold text-sm">
-                <span className='order-total-title'>إجمالي الطلب</span>
+                <span className='order-total-title'>{translation.orderTotal}</span>
                 <span className='order-total-price'>
                     {order.value}
                     <span className='ms-1'>{translation.jod}</span>

@@ -6,6 +6,7 @@ export const endpoints = {
     register: "?action=REGISTER",
     logout: "/auth/logout",
     refreshToken: "/auth/refresh-token",
+    updateProfile: "?action=UPDATE.PROFILE"
   },
   user: {
     profile: "?action=USERINFO",

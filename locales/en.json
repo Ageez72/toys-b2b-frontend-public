@@ -40,7 +40,7 @@
       },
       "username": {
         "required": "Username is required",
-        "invalid": "Username must consist of lowercase English letters or numbers only"
+        "invalid": "Username must consist of English letters or numbers only"
       },
       "phone_no": {
         "required": "Phone number is required",
@@ -170,9 +170,11 @@
   "completed": "Completed",
   "inProgress": "In Progress",
   "canceled": "Canceled",
-  "orderNumber": "Order Number:",
+  "orderNumber": "Order Number",
   "additionalProducts": "Additional Products",
   "orderTotal": "Order Total",
+  "piece": "Piece",
+  "orderDetails": "Order Details",
   "noOrders": "You have no orders!",
   "goToStore": "Go to Store",
   "logoutConfirmation": "Are you sure you want to log out?",
