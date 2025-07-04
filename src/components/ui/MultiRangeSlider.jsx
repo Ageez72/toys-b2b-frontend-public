@@ -10,8 +10,13 @@ import {
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
+import { useSearchParams } from "next/navigation";
 
 const MultiRangeSlider = ({ min, max, selectedFrom, selectedTo, title, initiallyOpen = false, handlePriceFrom, handlePriceTo }) => {
+  const searchParams = useSearchParams();
+  const fromPrice = searchParams?.get("fromPrice");
+  const toPrice = searchParams?.get("toPrice");
+
   const STORAGE_KEY = "price_range";
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar); // default fallback
@@ -19,21 +24,23 @@ const MultiRangeSlider = ({ min, max, selectedFrom, selectedTo, title, initially
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
 
-  const [open, setOpen] = useState(initiallyOpen);
+  const [open, setOpen] = useState(fromPrice && toPrice ? true : initiallyOpen);
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef(null);
 
   const [minVal, setMinVal] = useState(() => {
-    const cookieValue = Cookies?.get(STORAGE_KEY);
-    const saved = cookieValue ? JSON.parse(cookieValue) : {};
-    return saved?.minVal ?? min;
+    if (fromPrice && toPrice) {
+      return fromPrice ?? min;
+    }
+    return min;
   });
 
   const [maxVal, setMaxVal] = useState(() => {
-    const cookieValue = Cookies?.get(STORAGE_KEY);
-    const saved = cookieValue ? JSON.parse(cookieValue) : {};
-    return saved?.maxVal ?? max;
+    if (fromPrice && toPrice) {
+      return toPrice ?? max;
+    }
+    return max;
   });
 
   useEffect(() => {

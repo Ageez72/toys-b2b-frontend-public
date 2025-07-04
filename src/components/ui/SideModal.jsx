@@ -28,14 +28,14 @@ export default function SidebarModal({ open, onClose }) {
 
       {/* Sidebar */}
       <div
-        className={`sidebar-container fixed top-0 ${sidebarPosition} h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"
+        className={`sidebar-container fixed top-0 ${open ? "opacity-100" : "opacity-0"} ${sidebarPosition} h-full bg-white shadow-lg z-50 transform transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"
           }`}
       >
         <FilterBar
           catalogEndpoint={endpoints.products.catalogList}
           categoriesEndpoint={endpoints.products.categoriesList}
           searchTerm=""
-          close={onClose}
+          onClose={onClose}
         />
       </div>
     </>

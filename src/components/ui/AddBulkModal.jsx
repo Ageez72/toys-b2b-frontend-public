@@ -130,7 +130,7 @@ export default function AddBulkModal({ open, onClose }) {
                       <div className="qty">{translation.qty}</div>
                     </div>
                     <div className="info flex items-center justify-between">
-                      <div className="item flex-2">{translation.productNumber}</div>
+                      <div className="item flex-1">{translation.productNumber}</div>
                       <div className="item flex-1">{translation.availablity}</div>
                       {/* <div className="item flex-1">{translation.totalItems}</div> */}
                       <div className="item flex-1">{translation.itemPrice}</div>
@@ -180,7 +180,7 @@ export default function AddBulkModal({ open, onClose }) {
 
                         {item.isConfirmed && (
                           <div className="info flex items-center justify-between">
-                            <div className="item flex-2">
+                            <div className="item flex-1">
                               <label className="mobile-title hidden">{translation.productNumber}</label>
                               <span className="mobile-box">{item.id}</span>
                             </div>

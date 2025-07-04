@@ -26,7 +26,7 @@ function Cart() {
   const [refresh, setRefresh] = useState(false);
   const [orderSummary, setOrderSummary] = useState(null);
 
-  const { state = {}, dispatch = () => {} } = useAppContext() || {};
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
 
   useEffect(() => {
@@ -190,27 +190,34 @@ function Cart() {
               </div>
               <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress} <span className="required">*</span></h3>
               <div className="addresses">
-                {addressesItems?.map((add, index) => (
-                  <div className="card mb-3" key={add.id}>
-                    <div className="address-item">
-                      <input
-                        type="radio"
-                        name="address"
-                        id={`address-${index}`}
-                        value={add.id}
-                        checked={selectedAddressId === add.id}
-                        onChange={() => setSelectedAddressId(add.id)}
-                      />
-                      <label htmlFor={`address-${index}`} className="flex justify-between items-center">
-                        <span className="flex items-center gap-2">
-                          <i className="icon-location location"></i>
-                          <span>{add.address}</span>
-                        </span>
-                        <i className="icon-tick-circle check"></i>
-                      </label>
+                {!addressesItems.length ? (
+                  addressesItems?.map((add, index) => (
+                    <div className="card mb-3" key={add.id}>
+                      <div className="address-item">
+                        <input
+                          type="radio"
+                          name="address"
+                          id={`address-${index}`}
+                          value={add.id}
+                          checked={selectedAddressId === add.id}
+                          onChange={() => setSelectedAddressId(add.id)}
+                        />
+                        <label htmlFor={`address-${index}`} className="flex justify-between items-center">
+                          <span className="flex items-center gap-2">
+                            <i className="icon-location location"></i>
+                            <span>{add.address}</span>
+                          </span>
+                          <i className="icon-tick-circle check"></i>
+                        </label>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="">
+                    {translation.noAddressesMessage}
+                  </p>
+                )
+                }
               </div>
             </>
           ) : (

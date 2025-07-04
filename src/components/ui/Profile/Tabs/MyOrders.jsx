@@ -54,7 +54,7 @@ export default function MyOrders() {
         }
       </div>
       {
-        !orders.length && (
+        !orders.length && !loading && (
           <div className='card empty-state flex justify-center items-center'>
             <div className="text-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260" fill="none">

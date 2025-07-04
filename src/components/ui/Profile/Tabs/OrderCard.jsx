@@ -11,6 +11,16 @@ export default function OrderCard({ order }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
 
+    let status;
+    if (order.status == 0) {
+        status = "canceled"
+    } else if (order.status == 1) {
+        status = "in-progress"
+    } else if (order.status == 2) {
+        status = "closed"
+    }
+
+
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
@@ -23,7 +33,7 @@ export default function OrderCard({ order }) {
                         <span>{translation.orderNumber}:</span> <span>#{order.orderID}</span>
                     </div>
                 </Link>
-                <span className="order-status closed">
+                <span className={`order-status ${status}`}>
                     <span>{order.status}</span>
                 </span>
             </div>

@@ -209,5 +209,6 @@
   "noProductsSelected": "Please add at least one product",
   "material": "Material",
   "gender": "Gender",
-  "ok":"OK"
+  "ok":"OK",
+  "noAddressesMessage": "Please contact your sales representative to add a shipping address."
 }

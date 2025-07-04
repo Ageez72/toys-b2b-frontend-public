@@ -77,6 +77,16 @@
             color: #009941;
             background-color: #E5FFF0;
         }
+
+        &.canceled {
+            color: #fff;
+            background-color: #8d1a14;
+        }
+
+        &.in-progress {
+            color: #D8A343;
+            background-color: #D8A3431F;
+        }
     }
 
     .order-date {

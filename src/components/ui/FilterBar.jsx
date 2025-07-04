@@ -14,13 +14,13 @@ import { useAppContext } from '../../../context/AppContext';
 
 
 
-export default function FilterBar({ isProductsPage, close, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm }) {
-    const { state = {}, dispatch = () => {} } = useAppContext() || {};
+export default function FilterBar({ isProductsPage, close, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose }) {
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
-    
+
     const StatusOptions = [
         {
             id: 1,
@@ -38,7 +38,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
             value: "OUTOFSTOCK"
         },
     ]
-    
+
     const itemTypeOptions = [
         {
             id: 1,
@@ -118,27 +118,32 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
             searchItems = `${searchParams.toString()}`;
             Cookies.set('store_filters', searchItems);
+            onClose && onClose()
         }
     };
 
     const handleClearFilter = () => {
-        const query = new URLSearchParams();
-        Cookies.remove('pagesToken');
-        query.set('page', '1');
-        // Reset all filters
-        setFromPrice(0);
-        setToPrice(1000);
-        setItemType("");
-        setItemStatus("");
-        setBrand([]);
-        setCategory([]);
-        setCatalog([]);
+        if (isProductsPage) {
+            const query = new URLSearchParams();
+            Cookies.remove('pagesToken');
+            query.set('page', '1');
+            // Reset all filters
+            setFromPrice(0);
+            setToPrice(1000);
+            setItemType("");
+            setItemStatus("");
+            setBrand([]);
+            setCategory([]);
+            setCatalog([]);
 
-        setSelectedCategoriesOptions([]);
-        setSelectedCatalogsOptions([]);
+            setSelectedCategoriesOptions([]);
+            setSelectedCatalogsOptions([]);
 
-        // Push clean URL
-        router.push('/products?itemStatus=AVAILABLE');
+            // Push clean URL
+            router.push('/products?itemStatus=AVAILABLE');
+        } else {
+            onClose && onClose()
+        }
     }
 
     const changePriceFrom = (from) => {
@@ -171,7 +176,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     }
 
     // get all options
-    const fetchCategoriesOptions = async (ch, brands=[]) => {        
+    const fetchCategoriesOptions = async (ch, brands = []) => {
         const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
@@ -187,7 +192,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                 value: item.categoryId
             })
         ))
-        if(!ch){
+        if (!ch) {
             setCategoryOpen(true)
         }
         setSelectedCategoriesOptions(selected)
@@ -216,7 +221,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     useEffect(() => {
         fetchCategoriesOptions()
         fetchCatalogsOptions()
-    }, [])    
+    }, [])
 
     return (
         <>
