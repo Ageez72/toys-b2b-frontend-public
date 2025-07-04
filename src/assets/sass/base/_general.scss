@@ -549,3 +549,34 @@
 input.disabled {
     background-color: #ccc;
 }
+
+.not-found {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 247px);
+
+    svg {
+        width: 100%;
+    }
+    .img-text {
+        position: relative;
+        margin-bottom: 30px;
+        .title {
+            width: 100%;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1E1E1E;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+
+            @media (max-width: 600px) {
+                font-size: 25px;
+            }
+        }
+    }
+}
