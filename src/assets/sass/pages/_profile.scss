@@ -72,6 +72,8 @@
         font-size: 14px;
         padding: 5px 8px;
         border-radius: 8px;
+        min-width: 100px;
+        text-align: center;
 
         &.closed {
             color: #009941;
@@ -79,8 +81,8 @@
         }
 
         &.canceled {
-            color: #fff;
-            background-color: #8d1a14;
+            color: #8d1a14;
+            background-color: #8d1a141f;
         }
 
         &.in-progress {
@@ -125,10 +127,10 @@
     .extra-products {
         font-size: 14px;
         padding: 8px;
-        color: #8D1A14;
+        color: #4A4A49;
         border-radius: 6px;
         margin-top: 15px;
-        background-color: #8D1A141F;
+        background-color: #C2C5D233;
     }
 
     .order-total-price,

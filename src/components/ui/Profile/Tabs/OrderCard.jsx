@@ -43,7 +43,7 @@ export default function OrderCard({ order }) {
             {/* Items */}
             <div className="space-y-4 border-t border-gray-200 pt-4">
                 {order.details.slice(0, 1).map((el, i) => (
-                    <div key={i} className="flex justify-between gap-2">
+                    <div key={i} className="flex justify-between gap-2" title={el.name}>
                         <div className="flex items-center gap-2">
                             <Image
                                 src={el.images["800"].main || brokenImage()}
@@ -51,9 +51,10 @@ export default function OrderCard({ order }) {
                                 width={50}
                                 height={50}
                                 className="prod-img rounded-md"
+                                title={el.name}
                             />
                             <div>
-                                <h4 className="prod-title">
+                                <h4 className="prod-title" title={el.name}>
                                     {el.name}
                                 </h4>
                                 <p className="prod-qty text-xs text-red-500 mt-1">
@@ -73,7 +74,7 @@ export default function OrderCard({ order }) {
             {/* Extra Products */}
             {
                 order.details.length - 1 >= 0 && (
-                    <div className="extra-products text-center">
+                    <div className={`extra-products text-center ${order.details.length - 1 > 0 ? '' : 'opacity-0'}`}>
                         <span>{order.details.length - 1}</span>
                         <span className='ms-1'>{translation.additionalProducts}</span>
                     </div>
@@ -88,6 +89,9 @@ export default function OrderCard({ order }) {
                     <span className='ms-1'>{translation.jod}</span>
                 </span>
             </div>
+            <Link className='primary-btn block text-center mt-3' href={`/order-details?id=${order.orderID}`}>
+                {translation.orderDetails}
+            </Link>
         </div>
     )
 }
