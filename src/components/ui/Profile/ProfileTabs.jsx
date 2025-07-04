@@ -19,11 +19,22 @@ export default function ProfileTabs() {
     const [activeTab, setActiveTab] = useState('personal');
     const [profileData, setProfileData] = useState(null);
     const [translation, setTranslation] = useState(ar);
+    const [firstLetter, setFirstLetter] = useState('');
+    const [lastLetter, setLastLetter] = useState('');
     const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { state = {}, dispatch = () => {} } = useAppContext() || {};
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
+
+    const getInitials = (str) => {
+        if (!str) return ['', ''];
+        const words = str.trim().split(/\s+/);
+        const first = words[0]?.[0] || '';
+        const last = words[words.length - 1]?.[0] || '';
+        return [first.toUpperCase(), last.toUpperCase()];
+    };
+
 
     useEffect(() => {
         setHasMounted(true);
@@ -38,8 +49,14 @@ export default function ProfileTabs() {
         if (queryTab && profileTabs.some(t => t.id === queryTab)) {
             setActiveTab(queryTab);
         }
-        const profile = getProfile();
-        setProfileData(profile ? profile : []);
+        setTimeout(() => {
+            const profile = getProfile();
+            setProfileData(profile ? profile : []);
+            
+            const [firstInitial, lastInitial] = getInitials(profile?.name);
+            setFirstLetter(firstInitial)
+            setLastLetter(lastInitial)
+        }, 500);
     }, [searchParams]);
 
     if (!hasMounted) return null;
@@ -48,16 +65,6 @@ export default function ProfileTabs() {
         setActiveTab(tabId);
         router.replace(`/profile?${tabId}`);
     };
-
-    const getInitials = (str) => {
-        if (!str) return ['', ''];
-        const words = str.trim().split(/\s+/);
-        const first = words[0]?.[0] || '';
-        const last = words[words.length - 1]?.[0] || '';
-        return [first.toUpperCase(), last.toUpperCase()];
-    };
-
-    const [firstInitial, lastInitial] = getInitials(profileData?.name);
 
     return (
         <>
@@ -68,9 +75,9 @@ export default function ProfileTabs() {
                         <div className="flex profile-dropdown-header px-4 py-2">
                             <div className="me-3 shrink-0">
                                 <span className="profile-img block p-2 bg-gray-100 rounded-full">
-                                    <span>{firstInitial}</span>
+                                    <span>{firstLetter}</span>
                                     <span>.</span>
-                                    <span>{lastInitial}</span>
+                                    <span>{lastLetter}</span>
                                 </span>
                             </div>
                             <div>

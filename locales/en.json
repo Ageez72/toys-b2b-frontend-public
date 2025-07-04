@@ -208,5 +208,6 @@
   "chooseQty": "Please specify the quantity",
   "noProductsSelected": "Please add at least one product",
   "material": "Material",
-  "gender": "Gender"
+  "gender": "Gender",
+  "ok":"OK"
 }
