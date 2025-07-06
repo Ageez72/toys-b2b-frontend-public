@@ -46,11 +46,11 @@ export default function DetailsProductCard({ item }) {
                 }
                 <h1 className="product-card-title" title={item.name}>{item.name}</h1>
                 <p className="product-card-description">
-                    <Link href={`/products?brand=${item?.brand?.id}`}>
+                    <Link href={`/products?brand=${item?.brand?.id}&itemStatus=AVAILABLE`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>
                     </Link>
                     <span className='mx-1'>-</span>
-                    <Link href={`/products?category=${item?.category?.id}`}>
+                    <Link href={`/products?category=${item?.category?.id}&itemStatus=AVAILABLE`}>
                         <span className="product-card-category">{item?.category?.description}</span>
                     </Link>
                 </p>

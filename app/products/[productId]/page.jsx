@@ -17,6 +17,7 @@ import Link from 'next/link';
 import Loader from '@/components/ui/Loaders/Loader';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
+import NotFound from '../../not-found';
 
 let breadcrumbItems = [];
 export default function Page() {
@@ -55,9 +56,15 @@ export default function Page() {
   if (isLoading) return <Loader />;
   if (error instanceof Error) return push("/");
 
+  if (Array.isArray(data?.data?.items) && data?.data?.items?.length === 0) {
+    return (
+      <NotFound />
+    );
+  }
+
   breadcrumbItems = [
     { label: translation.home, href: '/home' },
-    { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}` },
+    { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}&itemStatus=AVAILABLE` },
     { label: `${details?.name}` }
   ]
   const getAge = (str) => {
@@ -65,95 +72,95 @@ export default function Page() {
     return match ? match[0] : null;
   }
 
-  return data ? (
+  return details ? (
     <div className="max-w-screen-xl mx-auto p-4 product-details">
       <Breadcrumb items={breadcrumbItems} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5 pt-5 pb-5 details-card">
-        <ProductGallery images={details.images["800"].list} />
+        <ProductGallery images={details?.images["800"].list} />
         <DetailsProductCard item={details} />
       </div>
       <div className="card mt-5">
         {
-          details.brand.description || details.category.description || details.dimentions || details.dimentions || details.netWeightKg || details.barcode || details.constants.AGES || details.constants.GENDER.length || details.constants.MATERIAL.length ? (
+          details?.brand.description || details?.category.description || details?.dimentions || details?.dimentions || details?.netWeightKg || details?.barcode || details?.constants.AGES || details?.constants.GENDER.length || details?.constants.MATERIAL.length ? (
             <h3 className="sub-title mb-5">{translation.productSpecifications}</h3>
           ) : null
         }
         <div className="specifications-table lg:w-1/2 mb-10">
           {
-            details.id && (
+            details?.id && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.productNumber}</strong></div>
-                <div className="info w-1/2">{details.id}</div>
+                <div className="info w-1/2">{details?.id}</div>
               </div>
             )
           }
           {
-            details.brand.description && (
+            details?.brand.description && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.brand}</strong></div>
-                <div className="info w-1/2">{details.brand.description}</div>
+                <div className="info w-1/2">{details?.brand.description}</div>
               </div>
             )
           }
           {
-            details.category.description && (
+            details?.category.description && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.type}</strong></div>
-                <div className="info w-1/2">{details.category.description}</div>
+                <div className="info w-1/2">{details?.category.description}</div>
               </div>
             )
           }
           {
-            details.dimentions && (
+            details?.dimentions && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.dimentions}</strong></div>
-                <div className="info w-1/2">{details.dimentions}</div>
+                <div className="info w-1/2">{details?.dimentions}</div>
               </div>
             )
           }
           {
-            details.netWeightKg && (
+            details?.netWeightKg && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.weight}</strong></div>
-                <div className="info w-1/2">{details.netWeightKg} {translation.kg}</div>
+                <div className="info w-1/2">{details?.netWeightKg} {translation.kg}</div>
               </div>
             )
           }
           {
-            details.barcode && (
+            details?.barcode && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.barcode}</strong></div>
-                <div className="info w-1/2">{details.barcode}</div>
+                <div className="info w-1/2">{details?.barcode}</div>
               </div>
             )
           }
           {
-            details.constants.AGES && (
+            details?.constants.AGES && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.age}</strong></div>
-                <div className="info w-1/2">+{getAge(details.constants.AGES)} {translation.years}</div>
+                <div className="info w-1/2">+{getAge(details?.constants.AGES)} {translation.years}</div>
               </div>
             )
           }
           {
-            details.constants.GENDER && (
+            details?.constants.GENDER && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.gender}</strong></div>
                 <div className="info w-1/2">{
-                  details.constants.GENDER.map((el, index) => (
-                    <span key={index}>{el} {index !== details.constants.GENDER.length - 1 && ','}</span>
+                  details?.constants.GENDER.map((el, index) => (
+                    <span key={index}>{el} {index !== details?.constants.GENDER.length - 1 && ','}</span>
                   ))
                 }</div>
               </div>
             )
           }
           {
-            details.constants.MATERIAL && (
+            details?.constants.MATERIAL && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.material}</strong></div>
                 <div className="info w-1/2">{
-                  details.constants.MATERIAL.map((el, index) => (
-                    <span key={index}>{el} {index !== details.constants.MATERIAL.length - 1 && ', '}</span>
+                  details?.constants.MATERIAL.map((el, index) => (
+                    <span key={index}>{el} {index !== details?.constants.MATERIAL.length - 1 && ', '}</span>
                   ))
                 }</div>
               </div>
@@ -175,7 +182,7 @@ export default function Page() {
               <div className="badges flex gap-2">
                 {
                   details?.catalogs?.map(b => (
-                    <Link href={`/products?catalog=${encodeURIComponent(b?.id)}`} key={b.id}>
+                    <Link href={`/products?catalog=${encodeURIComponent(b?.id)}&itemStatus=AVAILABLE`} key={b.id}>
                       <Badge type={"catalog-details"} text={b?.description} />
                     </Link>
                   ))
@@ -185,11 +192,11 @@ export default function Page() {
           )
         }
       </div>
-      <RateCard reviews={details.reviews.reviews} id={details.id} onRefresh={() => setRefresh(true)} />
+      <RateCard reviews={details?.reviews.reviews} id={details?.id} onRefresh={() => setRefresh(true)} />
       <h3 className="sub-title mb-3 mt-10">{translation.relatedProducts}</h3>
       {
-        details.relatedItems.length && (
-          <RelatedProducts items={details.relatedItems} />
+        details?.relatedItems.length && (
+          <RelatedProducts items={details?.relatedItems} />
         )
       }
     </div>

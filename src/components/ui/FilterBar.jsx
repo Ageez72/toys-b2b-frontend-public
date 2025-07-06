@@ -142,6 +142,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
             // Push clean URL
             router.push('/products?itemStatus=AVAILABLE');
         } else {
+            Cookies.remove('store_filters');
             onClose && onClose()
         }
     }

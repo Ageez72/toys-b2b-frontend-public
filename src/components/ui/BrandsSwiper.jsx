@@ -63,7 +63,7 @@ export default () => {
             {
                 data?.data.map((slide, i) => (
                     <SwiperSlide key={slide.description + slide.brandID}>
-                        <Link href={`/products?brand=${slide.brandID}`} className="card block" style={{ position: 'relative', width: '100%', height: '132px' }}>
+                        <Link href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`} className="card block" style={{ position: 'relative', width: '100%', height: '132px' }}>
                             <Image
                                 src={slide.image}
                                 alt="Brand 1"

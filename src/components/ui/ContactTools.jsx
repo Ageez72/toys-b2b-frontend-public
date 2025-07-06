@@ -41,18 +41,22 @@ const ContactTools = () => {
   };
 
   if (!mounted) return null; // prevent rendering until mounted
-
+  
   return (
     <div className='contact-tools'>
       <button onClick={scrollToTop} className={`back-to-top circle-icon-container ${showButton ? "show" : "not-allowed"}`}>
         <i className="icon-arrow-up"></i>
       </button>
+      {
+        profile?.contactEmail || profile?.contactPhone && (
       <div className='contact-link circle-icon-container contact-btn' onClick={toggleOpen}>
         <i className="icon-multiplication-sign close"></i>
         <i className="icon-call-center call"></i>
       </div>
+        )
+      }
       {
-        profile && (
+        profile?.contactEmail || profile?.contactPhone && (
           <div className="socials">
             {
               profile?.contactEmail && (
