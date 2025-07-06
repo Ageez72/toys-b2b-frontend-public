@@ -61,7 +61,7 @@ export default function Hero() {
                         style={{ objectFit: "contain" }}
                     />
                 </div>
-                <h2 className='adds-title'>Regional Leaders<br/> In Joy Distribution</h2>
+                <h2 className='adds-title'>Regional Leaders<br/> In Toy Distribution</h2>
             </main>
         </>
     );

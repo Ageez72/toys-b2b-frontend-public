@@ -108,7 +108,7 @@ export default function ProfileTabs() {
                             ))}
                         </ul>
                     </div>
-                    <div className="bg-white rounded-lg py-2 px-4">
+                    <div className="logout-wrapper bg-white rounded-lg py-2 px-4">
                         <button className="w-full logout flex items-center cursor-pointer" onClick={() => setOpenLogoutModal(true)}>
                             <i className="icon-logout-03 type"></i>
                             <span className="flex items-center justify-between block px-2 py-2">

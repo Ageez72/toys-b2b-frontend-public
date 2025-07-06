@@ -182,7 +182,7 @@ export default function Page() {
   if (error instanceof Error) return push("/");
 
   return (
-    <div className="max-w-screen-xl mx-auto p-4 all-products-container">
+    <div className="max-w-screen-xl mx-auto p-4 all-products-container section-min">
       <div className="flex gap-4 filters-gap">
         <div className="filter-mobile">
           <i className="icon-filter-search" onClick={handleFilterOnMobile}></i>

@@ -112,7 +112,7 @@ export default function ProfileDropdown() {
                             <MenuItems
                                 className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none profile-dropdown ${state.LANG === "EN" ? "right-0" : "right-auto left-0"}`}
                             >
-                                <div className="py-1 text-right">
+                                <div className="py-1 text-start">
                                     <div className="flex profile-dropdown-header px-4 py-2">
                                         <div className="me-3 shrink-0">
                                             <span className="profile-img block p-2 bg-gray-100 rounded-lg dark:bg-gray-700">

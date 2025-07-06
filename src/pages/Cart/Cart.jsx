@@ -136,7 +136,7 @@ function Cart() {
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page">
+    <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page section-min">
       {/* {loading && <Loader />} */}
       <Breadcrumb items={breadcrumbItems} />
       <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">

@@ -37,9 +37,30 @@
         font-size: 20px;
     }
 
+    .logout-wrapper {
+        transition: all 0.4s ease-in-out;
+
+        &:hover {
+            background-color: var(--primary-color);
+
+            .logout {
+                color: #fff;
+
+                i:before {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
     .logout {
         color: #8d1a14;
         font-size: 16px;
+        transition: all 0.4s ease-in-out;
+
+        i:before {
+            transition: all 0.4s ease-in-out;
+        }
     }
 }
 
