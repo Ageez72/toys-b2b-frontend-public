@@ -3,7 +3,7 @@ import ProfileTabs from '@/components/ui/Profile/ProfileTabs'
 
 function Profile() {
   return (
-    <div className="max-w-screen-xl mx-auto p-4">
+    <div className="max-w-screen-xl mx-auto p-4 section-min">
       <ProfileTabs />
     </div>
   )
