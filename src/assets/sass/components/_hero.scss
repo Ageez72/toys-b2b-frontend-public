@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
 
     @media (max-width: 1280px) {
         min-height: 600px;
@@ -23,6 +24,17 @@
 
     @media (max-width: 600px) {
         padding-top: 62px;
+    }
+
+    .adds-title {
+        position: absolute;
+        bottom: 45px;
+        color: #fff;
+        font-size: 30px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        z-index: 2;
     }
 
     .hero-content {
