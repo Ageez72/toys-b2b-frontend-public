@@ -19,6 +19,7 @@ export default function Pagination({ currentPage, pagesToken, totalPages }) {
     }
 
     router.push(`?${params.toString()}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
 
