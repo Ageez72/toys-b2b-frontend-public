@@ -68,34 +68,6 @@
         }
     }
 
-    .order-status {
-        font-size: 14px;
-        padding: 5px 8px;
-        border-radius: 8px;
-        min-width: 100px;
-        text-align: center;
-
-        &.closed {
-            color: #009941;
-            background-color: #E5FFF0;
-        }
-
-        &.canceled {
-            color: #8d1a14;
-            background-color: #8d1a141f;
-        }
-
-        &.in-progress {
-            color: #D8A343;
-            background-color: #D8A3431F;
-        }
-    }
-
-    .order-date {
-        font-size: 16px;
-        color: #7E818E;
-    }
-
     .prod-img {
         border: 1px solid #CCD3D9;
     }
@@ -141,4 +113,38 @@
     }
 
     .order-total-price {}
+}
+
+.order-status {
+    font-size: 14px;
+    padding: 5px 8px;
+    border-radius: 8px;
+    min-width: 100px;
+    text-align: center;
+
+    &.closed {
+        color: #009941;
+        background-color: #E5FFF0;
+    }
+
+    &.canceled {
+        color: #8d1a14;
+        background-color: #8d1a141f;
+    }
+
+    &.in-progress {
+        color: #D8A343;
+        background-color: #D8A3431F;
+    }
+}
+
+.order-date {
+    font-size: 16px;
+    color: #7E818E;
+}
+
+@media (max-width: 767px) {
+    .order-details .cart-item .actions {
+        width: auto;
+    }
 }
