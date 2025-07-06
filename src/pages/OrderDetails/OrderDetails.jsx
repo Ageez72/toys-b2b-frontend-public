@@ -56,11 +56,11 @@ export default function OrderDetails() {
     ];
 
     let status;
-    if (orderDetails.status == 0) {
+    if (orderDetails.statusCode == 0) {
         status = "canceled"
-    } else if (orderDetails.status == 1) {
+    } else if (orderDetails.statusCode == 1) {
         status = "in-progress"
-    } else if (orderDetails.status == 2) {
+    } else if (orderDetails.statusCode == 2) {
         status = "closed"
     }
 
@@ -132,29 +132,31 @@ export default function OrderDetails() {
                                         defaultValue={orderDetails.notes}
                                     />
                                 </div>
-                                <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress}</h3>
-                                <div className="addresses">
-                                    {
-                                        orderDetails.address ? (
-                                            <div className="card mb-3">
-                                                <div className="address-item">
-                                                    <label className="flex justify-between items-center">
-                                                        <span className="flex items-center gap-2">
-                                                            <i className="icon-location location"></i>
-                                                            <span>{orderDetails.address}</span>
-                                                        </span>
-                                                    </label>
+                                {
+                                    orderDetails.address ? (
+                                        <>
+                                            <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress}</h3>
+                                            <div className="addresses">
+                                                <div className="card mb-3">
+                                                    <div className="address-item">
+                                                        <label className="flex justify-between items-center">
+                                                            <span className="flex items-center gap-2">
+                                                                <i className="icon-location location"></i>
+                                                                <span>{orderDetails.address}</span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        ) : (
-                                            null
-                                            // <label className="flex justify-center items-center">
-                                            //     <span className='block'>{translation.noAddresses}</span>
-                                            // </label>
-                                        )
-                                    }
+                                        </>
+                                    ) : (
+                                        null
+                                        // <label className="flex justify-center items-center">
+                                        //     <span className='block'>{translation.noAddresses}</span>
+                                        // </label>
+                                    )
+                                }
 
-                                </div>
                             </>
                         ) : null}
                     </div>

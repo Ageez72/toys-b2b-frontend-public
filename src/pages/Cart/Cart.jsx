@@ -44,6 +44,8 @@ function Cart() {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }
     });
+    console.log(res.data.locations);
+    
     setAddressesItems(res.data.locations);
   };
 
@@ -190,7 +192,7 @@ function Cart() {
               </div>
               <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress} <span className="required">*</span></h3>
               <div className="addresses">
-                {!addressesItems.length ? (
+                {addressesItems.length ? (
                   addressesItems?.map((add, index) => (
                     <div className="card mb-3" key={add.id}>
                       <div className="address-item">

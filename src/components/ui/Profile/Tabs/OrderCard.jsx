@@ -12,11 +12,11 @@ export default function OrderCard({ order }) {
     const [translation, setTranslation] = useState(ar);
 
     let status;
-    if (order.status == 0) {
+    if (order.statusCode == 0) {
         status = "canceled"
-    } else if (order.status == 1) {
+    } else if (order.statusCode == 1) {
         status = "in-progress"
-    } else if (order.status == 2) {
+    } else if (order.statusCode == 2) {
         status = "closed"
     }
 
