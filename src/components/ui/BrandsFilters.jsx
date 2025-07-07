@@ -23,8 +23,11 @@ async function fetchBrandsFilters() {
 
 export default function BrandsFilters({ selected = [], parentOptions }) {
     const [selectedMap, setSelectedMap] = useState({});
+    const [allSelected, setAllSelected] = useState(selected); // flat array of selected IDs
+
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
-    const [translation, setTranslation] = useState(ar); // default fallback
+    const [translation, setTranslation] = useState(ar);
+
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
@@ -34,22 +37,27 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
         queryFn: fetchBrandsFilters,
     });
 
-    const handleOptionsChange = (brandCode, selectedItems) => {
-        setSelectedMap(prev => {
-            const updated = { ...prev, [brandCode]: selectedItems };
+    useEffect(() => {
+  if (selected.length > 0 && data?.data?.length) {
+    const initialMap = {};
+    data.data.forEach((brandGroup) => {
+      initialMap[brandGroup.code] = brandGroup.brands
+        .filter((b) => selected.includes(b.brandID))
+        .map((b) => b.brandID);
+    });
 
-            // Flatten all selected values from all brand codes
+    setSelectedMap(initialMap);
+  }
+}, [data, selected]);
+
+    const handleOptionsChange = (brandCode, selectedItems) => {
+        setSelectedMap((prev) => {
+            const updated = { ...prev, [brandCode]: selectedItems };
             const allSelected = Object.values(updated).flat();
-            console.log(allSelected);
-            
-            parentOptions(false, allSelected); // pass to parent
+            parentOptions(false, allSelected);
             return updated;
         });
     };
-
-    console.log(selected);
-    console.log(selectedMap);
-    
 
     if (error instanceof Error) return <p>Error: {error.message}</p>;
     if (!data?.data?.length) return null;
@@ -59,23 +67,21 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
             <Disclosure defaultOpen={selected.length > 0}>
                 {({ open: isOpen }) => (
                     <div>
-                        <DisclosureButton
-                            className="accordion-item w-full flex items-center justify-between cursor-pointer"
-                        >
+                        <DisclosureButton className="accordion-item w-full flex items-center justify-between cursor-pointer">
                             <span className="title">{translation.brands}</span>
                             <i className={`icon-arrow-down-01-round arrow-down ${isOpen ? 'rotate-180' : ''}`}></i>
                         </DisclosureButton>
 
                         <DisclosurePanel>
-                            {data.data.map((brand) => (
+                            {data?.data?.map((brand) => (
                                 <FilterMultiItem
                                     key={brand.code}
                                     title={brand.code}
                                     options={brand.brands}
                                     name="brand"
-                                    selected={selected || []}
-                                    onOptionsChange={(selectedItems) =>
-                                        handleOptionsChange(brand.code, selectedItems)
+                                    selected={selectedMap[brand.code] || []}
+                                    onOptionsChange={(code, selectedItems) =>
+                                        handleOptionsChange(code, selectedItems)
                                     }
                                 />
                             ))}
@@ -86,4 +92,5 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
         </div>
     );
 }
+
 

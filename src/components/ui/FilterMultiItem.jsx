@@ -1,65 +1,60 @@
 'use client'
-import React, { useState } from 'react'
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import React from 'react';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 
 export default function FilterMultiItem({
-    title,
-    selected = [],
-    options = [],
-    name,
-    onOptionsChange
+  title,
+  selected = [],
+  options = [],
+  name,
+  onOptionsChange
 }) {
-    const [selectedValues, setSelectedValues] = useState(selected);
+  const toggleValue = (value) => {
+    const newSelected = selected.includes(value)
+      ? selected.filter((v) => v !== value)
+      : [...selected, value];
 
-    // 👉 Compute whether any selected item exists in the options list
-    const defaultOpen = selected.some(sel =>
-        options.some(opt => opt.brandID === sel)
-    );
+    onOptionsChange(title, newSelected); // Update the parent
+  };
 
-    const toggleValue = (value) => {
-        setSelectedValues(prev => {
-            const newSelected = prev.includes(value)
-                ? prev.filter(v => v !== value)
-                : [...prev, value];
+  console.log(selected);
+  
 
-            onOptionsChange(newSelected); // Notify parent
-            return newSelected;
-        });
-    };
+  const defaultOpen = selected.length > 0;
 
-    return (
-        <div className="accordion-wrapper">
-            <Disclosure defaultOpen={defaultOpen}>
-                {({ open: isOpen }) => (
-                    <div>
-                        <DisclosureButton className="accordion-item w-full flex items-center justify-between cursor-pointer">
-                            <span className="title small-title">{title}</span>
-                            <i className={`icon-arrow-down-01-round arrow-down ${isOpen ? 'rotate-180' : ''}`}></i>
-                        </DisclosureButton>
+  return (
+    <div className="accordion-wrapper">
+      <Disclosure defaultOpen={defaultOpen}>
+        {({ open: isOpen }) => (
+          <div>
+            <DisclosureButton className="accordion-item w-full flex items-center justify-between cursor-pointer">
+              <span className="title small-title">{title}</span>
+              <i className={`icon-arrow-down-01-round arrow-down ${isOpen ? 'rotate-180' : ''}`}></i>
+            </DisclosureButton>
 
-                        <DisclosurePanel>
-                            <div className="options-list">
-                                {options.map((option) => (
-                                    <div className="form-group flex items-center gap-3" key={option.brandID}>
-                                        <input
-                                            className="cursor-pointer"
-                                            id={option.brandID}
-                                            type="checkbox"
-                                            name={name}
-                                            value={option.brandID}
-                                            checked={selectedValues.includes(option.brandID)}
-                                            onChange={() => toggleValue(option.brandID)}
-                                        />
-                                        <label htmlFor={option.brandID} className="mb-0 cursor-pointer">
-                                            {option.description}
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
-                        </DisclosurePanel>
-                    </div>
-                )}
-            </Disclosure>
-        </div>
-    );
+            <DisclosurePanel>
+              <div className="options-list">
+                {options.map((option) => (
+                  <div className="form-group flex items-center gap-3" key={option.brandID}>
+                    <input
+                      className="cursor-pointer"
+                      id={option.brandID}
+                      type="checkbox"
+                      name={name}
+                      value={option.brandID}
+                      checked={selected.includes(option.brandID)}
+                      onChange={() => toggleValue(option.brandID)}
+                    />
+                    <label htmlFor={option.brandID} className="mb-0 cursor-pointer">
+                      {option.description}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </DisclosurePanel>
+          </div>
+        )}
+      </Disclosure>
+    </div>
+  );
 }

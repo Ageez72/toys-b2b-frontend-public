@@ -172,6 +172,8 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     }
 
     const parentOptions = (st, options) => {
+        console.log(options);
+        
         setBrand(options)
         fetchCategoriesOptions(st, options)
     }
