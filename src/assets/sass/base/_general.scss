@@ -551,7 +551,7 @@ input.disabled {
 }
 
 .not-found {
-    padding: 0 20px;
+    padding: 50px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -578,6 +578,10 @@ input.disabled {
                 font-size: 25px;
             }
         }
+    }
+
+    & + footer {
+        margin-top: 0;
     }
 }
 

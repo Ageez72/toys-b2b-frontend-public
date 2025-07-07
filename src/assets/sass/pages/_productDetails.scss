@@ -1,9 +1,11 @@
 .product-details {
     padding: 60px 0;
 
-    .product-card-title {
-        font-size: 22px !important;
-        font-weight: 700 !important;
+    .product-card-content{
+        .details-product-card-title {
+            font-size: 22px !important;
+            font-weight: 700 !important;
+        }
     }
 
     .product-description {

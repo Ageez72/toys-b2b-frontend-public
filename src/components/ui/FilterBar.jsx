@@ -69,7 +69,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 1000); // نطاق السعر
     const [itemType, setItemType] = useState(useParams.get('itemType') || ""); // الاقسام
     const [brand, setBrand] = useState(() => {
-        const value = useParams.get('brand');
+        const value = useParams.get('brand');        
         return value ? value.split(',') : [];
     }); // العلامات التجارية
     const [category, setCategory] = useState(useParams.get('category') ? useParams.get('category').split(',') : ""); // التصنيفات
@@ -171,13 +171,14 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
         }
     }
 
-    const parentOptions = (options) => {
+    const parentOptions = (st, options) => {
         setBrand(options)
-        fetchCategoriesOptions(true, options)
+        fetchCategoriesOptions(st, options)
     }
 
     // get all options
     const fetchCategoriesOptions = async (ch, brands = []) => {
+        
         const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
@@ -220,8 +221,12 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     }
 
     useEffect(() => {
-        fetchCategoriesOptions()
-        fetchCatalogsOptions()
+        fetchCatalogsOptions()        
+        parentOptions(false, brand)
+        // if(brand.length){
+        // }else {
+        //     fetchCategoriesOptions(true, brand)
+        // }
     }, [])
 
     return (

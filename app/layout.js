@@ -76,8 +76,8 @@ export default function RootLayout({ children }) {
 
 
             {children}
-            {!isAuthPage && <ContactTools />}
             {!isAuthPage && <Footer />}
+            {!isAuthPage && <ContactTools />}
           </AppProvider>
         </body>
       </html>

@@ -40,11 +40,16 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
 
             // Flatten all selected values from all brand codes
             const allSelected = Object.values(updated).flat();
-
-            parentOptions(allSelected); // pass to parent
+            console.log(allSelected);
+            
+            parentOptions(false, allSelected); // pass to parent
             return updated;
         });
     };
+
+    console.log(selected);
+    console.log(selectedMap);
+    
 
     if (error instanceof Error) return <p>Error: {error.message}</p>;
     if (!data?.data?.length) return null;
