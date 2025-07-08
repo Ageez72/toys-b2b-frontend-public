@@ -14,6 +14,7 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Cookies from 'js-cookie';
 import Loader from "@/components/ui/Loaders/Loader";
 import { showWarningToast } from "@/actions/toastUtils";
+import ErrorOrderResModal from "@/components/ui/ErrorOrderResModal";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -21,6 +22,8 @@ function Cart() {
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [notes, setNotes] = useState('');
   const [openSureOrder, setOpenSureOrder] = useState(false);
+  const [errorOrderResContent, setErrorOrderResContent] = useState([]);
+  const [openErrorOrderResModal, setOpenErrorOrderResModal] = useState(false);
   const [openConfirmOrder, setOpenConfirmOrder] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -39,14 +42,24 @@ function Cart() {
     setCartItems(items);
   };
 
+  function getOverQtyItems(data) {
+    if (!data || !Array.isArray(data.items)) return [];
+
+    return data.items.filter(item => {
+      const qty = parseInt(item.QTY, 10);
+      const avlqty = parseInt(item.avlqty ?? item.AQTY, 10); // fallback if `avlqty` is undefined
+
+      return qty > avlqty;
+    });
+  }
+
+
   const fetchProfile = async () => {
     const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get('token')}`,
       }
     });
-    console.log(res.data.locations);
-    
     setAddressesItems(res.data.locations);
   };
 
@@ -95,7 +108,7 @@ function Cart() {
 
   const handleSubmitOrder = async () => {
     const storedCart = getCart();
-    
+
     const data = {
       notes: notes,
       deliveryDate: "",
@@ -120,7 +133,78 @@ function Cart() {
         handleRefresh();
       } else {
         // console.log('Error in ADD ORDER:', response.data);
-        alert("Error in ADD ORDER")
+        const res = {
+          "error": true,
+          "errorType": "qty",
+          "items": [
+            {
+              "name": "Little Tikes Clubhouse Swing Set- Natural Color",
+              "QTY": "6",
+              "AQTY": "2",
+              "ISERROR": "1",
+              "SUBTOTAL": "3620.640",
+              "DISCPER": "30",
+              "LPRICE": "603.440",
+              "DISC": "1086.192",
+              "TAX": "405.512",
+              "NET": "2939.960",
+              "QTYERROR": true,
+              "id": "171093",
+              "price": 699.99,
+              "priceAfterDisc": 489.993,
+              "status": "AVAILABLE",
+              "type": " LITTLE TIKES-OUTDOOR ",
+              "video": "",
+              "category": {
+                "id": "1990566510",
+                "description": "Little Tikes,Little Tikes Swing Sets and Swings"
+              },
+              "dimensions": "219.7x102.9x50.8",
+              "brand": {
+                "id": "00040",
+                "description": "MGA ENTERTAINMENTS "
+              },
+              "avlqty": 2,
+              "itemdisc": 30,
+            },
+            {
+              "name": "Little Tikes Clubhouse Swing 2",
+              "QTY": "13",
+              "AQTY": "2",
+              "ISERROR": "1",
+              "SUBTOTAL": "3620.640",
+              "DISCPER": "30",
+              "LPRICE": "603.440",
+              "DISC": "1086.192",
+              "TAX": "405.512",
+              "NET": "2939.960",
+              "QTYERROR": true,
+              "id": "171093",
+              "price": 699.99,
+              "priceAfterDisc": 489.993,
+              "status": "AVAILABLE",
+              "type": " LITTLE TIKES-OUTDOOR ",
+              "video": "",
+              "category": {
+                "id": "1990566510",
+                "description": "Little Tikes,Little Tikes Swing Sets and Swings"
+              },
+              "dimensions": "219.7x102.9x50.8",
+              "brand": {
+                "id": "00040",
+                "description": "MGA ENTERTAINMENTS "
+              },
+              "avlqty": 12,
+              "itemdisc": 30,
+            }
+          ]
+        }
+
+        // let exceededItems = getOverQtyItems(response?.data?.items);
+        let exceededItems = getOverQtyItems(res);
+        setErrorOrderResContent(exceededItems)
+        setOpenSureOrder(false);
+        setOpenErrorOrderResModal(true)
       }
     } catch (error) {
       console.error('Order submission failed:', error);
@@ -293,7 +377,7 @@ function Cart() {
           </div>
         </div>
       </div>
-
+      <ErrorOrderResModal errorsContent={errorOrderResContent} setOpen={() => setOpenErrorOrderResModal(false)} open={openErrorOrderResModal} />
       <SureOrderModal setOpen={() => setOpenSureOrder(false)} open={openSureOrder} onHandleSubmit={handleSubmitOrder} />
       <ConfirmOrderModal setOpen={() => setOpenConfirmOrder(true)} open={openConfirmOrder} />
     </div>

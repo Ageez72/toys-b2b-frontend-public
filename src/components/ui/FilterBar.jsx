@@ -210,7 +210,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
             }
         });
         setCatalogsAllOptions(res.data);
-        const arr = res.data.catalogs.filter(item => catalog.includes(item.code));
+        const arr = res?.data?.catalogs?.filter(item => catalog.includes(item.code));
         let selected = [];
         arr?.map(item => (
             selected.push({

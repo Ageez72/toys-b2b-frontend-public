@@ -1,6 +1,10 @@
 .product-details {
     padding: 60px 0;
 
+    &.error-product-details {
+        padding: 20px 0 0;
+    }
+
     .product-card-content{
         .details-product-card-title {
             font-size: 22px !important;
