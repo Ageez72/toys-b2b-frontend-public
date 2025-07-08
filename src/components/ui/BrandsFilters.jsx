@@ -38,17 +38,17 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
     });
 
     useEffect(() => {
-  if (selected.length > 0 && data?.data?.length) {
-    const initialMap = {};
-    data.data.forEach((brandGroup) => {
-      initialMap[brandGroup.code] = brandGroup.brands
-        .filter((b) => selected.includes(b.brandID))
-        .map((b) => b.brandID);
-    });
+        if (selected.length > 0 && data?.data?.length) {
+            const initialMap = {};
+            data.data.forEach((brandGroup) => {
+                initialMap[brandGroup.code] = brandGroup.brands
+                    .filter((b) => selected.includes(b.brandID))
+                    .map((b) => b.brandID);
+            });
 
-    setSelectedMap(initialMap);
-  }
-}, [data, selected]);
+            setSelectedMap(initialMap);
+        }
+    }, [data, selected]);
 
     const handleOptionsChange = (brandCode, selectedItems) => {
         setSelectedMap((prev) => {
