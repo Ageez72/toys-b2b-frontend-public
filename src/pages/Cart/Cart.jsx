@@ -95,6 +95,7 @@ function Cart() {
 
   const handleSubmitOrder = async () => {
     const storedCart = getCart();
+    
     const data = {
       notes: notes,
       deliveryDate: "",
@@ -119,6 +120,7 @@ function Cart() {
         handleRefresh();
       } else {
         console.log('Error in ADD ORDER:', response.data);
+        alert("Error in ADD ORDER")
       }
     } catch (error) {
       console.error('Order submission failed:', error);

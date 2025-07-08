@@ -28,6 +28,7 @@ export default function AddToCart({ item }) {
 
   const handleAddToCart = () => {
     const result = addToCart({
+      id: item.id,
       item: item.id,
       qty: count.toString(),
       image: item.images?.['800']?.main,

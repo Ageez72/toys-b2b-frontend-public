@@ -7,6 +7,8 @@ import ar from "../../locales/ar.json";
 export function addToCart(newItem) {
     const requestedQty = parseInt(newItem.qty);
     const availableQty = parseInt(newItem.avlqty);
+        console.log(newItem);
+
 
     // Step 1: Get cart from cookie or initialize as empty array
     let cart = Cookies.get('cart') ? JSON.parse(Cookies.get('cart')) : [];
@@ -42,7 +44,9 @@ export function addToCart(newItem) {
         }
 
         // Step 6: Add new item to cart
+        
         cart.push({
+            id: newItem.id,
             item: newItem.item,
             qty: newItem.qty.toString(),
             avlqty: newItem.avlqty.toString(),

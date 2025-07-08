@@ -40,6 +40,22 @@ const ContactTools = () => {
     document.querySelector(".contact-tools")?.classList.toggle("open");
   };
 
+  function getWhatsAppLink(phone) {
+  // Remove any non-digit characters for safety
+  const cleaned = phone.replace(/\D/g, '');
+
+  if (cleaned.startsWith('962')) {
+    // If it starts with +962 or 00962 (cleaned becomes 962...)
+    return `https://wa.me/+${cleaned}`;
+  } else if (cleaned.startsWith('00962')) {
+    return `https://wa.me/+${cleaned.slice(2)}`; // remove the 00
+  } else {
+    // Default to adding +962 before the number
+    return `https://wa.me/+962${cleaned}`;
+  }
+}
+
+
   if (!mounted) return null; // prevent rendering until mounted
   
   return (
@@ -73,12 +89,12 @@ const ContactTools = () => {
             {
               profile?.contactPhone && (
                 <a
-                  href={`tel:${profile?.contactPhone}`}
+                  href={`${getWhatsAppLink(profile?.contactPhone)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className='contact-link circle-icon-container mb-2 contact-phone'
                 >
-                  <i className="icon-phone"></i>
+                  <i className="icon-whatsapp-brands"></i>
                 </a>
               )
             }

@@ -42,6 +42,7 @@ export default function QuickAdd({ openSidebar }) {
         }
 
         const result = addToCart({
+            id: selectedItem.id,
             item: selectedItem.id,
             qty: count.toString(),
             image: selectedItem.images?.['800']?.main,
