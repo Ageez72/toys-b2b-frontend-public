@@ -14,7 +14,7 @@ export default function FilterMultiItem({
     useEffect(() => {
         const timer = setTimeout(() => {
             setOpen(true);
-        }, 1000);
+        }, 300);
 
         return () => clearTimeout(timer); // Cleanup
     }, []);
