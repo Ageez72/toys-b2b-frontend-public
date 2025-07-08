@@ -37,7 +37,7 @@ export default function OrderDetails() {
         });
         if (res.data) {
             const obj = res.data.filter(el => el.orderID === id);
-            console.log(obj[0]);
+            // console.log(obj[0]);
 
             setOrdersDetails(obj[0]);
         }

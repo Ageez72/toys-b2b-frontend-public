@@ -119,7 +119,7 @@ function Cart() {
         setOpenConfirmOrder(true);
         handleRefresh();
       } else {
-        console.log('Error in ADD ORDER:', response.data);
+        // console.log('Error in ADD ORDER:', response.data);
         alert("Error in ADD ORDER")
       }
     } catch (error) {

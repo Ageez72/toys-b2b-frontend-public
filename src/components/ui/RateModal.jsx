@@ -53,7 +53,7 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
                     Authorization: `Bearer ${Cookies.get('token')}`,
                 }
             });
-            console.log('Response:', response.data);
+            // console.log('Response:', response.data);
             setOpen(false);
             setRating(0);
             setComment('');

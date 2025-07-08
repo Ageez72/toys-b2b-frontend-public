@@ -74,7 +74,7 @@ export default function MyProfile() {
       name: data.fullName,
       businessname: data.storeName
     };
-    console.log(userData);
+    // console.log(userData);
 
     try {
       const res = await axios.post(`${BASE_API + endpoints.auth.updateProfile}`, userData, {
@@ -82,7 +82,7 @@ export default function MyProfile() {
           Authorization: `Bearer ${Cookies.get('token')}`,
         }
       });
-      console.log(res.data.MESSAGE);
+      // console.log(res.data.MESSAGE);
 
       if (res.data.MESSAGE) {
         const res = await axios(`${BASE_API + endpoints.user.profile}`, {
@@ -100,7 +100,7 @@ export default function MyProfile() {
           contactPhone: res?.data?.contactPhone,
           username: res?.data?.username,
         }
-        console.log(profile);
+        // console.log(profile);
 
         Cookies.set('profile', JSON.stringify(profile));
         setIsSuccessUpdatModalOpen(true)
