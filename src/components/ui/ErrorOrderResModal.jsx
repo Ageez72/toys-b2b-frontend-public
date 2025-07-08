@@ -56,7 +56,7 @@ export default function ErrorOrderResModal({ open, setOpen, errorsContent }) {
                             <button
                                 type="button"
                                 onClick={() => setOpen(false)}
-                                className="gray-btn flex-1 mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 shadow-xs sm:mt-0 sm:w-auto"
+                                className="primary-btn flex-1 mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 shadow-xs sm:mt-0 sm:w-auto"
                             >
                                 {translation.cancel}
                             </button>
