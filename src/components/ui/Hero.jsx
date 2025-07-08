@@ -21,6 +21,7 @@ export default function Hero() {
 
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
+        document.title = state.LANG === 'AR' ? ar.alekha : en.alekha;
     }, [state.LANG]);
 
     return (

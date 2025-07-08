@@ -17,6 +17,7 @@ export default function MyOrders() {
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
+    document.title = state.LANG === 'AR' ? ar.orders : en.orders;
   }, [state.LANG]);
 
   const fetchMyOrder = async () => {

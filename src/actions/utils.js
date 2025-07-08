@@ -72,6 +72,10 @@ export function getCart() {
 export function getProfile() {
     return Cookies.get('profile') ? JSON.parse(Cookies.get('profile')) : [];
 }
+// Function to get lang from cookie
+export function getLang() {
+    return Cookies.get('lang') ? Cookies.get('lang') : [];
+}
 
 export function logout() {
     Cookies.remove('profile');

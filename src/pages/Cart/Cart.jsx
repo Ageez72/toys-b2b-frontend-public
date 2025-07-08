@@ -31,6 +31,7 @@ function Cart() {
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
+    document.title = state.LANG === 'AR' ? ar.cart : en.cart;
   }, [state.LANG]);
 
   const loadCart = () => {

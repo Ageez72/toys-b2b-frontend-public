@@ -16,6 +16,7 @@ export default function Adressess() {
   const [translation, setTranslation] = useState(ar);
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
+    document.title = state.LANG === 'AR' ? ar.addresses : en.addresses;
   }, [state.LANG]);
 
   const loadAddresses = () => {

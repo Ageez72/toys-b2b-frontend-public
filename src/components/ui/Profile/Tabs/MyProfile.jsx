@@ -27,6 +27,7 @@ export default function MyProfile() {
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
+    document.title = state.LANG === 'AR' ? ar.profile : en.profile;
   }, [state.LANG]);
 
   const {

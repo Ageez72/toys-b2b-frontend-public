@@ -30,6 +30,7 @@ export default function Register() {
 
   useEffect(() => {
     setIsLoading(false);
+    document.title = state.LANG === 'AR' ? ar.login.register : en.login.register ;
   }, []);
 
   const {

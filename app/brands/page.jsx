@@ -29,6 +29,7 @@ export default function Page() {
   const [translation, setTranslation] = useState(ar); // default fallback
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
+    document.title = state.LANG === 'AR' ? ar.brands : en.brands;
   }, [state.LANG]);
 
   const { data, isLoading, error } = useQuery({
