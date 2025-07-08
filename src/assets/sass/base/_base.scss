@@ -132,6 +132,8 @@ input::-webkit-inner-spin-button {
 .html-overflow {
     overflow: hidden;
     padding-right: 15px;
+    overflow: visible;
+    padding: 0;
 }
 
 hr {

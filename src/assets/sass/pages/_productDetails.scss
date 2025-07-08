@@ -110,10 +110,14 @@ textarea {
     outline: #CCD3D9;
     resize: none;
     font-size: 14px;
-    color: #A8B1CE;
+    color: #1e1e1e;
 
     &:focus {
         border-color: #545455;
+    }
+
+    &::placeholder {
+        color: #A8B1CE;
     }
 }
 
