@@ -188,6 +188,20 @@
         }
     }
 
+    &.hero-filter {
+        position: relative;
+        padding-bottom: 75px;
+
+        .action-btns {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+            background: #fff;
+            padding: 10px 20px;
+        }
+    }
+
 }
 
 .slider-container {

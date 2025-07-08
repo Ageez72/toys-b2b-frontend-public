@@ -233,7 +233,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
     return (
         <>
-            <div className={`filter-bar card ${isProductsPage ? "filter-products-page" : ""}`}>
+            <div className={`filter-bar card ${isProductsPage ? "filter-products-page" : "hero-filter"}`}>
                 <div className="filter-header flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <i className="icon-filter-search"></i>
@@ -242,8 +242,8 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                     {
                         <div className="close-filter">
                             <i className="icon-multiplication-sign cursor-pointer" onClick={() => {
-                                if (close) {
-                                    close();
+                                if (onClose) {
+                                    onClose();
                                 }
                                 const filterElement = document.querySelector(".filter-products-page");
                                 if (filterElement) {
