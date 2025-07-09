@@ -248,7 +248,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                     }
                 </div>
                 <div className="filter-body">
-                    <MultiRangeSlider title={translation.priceRange} min={0} max={1000} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                    <MultiRangeSlider title={translation.priceRange} min={0} max={1600} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
                     <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
                     <BrandsFilters selected={brand} parentOptions={parentOptions} />
                     {
