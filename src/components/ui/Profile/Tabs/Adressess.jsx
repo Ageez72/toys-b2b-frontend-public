@@ -26,11 +26,7 @@ export default function Adressess() {
 
   const fetchProfile = async () => {
     setLoading(true)
-    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    });
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}&token=${Cookies.get('token')}`, {});
     if (res.data.locations) {
       setAddressesItems(res.data.locations);
     }

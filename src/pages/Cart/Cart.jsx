@@ -55,11 +55,7 @@ function Cart() {
 
 
   const fetchProfile = async () => {
-    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    });
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}&token=${Cookies.get('token')}`, {});
     setAddressesItems(res.data.locations);
   };
 
@@ -67,11 +63,7 @@ function Cart() {
     const items = getCart();
     try {
       setLoading(true);
-      const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}`, items, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        }
-      });
+      const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}&token=${Cookies.get('token')}`, items, {});
       setOrderSummary(response.data);
     } catch (error) {
       console.error('Failed to get order summary:', error);
@@ -120,11 +112,7 @@ function Cart() {
     };
     try {
       setLoading(true);
-      const response = await axios.post(`${BASE_API}${endpoints.products.order}`, data, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        }
-      });
+      const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`, data, {});
       if (response.data && !response.data.ERROR) {
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
         dispatch({ type: 'STORED-ITEMS', payload: [] });

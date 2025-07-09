@@ -44,11 +44,7 @@ export default function Security() {
     console.log(userData);
 
     try {
-      const res = await axios.post(`${BASE_API + endpoints.auth.updateProfile}`, userData, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        }
-      });
+      const res = await axios.post(`${BASE_API + endpoints.auth.updateProfile}&token=${Cookies.get('token')}`, userData, {});
       if (res.data.MESSAGE) {
         setInputsStatus(false);
         setIsSuccessUpdatModalOpen(true)

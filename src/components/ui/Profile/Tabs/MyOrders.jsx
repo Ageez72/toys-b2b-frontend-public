@@ -22,11 +22,7 @@ export default function MyOrders() {
 
   const fetchMyOrder = async () => {
     setLoading(true)
-    const res = await axios.get(`${BASE_API}${endpoints.products.myorders}&lang=${state.LANG}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    });
+    const res = await axios.get(`${BASE_API}${endpoints.products.myorders}&lang=${state.LANG}&token=${Cookies.get('token')}`, {});
     if (res.data) {
       setOrders(res.data);
     }

@@ -32,11 +32,7 @@ export default function Page() {
 
   const { push } = useRouter();
   async function fetchProductDetails() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${productId}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    });
+    const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${productId}&token=${Cookies.get('token')}`, {});
     return res;
   }
   const { data, isLoading, error, refetch } = useQuery({

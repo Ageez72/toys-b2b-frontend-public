@@ -13,11 +13,7 @@ import { useAppContext } from '../../../context/AppContext';
 
 async function fetchBrandsFilters() {
     const lang = Cookies.get('lang') || 'AR';
-    const res = await axios.get(`${BASE_API}${endpoints.products.brandsFilters}&lang=${lang}`, {
-        headers: {
-            Authorization: `Bearer ${Cookies.get('token')}`,
-        }
-    });
+    const res = await axios.get(`${BASE_API}${endpoints.products.brandsFilters}&lang=${lang}&token=${Cookies.get('token')}`, {});
     return res;
 }
 

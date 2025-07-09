@@ -181,11 +181,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     // get all options
     const fetchCategoriesOptions = async (ch, brands = []) => {
         
-        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}`, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-            }
-        });
+        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}&token=${Cookies.get('token')}`, {});
 
         setCategoriesAllOptions(res.data);
         const arr = res.data.filter(item => category.includes(item.categoryId));
@@ -204,11 +200,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
     const fetchCatalogsOptions = async () => {
         const lang = Cookies.get('lang') || 'AR';
-        const res = await axios.get(`${BASE_API}${catalogEndpoint}&lang=${lang}`, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-            }
-        });
+        const res = await axios.get(`${BASE_API}${catalogEndpoint}&lang=${lang}&token=${Cookies.get('token')}`, {});
         setCatalogsAllOptions(res.data);
         const arr = res?.data?.catalogs?.filter(item => catalog.includes(item.code));
         let selected = [];

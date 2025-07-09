@@ -15,11 +15,7 @@ import { useAppContext } from '../../context/AppContext';
 
 async function fetchBrandsPage() {
   const lang = Cookies.get('lang') || 'AR';
-  const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}`, {
-    headers: {
-      Authorization: `Bearer ${Cookies.get('token')}`,
-    }
-  });
+  const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}&token=${Cookies.get('token')}`, {});
   return res;
 }
 

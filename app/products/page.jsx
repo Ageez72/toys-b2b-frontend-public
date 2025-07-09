@@ -116,11 +116,7 @@ export default function Page() {
   }, [apiParams]);
 
   async function fetchProducts() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&lang=${lang}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    });
+    const res = await axios.get(`${BASE_API}${endpoints.products.list}&${queryString}&lang=${lang}&token=${Cookies.get('token')}`, {});
     return res;
   }
   const { push } = useRouter();

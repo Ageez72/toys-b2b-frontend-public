@@ -11,11 +11,7 @@ export default function RelatedProducts({ items }) {
     const lang = Cookies.get('lang') || 'AR';
     const { push } = useRouter();
     async function fetchRelatedProducts() {
-        const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${items.join(',')}`, {
-            headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-            }
-        });
+        const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${items.join(',')}&token=${Cookies.get('token')}`, {});
         return res;
     }
     const { data, isLoading, error } = useQuery({

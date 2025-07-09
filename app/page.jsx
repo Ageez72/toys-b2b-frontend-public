@@ -13,11 +13,7 @@ export default function Home() {
 
   async function fetchProfile() {
     const lang = Cookies.get('lang') || 'AR';
-    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    });
+    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${lang}&token=${Cookies.get('token')}`, {});
     return res.data;
   }
 
