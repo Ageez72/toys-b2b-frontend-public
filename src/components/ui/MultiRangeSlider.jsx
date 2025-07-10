@@ -24,20 +24,20 @@ const MultiRangeSlider = ({ min, max, selectedFrom, selectedTo, title, initially
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
 
-  const [open, setOpen] = useState(fromPrice && toPrice ? true : initiallyOpen);
+  const [open, setOpen] = useState(fromPrice || toPrice ? true : initiallyOpen);
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
   const range = useRef(null);
 
   const [minVal, setMinVal] = useState(() => {
-    if (fromPrice && toPrice) {
+    if (toPrice) {
       return fromPrice ?? min;
     }
     return min;
   });
 
   const [maxVal, setMaxVal] = useState(() => {
-    if (fromPrice && toPrice) {
+    if ( toPrice) {
       return toPrice ?? max;
     }
     return max;

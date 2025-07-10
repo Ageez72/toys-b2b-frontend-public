@@ -128,7 +128,7 @@ export default function ProfileDropdown({ onGoTo }) {
                                     </div>
 
                                     <MenuItem>
-                                        <Link onClick={() => onGoTo()} href="/profile?personal" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo && onGoTo()} href="/profile?personal" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-user"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.profile}
@@ -136,7 +136,7 @@ export default function ProfileDropdown({ onGoTo }) {
                                         </Link>
                                     </MenuItem>
                                     <MenuItem>
-                                        <Link onClick={() => onGoTo()} href="/profile?security" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo && onGoTo()} href="/profile?security" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-shield-security"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.security}
@@ -144,7 +144,7 @@ export default function ProfileDropdown({ onGoTo }) {
                                         </Link>
                                     </MenuItem>
                                     <MenuItem>
-                                        <Link onClick={() => onGoTo()} href="/profile?orders" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo && onGoTo()} href="/profile?orders" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-task"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.orders}
@@ -152,7 +152,7 @@ export default function ProfileDropdown({ onGoTo }) {
                                         </Link>
                                     </MenuItem>
                                     <MenuItem>
-                                        <Link onClick={() => onGoTo()} href="/profile?addresses" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo && onGoTo()} href="/profile?addresses" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-location"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.addresses}
@@ -161,7 +161,7 @@ export default function ProfileDropdown({ onGoTo }) {
                                     </MenuItem>
                                     <MenuItem>
                                         <button className='logout profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full cursor-pointer' onClick={() => {
-                                            onGoTo()
+                                            onGoTo && onGoTo()
                                             setOpenLogoutModal(true)
                                         }}>
                                             <i className="icon-logout-03"></i>
