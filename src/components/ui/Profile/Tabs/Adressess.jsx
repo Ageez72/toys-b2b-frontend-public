@@ -64,7 +64,7 @@ export default function Adressess() {
           ) : (
             <div className='card empty-state flex justify-center items-center'>
               <div className="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260" fill="none">
+                <svg className='m-auto my-2' xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260" fill="none">
                   <rect width="260" height="260" rx="130" fill="url(#paint0_linear_198_7306)" />
                   <path opacity="0.4" d="M182.534 189.6C176.201 194.267 167.867 196.667 157.934 196.667H102.067C100.467 196.667 98.8673 196.6 97.334 196.4L143.334 150.4L182.534 189.6Z" fill="#7E818E" />
                   <path opacity="0.4" d="M196.667 102.067V157.933C196.667 167.867 194.267 176.2 189.6 182.533L150.4 143.333L196.4 97.3333C196.6 98.8666 196.667 100.467 196.667 102.067Z" fill="#7E818E" />

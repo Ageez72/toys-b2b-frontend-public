@@ -73,10 +73,10 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
                 className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
             />
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
                     <DialogPanel
                         transition
-                        className="relative transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl px-4 py-5"
+                        className="relative transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all sm:my-8 w-full sm:max-w-xl px-4 py-5"
                     >
                         <h3 className="sub-title">{translation.reviewQuestion}</h3>
                         <div className="mt-5">
@@ -106,7 +106,7 @@ export default function RateModal({ open, setOpen, totalStars = 5, itemId, onRef
                         <textarea
                             name="rate-comment"
                             id="rate-comment"
-                            rows="4"
+                            rows="8"
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             className="block p-2.5 w-full text-gray-900 rounded-lg border border-gray-300"

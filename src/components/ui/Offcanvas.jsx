@@ -32,7 +32,7 @@ export default function Offcanvas({ isOffCanvas, handleOffCanvas, scroll }) {
                 </div>
               </div>
               <div className="">
-                <MobileMenu />
+                <MobileMenu onGoTo={handleOffCanvas} />
               </div>
             </div>
           </div>

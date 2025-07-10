@@ -5,7 +5,7 @@ import LangSwitcher from './LangSwitcher';
 import ProfileDropdown from './ProfileDropdown';
 import Link from 'next/link';
 
-export default function MenuControl() {
+export default function MenuControl({onGoTo}) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   let cartLength = state.STOREDITEMS.length;
 
@@ -18,7 +18,7 @@ export default function MenuControl() {
       <LangSwitcher top={true} />
       <div className="flex items-center justify-between gap-3">
         <div className="vl"></div>
-        <Link href="/cart">
+        <Link href="/cart" onClick={()=> onGoTo()}>
           <div className="circle-icon-container">
             <span className='cart-icon relative'>
               {cartLength > 0 && (
@@ -28,7 +28,7 @@ export default function MenuControl() {
             </span>
           </div>
         </Link>
-        <ProfileDropdown />
+        <ProfileDropdown onGoTo={onGoTo} />
       </div>
     </div>
   );

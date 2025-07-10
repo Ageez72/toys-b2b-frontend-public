@@ -72,7 +72,7 @@ export default function ProfileTabs() {
             <div className="flex flex-col lg:flex-row gap-4 mt-5 lg:mt-10">
                 <aside className="w-full lg:w-1/4 profile-side-bar">
                     <div className="bg-white p-4 rounded-lg mb-4">
-                        <div className="flex profile-dropdown-header px-4 py-2">
+                        <div className="flex profile-dropdown-header py-2">
                             <div className="me-3 shrink-0">
                                 <span className="profile-img block p-2 bg-gray-100 rounded-full">
                                     <span>{firstLetter}</span>

@@ -119,7 +119,7 @@ export default function AddBulkModal({ open, onClose }) {
     <Dialog open={open} onClose={onClose} className="relative z-999">
       <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0 w-full">
+        <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0 w-full">
           <DialogPanel className="relative add-bulk-modal transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all sm:my-8">
             <div className="p-32">
               <h2 className="modal-title">{translation.oneClick}</h2>

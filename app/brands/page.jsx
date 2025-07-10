@@ -43,11 +43,11 @@ export default function Page() {
         {
           data?.data.map((brand, i) => (
             <Link href={`/products?brand=${brand.brandID}&itemStatus=AVAILABLE`} key={brand.brandID}>
-              <div className="relative brans card" style={{ height: "132px" }}>
+              <div className="relative brands card" style={{ height: "132px" }}>
                 <Image
-                  className='relative'
+                  className='brand-logo'
                   src={brand.image !== "" ? brand.image : Placeholder}
-                  alt="Brand 1"
+                  alt={brand.description !== "" ? brand.description : 'Brand'}
                   fill
                   style={{ objectFit: 'contain' }}
                 />

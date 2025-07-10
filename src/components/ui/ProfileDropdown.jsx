@@ -15,7 +15,7 @@ import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import LogoutModal from './Profile/LogoutModal';
 
-export default function ProfileDropdown() {
+export default function ProfileDropdown({ onGoTo }) {
     const { push } = useRouter();
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
@@ -106,7 +106,7 @@ export default function ProfileDropdown() {
                             </div>
 
                             <MenuItems
-                                className={`absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none profile-dropdown ${state.LANG === "EN" ? "right-0" : "right-auto left-0"}`}
+                                className={`absolute z-20 mt-2 sm:w-56 origin-top-right w-screen ${state.LANG === "EN" ? "right-0" : "left-0"} mx-auto rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none profile-dropdown`}
                             >
                                 <div className="py-1 text-start">
                                     <div className="flex profile-dropdown-header px-4 py-2">
@@ -128,7 +128,7 @@ export default function ProfileDropdown() {
                                     </div>
 
                                     <MenuItem>
-                                        <Link href="/profile?personal" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo()} href="/profile?personal" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-user"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.profile}
@@ -136,7 +136,7 @@ export default function ProfileDropdown() {
                                         </Link>
                                     </MenuItem>
                                     <MenuItem>
-                                        <Link href="/profile?security" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo()} href="/profile?security" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-shield-security"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.security}
@@ -144,7 +144,7 @@ export default function ProfileDropdown() {
                                         </Link>
                                     </MenuItem>
                                     <MenuItem>
-                                        <Link href="/profile?orders" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo()} href="/profile?orders" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-task"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.orders}
@@ -152,7 +152,7 @@ export default function ProfileDropdown() {
                                         </Link>
                                     </MenuItem>
                                     <MenuItem>
-                                        <Link href="/profile?addresses" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                        <Link onClick={() => onGoTo()} href="/profile?addresses" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
                                             <i className="icon-location"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                                                 {translation.addresses}
@@ -160,7 +160,10 @@ export default function ProfileDropdown() {
                                         </Link>
                                     </MenuItem>
                                     <MenuItem>
-                                        <button className='logout profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full cursor-pointer'  onClick={() => setOpenLogoutModal(true)}>
+                                        <button className='logout profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full cursor-pointer' onClick={() => {
+                                            onGoTo()
+                                            setOpenLogoutModal(true)
+                                        }}>
                                             <i className="icon-logout-03"></i>
                                             <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">{translation.logout}</span>
                                         </button>

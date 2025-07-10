@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 
-export default function MobileMenu({ scroll }) {
+export default function MobileMenu({ scroll, onGoTo }) {
   const { state = {}, dispatch = () => {} } = useAppContext() || {};
   const [lang, setLang] = useState("AR"); // fallback
   const [cookiesState, setCookiesState] = useState({
@@ -51,42 +51,42 @@ export default function MobileMenu({ scroll }) {
         {scroll && isActive("/home") ? (
           <ul className="mobile-menu-links">
             {cookiesState.newArrivals && (
-              <li className={isActive("/new-arrival")}>
+              <li className={isActive("/new-arrival")} onClick={() => onGoTo()}>
                 <Link href="#new-arrival">{translation.newArrivals}</Link>
               </li>
             )}
             {cookiesState.giveaway && (
-              <li className={isActive("/giveaway")}>
+              <li className={isActive("/giveaway")} onClick={() => onGoTo()}>
                 <Link href="#giveaway">{translation.offers}</Link>
               </li>
             )}
             {cookiesState.commingSoon && (
-              <li className={isActive("/comming-soon")}>
+              <li className={isActive("/comming-soon")} onClick={() => onGoTo()}>
                 <Link href="#comming-soon">{translation.commingSoon}</Link>
               </li>
             )}
             {cookiesState.clearance && (
-              <li className={isActive("/clearance")}>
+              <li className={isActive("/clearance")} onClick={() => onGoTo()}>
                 <Link href="#clearance">{translation.clearance}</Link>
               </li>
             )}
           </ul>
         ) : (
           <ul className="mobile-menu-links">
-            <li className={isActive("/home")}>
+            <li className={isActive("/home")} onClick={() => onGoTo()}>
               <Link href="/home">{translation.home}</Link>
             </li>
-            <li className={isActive("/products")}>
+            <li className={isActive("/products")} onClick={() => onGoTo()}>
               <Link href="/products?itemStatus=AVAILABLE">{translation.allProducts}</Link>
             </li>
-            <li className={isActive("/brands")}>
+            <li className={isActive("/brands")} onClick={() => onGoTo()}>
               <Link href="/brands">{translation.brands}</Link>
             </li>
           </ul>
         )}
 
         <hr />
-        <MenuControl />
+        <MenuControl onGoTo={onGoTo}/>
       </div>
     </div>
   );

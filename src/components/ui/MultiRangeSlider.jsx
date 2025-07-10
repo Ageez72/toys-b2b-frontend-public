@@ -14,8 +14,8 @@ import { useSearchParams } from "next/navigation";
 
 const MultiRangeSlider = ({ min, max, selectedFrom, selectedTo, title, initiallyOpen = false, handlePriceFrom, handlePriceTo }) => {
   const searchParams = useSearchParams();
-  const fromPrice = searchParams?.get("fromPrice");
-  const toPrice = searchParams?.get("toPrice");
+  const fromPrice = Number(searchParams?.get("fromPrice"));
+  const toPrice = Number(searchParams?.get("toPrice"));
 
   const STORAGE_KEY = "price_range";
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -105,8 +105,8 @@ const MultiRangeSlider = ({ min, max, selectedFrom, selectedTo, title, initially
                     Number(event.target.value),
                     maxVal - 1
                   );
-                  setMinVal(value);
-                  handlePriceFrom(event.target.value)
+                  setMinVal(value);              
+                  handlePriceFrom(Number(event.target.value))
                 }}
                 className="thumb thumb--left"
                 style={{ zIndex: minVal > max - 100 ? "5" : undefined }}
@@ -121,8 +121,8 @@ const MultiRangeSlider = ({ min, max, selectedFrom, selectedTo, title, initially
                     Number(event.target.value),
                     minVal + 1
                   );
-                  setMaxVal(value);
-                  handlePriceTo(event.target.value)
+                  setMaxVal(value); 
+                  handlePriceTo(Number(event.target.value))
                 }}
                 className="thumb thumb--right"
               />

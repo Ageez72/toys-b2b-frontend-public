@@ -72,7 +72,7 @@ export default function Page() {
     <div className="max-w-screen-xl mx-auto p-4 product-details">
       <Breadcrumb items={breadcrumbItems} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5 pt-5 pb-5 details-card">
-        <ProductGallery images={details?.images["800"].list} />
+        <ProductGallery images={details?.images["800"].list} main={details?.images["800"].main} />
         <DetailsProductCard item={details} />
       </div>
       <div className="card mt-5">
@@ -175,7 +175,7 @@ export default function Page() {
           details?.catalogs.length && (
             <>
               <h3 className="sub-title mb-5">{translation.catalogs}</h3>
-              <div className="badges flex gap-2">
+              <div className="badges flex flex-wrap gap-2">
                 {
                   details?.catalogs?.map(b => (
                     <Link href={`/products?catalog=${encodeURIComponent(b?.id)}&itemStatus=AVAILABLE`} key={b.id}>

@@ -7,6 +7,7 @@ import { useAppContext } from '../../../context/AppContext';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Loader from './Loaders/Loader';
+import Placeholder from "../../../src/assets/imgs/200x100.svg"
 import { useQuery } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
@@ -59,13 +60,16 @@ export default () => {
             {
                 data?.data.map((slide, i) => (
                     <SwiperSlide key={slide.description + slide.brandID}>
-                        <Link href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`} className="card block" style={{ position: 'relative', width: '100%', height: '132px' }}>
-                            <Image
-                                src={slide.image}
-                                alt="Brand 1"
-                                fill
-                                style={{ objectFit: 'contain' }}
-                            />
+                        <Link href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`}>
+                            <div className="relative brands card" style={{ height: "132px" }}>
+                                <Image
+                                    className='brand-logo'
+                                    src={slide.image !== "" ? slide.image : Placeholder}
+                                    alt={slide.description !== "" ? slide.description : 'Brand'}
+                                    fill
+                                    style={{ objectFit: 'contain' }}
+                                />
+                            </div>
                         </Link>
                     </SwiperSlide>
                 ))
