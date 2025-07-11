@@ -39,7 +39,7 @@ export default function Page() {
   return (
     <div className="container">
       <h2 className="main-title mt-40 mb-4">{translation.brands}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-40">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-40">
         {
           data?.data.map((brand, i) => (
             <Link href={`/products?brand=${brand.brandID}&itemStatus=AVAILABLE`} key={brand.brandID}>

@@ -35,7 +35,7 @@ export default () => {
         <Swiper
             dir={state.LANG === "AR" ? "rtl" : "ltr"}
             modules={[Autoplay]}
-            slidesPerView={1.5}
+            slidesPerView={2}
             spaceBetween={10}
             autoplay={{
                 delay: 5000,
