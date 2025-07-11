@@ -171,7 +171,7 @@ export default function Page() {
   }
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [`allProducts-${queryString}`, queryString],
+    queryKey: [`allProducts}`, apiParams],
     queryFn: fetchProducts,
   });
 
