@@ -1,8 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
+import { Fancybox } from '@fancyapps/ui';
 
 export default function ProductGallery({ images, main }) {
     const [selectedImage, setSelectedImage] = useState(images[0]);
+
+    useEffect(() => {
+        Fancybox.bind('[data-fancybox]', {});
+    }, [selectedImage]);
 
     const isYouTubeLink = (url) => /youtube\.com|youtu\.be/.test(url);
     const isVideoFile = (url) => url.endsWith('.mp4') || url.includes('.mp4');
@@ -21,8 +28,7 @@ export default function ProductGallery({ images, main }) {
             <button
                 key={index}
                 onClick={() => setSelectedImage(img)}
-                className={`border rounded-md p-1 ${selectedImage === img ? 'border-red-500' : 'border-transparent'
-                    }`}
+                className={`border rounded-md p-1 ${selectedImage === img ? 'border-red-500' : 'border-transparent'}`}
             >
                 <span className='relative block'>
                     {(isYouTube || isVideo) && (
@@ -33,7 +39,7 @@ export default function ProductGallery({ images, main }) {
                             isYouTube && youtubeId
                                 ? `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`
                                 : isVideo
-                                    ? main // fallback thumbnail or a generated preview
+                                    ? main // fallback preview
                                     : img
                         }
                         alt={`Thumbnail ${index + 1}`}
@@ -45,36 +51,67 @@ export default function ProductGallery({ images, main }) {
     };
 
     const renderMainContent = () => {
-        if (isYouTubeLink(selectedImage)) {
-            const id = getYouTubeId(selectedImage);
-            return (
+        const isYouTube = isYouTubeLink(selectedImage);
+        const isVideo = isVideoFile(selectedImage);
+        const youtubeId = getYouTubeId(selectedImage);
+
+        const fancyHref = isYouTube && youtubeId
+            ? `https://www.youtube.com/watch?v=${youtubeId}`
+            : selectedImage;
+
+        const fancyDataType = isYouTube ? 'iframe' : 'image';
+
+        let content;
+
+        if (isYouTube && youtubeId) {
+            content = (
                 <iframe
-                    className="w-full h-[400px] md:h-[500px]"
-                    src={`https://www.youtube.com/embed/${id}`}
+                    className="w-full h-full aspect-video"
+                    src={`https://www.youtube.com/embed/${youtubeId}`}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                 ></iframe>
             );
-        } else if (isVideoFile(selectedImage)) {
-            return (
+        } else if (isVideo) {
+            content = (
                 <video
                     controls
-                    className="w-full h-[400px] md:h-[500px] rounded"
+                    className="w-full max-h-[500px] w-auto max-w-full rounded object-contain"
                 >
                     <source src={selectedImage} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
             );
         } else {
-            return (
+            content = (
                 <img
                     src={selectedImage}
                     alt="Selected product"
-                    className="w-full h-auto max-h-[500px] object-contain rounded"
+                    className="max-h-[500px] w-auto max-w-full object-contain rounded"
                 />
             );
         }
+
+        return (
+            <div className="relative group w-full max-w-full overflow-hidden">
+                <div className="w-full max-h-[500px] aspect-video flex items-center justify-center">
+                    {content}
+                </div>
+
+                {/* Expand icon only for image or YouTube */}
+                {!isVideo && (
+                    <a
+                        href={fancyHref}
+                        data-fancybox
+                        data-type={fancyDataType}
+                        className="absolute top-2 right-2 z-10 text-white bg-black/50 p-2 rounded-full hidden group-hover:flex items-center justify-center"
+                    >
+                        <i className="icon-expand-solid text-xl"></i>
+                    </a>
+                )}
+            </div>
+        );
     };
 
     return (

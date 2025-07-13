@@ -131,32 +131,42 @@ export default function Page() {
             )
           }
           {
-            details?.constants.AGES && (
+            Array.isArray(details?.constants.AGES) &&
+            details.constants.AGES.some(el => el.trim() !== "") && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.age}</strong></div>
-                <div className="info w-1/2">+{getAge(details?.constants.AGES)} {translation.years}</div>
+                <div className="info w-1/2">{details?.constants.AGES}</div>
+                {/* <div className="info w-1/2">+{getAge(details?.constants.AGES)} {translation.years}</div> */}
               </div>
             )
           }
           {
-            details?.constants.GENDER && (
+            Array.isArray(details?.constants.GENDER) &&
+            details.constants.GENDER.some(el => el.trim() !== "") && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.gender}</strong></div>
-                <div className="info w-1/2">{
-                  details?.constants.GENDER.map((el, index) => (
-                    <span key={index}>{el} {index !== details?.constants.GENDER.length - 1 && `${state.LANG === "AR"? '،': ',' }`}</span>
-                  ))
-                }</div>
+                <div className="info w-1/2">
+                  {details.constants.GENDER.map((el, index) => (
+                    el.trim() !== "" && (
+                      <span key={index}>
+                        {el}
+                        {index !== details.constants.GENDER.length - 1 &&
+                          `${state.LANG === "AR" ? '،' : ','}`}
+                      </span>
+                    )
+                  ))}
+                </div>
               </div>
             )
           }
           {
-            details?.constants.MATERIAL && (
+            Array.isArray(details?.constants.MATERIAL) &&
+            details.constants.MATERIAL.some(el => el.trim() !== "") && (
               <div className="item flex w-full">
                 <div className="title w-1/2"><strong>{translation.material}</strong></div>
                 <div className="info w-1/2">{
                   details?.constants.MATERIAL.map((el, index) => (
-                    <span key={index}>{el} {index !== details?.constants.MATERIAL.length - 1 && `${state.LANG === "AR"? '، ': ', ' }`}</span>
+                    <span key={index}>{el} {index !== details?.constants.MATERIAL.length - 1 && `${state.LANG === "AR" ? '، ' : ', '}`}</span>
                   ))
                 }</div>
               </div>
@@ -189,10 +199,12 @@ export default function Page() {
         }
       </div>
       <RateCard reviews={details?.reviews.reviews} id={details?.id} onRefresh={() => setRefresh(true)} />
-      <h3 className="sub-title mb-3 mt-10">{translation.relatedProducts}</h3>
       {
         details?.relatedItems.length && (
-          <RelatedProducts items={details?.relatedItems} />
+          <>
+            <h3 className="sub-title mb-3 mt-10">{translation.relatedProducts}</h3>
+            <RelatedProducts items={details?.relatedItems} />
+          </>
         )
       }
     </div>
