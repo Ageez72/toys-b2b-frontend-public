@@ -144,6 +144,7 @@ export default function ProductGallery({ images, main }) {
                         <Swiper
                             initialSlide={activeIndex}
                             navigation
+                            pagination={{ clickable: true }}
                             modules={[Navigation, Pagination]}
                             className="w-full"
                         >
@@ -164,7 +165,7 @@ export default function ProductGallery({ images, main }) {
                                                     allowFullScreen
                                                 ></iframe>
                                             ) : isVideo ? (
-                                                <video controls className="w-full max-h-[80vh] w-auto max-w-full object-contain rounded">
+                                                <video controls className="max-h-[80vh] w-auto max-w-full object-contain rounded">
                                                     <source src={img} type="video/mp4" />
                                                     Your browser does not support the video tag.
                                                 </video>
