@@ -17,6 +17,7 @@ export default function RelatedProducts({ items }) {
     const { data, isLoading, error } = useQuery({
         queryKey: ['related-products'],
         queryFn: fetchRelatedProducts,
+        cacheTime: 0,
     });
 
 

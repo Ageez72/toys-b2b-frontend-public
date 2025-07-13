@@ -171,8 +171,9 @@ export default function Page() {
   }
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [`allProducts}`, apiParams],
+    queryKey: [`allProducts`, apiParams],
     queryFn: fetchProducts,
+    cacheTime: 0,
   });
 
   // if (isLoading) return <VerticalLoader />;
@@ -253,7 +254,7 @@ export default function Page() {
                       </linearGradient>
                     </defs>
                   </svg>
-                  <h2 className='sub-title'>لم يتم العثور على اي نتائج!</h2>
+                  <h2 className='sub-title'>{translation.products.resultsNotFound}</h2>
                 </div>
               )
             }

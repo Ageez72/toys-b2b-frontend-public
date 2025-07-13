@@ -21,7 +21,7 @@ export default function ErrorToast({ message }) {
     if (!mounted) return null;
 
     return createPortal(
-        <div className={`fixed bottom-6 ${state.LANG === 'EN' ? 'left-6' : 'right-6'} z-9999 w-auto max-w-sm bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg animate-slide-in`}>
+        <div className={`fixed top-6 ${state.LANG === 'EN' ? 'left-6' : 'right-6'} z-9999 w-auto max-w-sm bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg animate-slide-in`}>
             <div className="flex items-start gap-3">
                 <div className="mt-1">
                     <i className="icon-warning-2 text-red-500 text-lg"></i>

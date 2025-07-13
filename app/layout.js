@@ -55,7 +55,7 @@ export default function RootLayout({ children }) {
         <body
           className={`antialiased ${!isAuthPage ? "header-padding" : ""}`}
         >
-           <Toaster position={"bottom-left"} toastOptions={{ duration: 4000 }} />
+           <Toaster position={"top-left"} toastOptions={{ duration: 4000 }} />
           <AppProvider>
             {!isAuthPage && (
               <>

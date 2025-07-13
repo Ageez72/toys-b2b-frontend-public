@@ -66,7 +66,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     const lang = Cookies.get('lang') || 'AR';
 
     const [fromPrice, setFromPrice] = useState(useParams.get('fromPrice') || 0); // نطاق السعر
-    const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 1000); // نطاق السعر
+    const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 1600); // نطاق السعر
     const [itemType, setItemType] = useState(useParams.get('itemType') || ""); // الاقسام
     const [brand, setBrand] = useState(() => {
         const value = useParams.get('brand');        
@@ -129,7 +129,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
             query.set('page', '1');
             // Reset all filters
             setFromPrice(0);
-            setToPrice(1000);
+            setToPrice(1600);
             setItemType("");
             setItemStatus("");
             setBrand([]);

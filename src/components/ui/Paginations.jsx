@@ -24,45 +24,76 @@ export default function Pagination({ currentPage, pagesToken, totalPages }) {
 
 
   const renderPageButtons = () => {
-    const buttons = [];
+  const buttons = [];
+  const maxVisible = 3; // number of pages to show around currentPage
 
-    const maxVisible = 3;
-    const startPage = Math.max(1, currentPage - 1);
-    const endPage = Math.min(totalPages, startPage + maxVisible - 1);
+  // Always show page 1
+  buttons.push(
+    <button
+      key={1}
+      onClick={() => goToPage(1, pagesToken)}
+      aria-current={1 === currentPage ? 'page' : undefined}
+      className={`relative z-10 inline-flex items-center px-4 py-2 focus:z-20 ${currentPage === 1 ? 'active' : ''}`}
+    >
+      1
+    </button>
+  );
 
-    for (let i = startPage; i <= endPage; i++) {
+  // Show start dots if needed
+  if (currentPage > 3) {
+    buttons.push(
+      <span key="startDots" className="relative z-10 inline-flex items-center px-4 py-2 dots pointer-events-none">
+        ...
+      </span>
+    );
+  }
+
+  // Pages around current (excluding 1 and totalPages)
+  const startPage = Math.max(2, currentPage - 1);
+  const endPage = Math.min(totalPages - 1, currentPage + 1);
+
+  for (let i = startPage; i <= endPage; i++) {
+    // Skip page 1 and last page to avoid duplicates
+    if (i !== 1 && i !== totalPages) {
       buttons.push(
         <button
           key={i}
           onClick={() => goToPage(i, pagesToken)}
           aria-current={i === currentPage ? 'page' : undefined}
-          className={`relative z-10 inline-flex items-center px-4 py-2 focus:z-20 ${i === currentPage ? 'active' : ''
-            }`}
+          className={`relative z-10 inline-flex items-center px-4 py-2 focus:z-20 ${i === currentPage ? 'active' : ''}`}
         >
           {i}
         </button>
       );
     }
+  }
 
-    if (endPage < totalPages) {
-      buttons.push(
-        <span key="dots" className="relative z-10 inline-flex items-center px-4 py-2 focus:z-20 dots pointer-events-none">
-          ...
-        </span>
-      );
-      buttons.push(
-        <button
-          key={totalPages}
-          onClick={() => goToPage(totalPages, pagesToken)}
-          className="relative z-10 inline-flex items-center px-4 py-2 focus:z-20"
-        >
-          {totalPages}
-        </button>
-      );
-    }
+  // Show end dots if needed
+  if (currentPage < totalPages - 2) {
+    buttons.push(
+      <span key="endDots" className="relative z-10 inline-flex items-center px-4 py-2 dots pointer-events-none">
+        ...
+      </span>
+    );
+  }
 
-    return buttons;
-  };
+  // Always show last page if more than 1
+  if (totalPages > 1) {
+    buttons.push(
+      <button
+        key={totalPages}
+        onClick={() => goToPage(totalPages, pagesToken)}
+        aria-current={totalPages === currentPage ? 'page' : undefined}
+        className={`relative z-10 inline-flex items-center px-4 py-2 focus:z-20 ${totalPages === currentPage ? 'active' : ''}`}
+      >
+        {totalPages}
+      </button>
+    );
+  }
+
+  return buttons;
+};
+
 
   return (
     <div className="flex items-center justify-center mt-4 px-4 py-3 sm:px-6 pagination-container">

@@ -43,19 +43,18 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
         const [_key, searchText] = queryKey;
         const filterItems = Cookies.get('store_filters') || '';
         const token = Cookies.get('token');
-        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize || 3}&${filterItems}&itemStatus=AVAILABLE&lang=${lang}`;
+        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize || 3}&${filterItems}&itemStatus=AVAILABLE&lang=${lang}&token=${token}`;
 
-        const res = await axios.get(url, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
+        const res = await axios.get(url, {});
 
         return res.data;
     };
 
     const { data, isFetching, error } = useQuery({
-        queryKey: ['products-search-list', debouncedSearchText],
+        queryKey: [`products-search-list`, debouncedSearchText],
         queryFn: fetchProducts,
         enabled: debouncedSearchText.length >= 3 && !hasSelected,
+        cacheTime: 0,
     });
 
     useEffect(() => {
