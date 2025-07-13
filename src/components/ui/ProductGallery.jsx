@@ -6,11 +6,13 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useAppContext } from '../../../context/AppContext';
 
 export default function ProductGallery({ images, main }) {
     const [selectedImage, setSelectedImage] = useState(images[0]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
+    const { state = {}, dispatch = () => {} } = useAppContext() || {};
 
     const isYouTubeLink = (url) => /youtube\.com|youtu\.be/.test(url);
     const isVideoFile = (url) => url.endsWith('.mp4') || url.includes('.mp4');
@@ -103,7 +105,7 @@ export default function ProductGallery({ images, main }) {
                 {/* Expand icon opens swiper modal */}
                 <button
                     onClick={() => openModal(selectedIndex)}
-                    className="absolute top-2 right-2 z-10 text-white bg-black/50 p-2 rounded-full flex items-center justify-center cursor-pointer"
+                    className={`absolute top-2 ${state.LANG === 'AR' ? 'right-2' : 'left-2'} z-10 text-white bg-black/50 p-2 rounded-full flex items-center justify-center cursor-pointer`}
                 >
                     <i className="icon-expand-solid text-xl"></i>
                 </button>
