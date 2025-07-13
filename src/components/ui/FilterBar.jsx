@@ -20,6 +20,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
+    const [showClearButton, setShowClearButton] = useState(false);
 
     const StatusOptions = [
         {
@@ -69,7 +70,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 1600); // نطاق السعر
     const [itemType, setItemType] = useState(useParams.get('itemType') || ""); // الاقسام
     const [brand, setBrand] = useState(() => {
-        const value = useParams.get('brand');        
+        const value = useParams.get('brand');
         return value ? value.split(',') : [];
     }); // العلامات التجارية
     const [category, setCategory] = useState(useParams.get('category') ? useParams.get('category').split(',') : ""); // التصنيفات
@@ -173,14 +174,14 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
     const parentOptions = (st, options) => {
         // console.log(options);
-        
+
         setBrand(options)
         fetchCategoriesOptions(st, options)
     }
 
     // get all options
     const fetchCategoriesOptions = async (ch, brands = []) => {
-        
+
         const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}&token=${Cookies.get('token')}`, {});
 
         setCategoriesAllOptions(res.data);
@@ -215,13 +216,29 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     }
 
     useEffect(() => {
-        fetchCatalogsOptions()        
+        fetchCatalogsOptions()
         parentOptions(false, brand)
         // if(brand.length){
         // }else {
         //     fetchCategoriesOptions(true, brand)
         // }
     }, [])
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const entries = Array.from(params.entries());
+
+        // Exclude default filter like itemStatus=AVAILABLE
+        const meaningfulParams = entries.filter(([key, value]) => {
+            return !(key === 'itemStatus' && value === 'AVAILABLE');
+        });
+
+        if (meaningfulParams.length > 1) {
+            setShowClearButton(true);
+        } else {
+            setShowClearButton(false);
+        }
+    }, [useParams.toString()]);
 
     return (
         <>
@@ -265,7 +282,11 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
                     <div className="action-btns flex gap-3 mt-4">
                         <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button>
-                        <button className="gray-btn flex-1" onClick={handleClearFilter}>{translation.clear}</button>
+                        {showClearButton && (
+                            <button className="gray-btn flex-1" onClick={handleClearFilter}>
+                                {translation.clear}
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
