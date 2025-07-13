@@ -1,22 +1,27 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import '@fancyapps/ui/dist/fancybox/fancybox.css';
-import { Fancybox } from '@fancyapps/ui';
+import React, { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export default function ProductGallery({ images, main }) {
     const [selectedImage, setSelectedImage] = useState(images[0]);
-
-    useEffect(() => {
-        Fancybox.bind('[data-fancybox]', {});
-    }, [selectedImage]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const isYouTubeLink = (url) => /youtube\.com|youtu\.be/.test(url);
     const isVideoFile = (url) => url.endsWith('.mp4') || url.includes('.mp4');
-
     const getYouTubeId = (url) => {
         const match = url.match(/(?:youtube\.com.*[?&]v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
         return match ? match[1] : null;
+    };
+
+    const openModal = (index) => {
+        setActiveIndex(index);
+        setIsModalOpen(true);
     };
 
     const renderThumbnail = (img, index) => {
@@ -39,7 +44,7 @@ export default function ProductGallery({ images, main }) {
                             isYouTube && youtubeId
                                 ? `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`
                                 : isVideo
-                                    ? main // fallback preview
+                                    ? main
                                     : img
                         }
                         alt={`Thumbnail ${index + 1}`}
@@ -54,12 +59,6 @@ export default function ProductGallery({ images, main }) {
         const isYouTube = isYouTubeLink(selectedImage);
         const isVideo = isVideoFile(selectedImage);
         const youtubeId = getYouTubeId(selectedImage);
-
-        const fancyHref = isYouTube && youtubeId
-            ? `https://www.youtube.com/watch?v=${youtubeId}`
-            : selectedImage;
-
-        const fancyDataType = isYouTube ? 'iframe' : 'image';
 
         let content;
 
@@ -93,38 +92,98 @@ export default function ProductGallery({ images, main }) {
             );
         }
 
+        const selectedIndex = images.indexOf(selectedImage);
+
         return (
             <div className="relative group w-full max-w-full overflow-hidden">
                 <div className="w-full max-h-[500px] aspect-video flex items-center justify-center">
                     {content}
                 </div>
 
-                {/* Expand icon only for image or YouTube */}
-                {!isVideo && (
-                    <a
-                        href={fancyHref}
-                        data-fancybox
-                        data-type={fancyDataType}
-                        className="absolute top-2 right-2 z-10 text-white bg-black/50 p-2 rounded-full hidden group-hover:flex items-center justify-center"
-                    >
-                        <i className="icon-expand-solid text-xl"></i>
-                    </a>
-                )}
+                {/* Expand icon opens swiper modal */}
+                <button
+                    onClick={() => openModal(selectedIndex)}
+                    className="absolute top-2 right-2 z-10 text-white bg-black/50 p-2 rounded-full flex lg:hidden group-hover:flex items-center justify-center cursor-pointer"
+                >
+                    <i className="icon-expand-solid text-xl"></i>
+                </button>
             </div>
         );
     };
 
     return (
-        <div className="flex flex-col md:flex-row items-start gap-4 products-gallery">
-            {/* Thumbnails */}
-            <div className="flex md:flex-col gap-2 flex-wrap md:flex-nowrap thumbnails">
-                {images.map((img, index) => renderThumbnail(img, index))}
+        <>
+            <div className="flex flex-col md:flex-row items-start gap-4 products-gallery">
+                {/* Thumbnails */}
+                <div className="flex md:flex-col gap-2 flex-wrap md:flex-nowrap thumbnails">
+                    {images.map((img, index) => renderThumbnail(img, index))}
+                </div>
+
+                {/* Main Display */}
+                <div className="flex-1 main-image w-full">
+                    {renderMainContent()}
+                </div>
             </div>
 
-            {/* Main Display */}
-            <div className="flex-1 main-image w-full">
-                {renderMainContent()}
-            </div>
-        </div>
+            {/* Modal with Swiper */}
+            {isModalOpen && (
+                <div
+                    className="product-gallery-modal fixed inset-0 bg-black/90 z-[999999999] flex items-center justify-center p-4"
+                    onClick={() => setIsModalOpen(false)} // close on backdrop click
+                >
+                    <button
+                        onClick={() => setIsModalOpen(false)}
+                        className="absolute top-4 right-4 text-white text-3xl z-[1010] cursor-pointer"
+                    >
+                        ×
+                    </button>
+                    {/* Prevent click from bubbling to backdrop */}
+                    <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-5xl">
+                        {/* Close Button */}
+
+                        <Swiper
+                            initialSlide={activeIndex}
+                            navigation
+                            modules={[Navigation, Pagination]}
+                            className="w-full"
+                        >
+                            {images.map((img, index) => {
+                                const isYouTube = isYouTubeLink(img);
+                                const isVideo = isVideoFile(img);
+                                const youtubeId = getYouTubeId(img);
+
+                                return (
+                                    <SwiperSlide key={index}>
+                                        <div className="w-full aspect-video flex items-center justify-center">
+                                            {isYouTube && youtubeId ? (
+                                                <iframe
+                                                    className="w-full h-full"
+                                                    src={`https://www.youtube.com/embed/${youtubeId}`}
+                                                    frameBorder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                ></iframe>
+                                            ) : isVideo ? (
+                                                <video controls className="w-full max-h-[80vh] w-auto max-w-full object-contain rounded">
+                                                    <source src={img} type="video/mp4" />
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            ) : (
+                                                <img
+                                                    src={img}
+                                                    alt={`Slide ${index + 1}`}
+                                                    className="max-h-[80vh] w-auto max-w-full object-contain rounded"
+                                                />
+                                            )}
+                                        </div>
+                                    </SwiperSlide>
+                                );
+                            })}
+                        </Swiper>
+                    </div>
+                </div>
+            )}
+
+        </>
     );
 }
