@@ -103,7 +103,7 @@ export default function ProductGallery({ images, main }) {
                 {/* Expand icon opens swiper modal */}
                 <button
                     onClick={() => openModal(selectedIndex)}
-                    className="absolute top-2 right-2 z-10 text-white bg-black/50 p-2 rounded-full flex lg:hidden group-hover:flex items-center justify-center cursor-pointer"
+                    className="absolute top-2 right-2 z-10 text-white bg-black/50 p-2 rounded-full flex items-center justify-center cursor-pointer"
                 >
                     <i className="icon-expand-solid text-xl"></i>
                 </button>

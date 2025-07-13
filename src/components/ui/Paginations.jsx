@@ -106,7 +106,7 @@ export default function Pagination({ currentPage, pagesToken, totalPages }) {
               disabled={currentPage <= 1}
             >
               <span className="sr-only">Previous</span>
-              <i className="icon-double-right"></i>
+              <i className="icon-arrow-right-01-round"></i>
             </button>
 
             {renderPageButtons()}
@@ -117,7 +117,7 @@ export default function Pagination({ currentPage, pagesToken, totalPages }) {
               disabled={currentPage >= totalPages}
             >
               <span className="sr-only">Next</span>
-              <i className="icon-double-left"></i>
+              <i className="icon-arrow-left-01-round"></i>
             </button>
           </nav>
         </div>

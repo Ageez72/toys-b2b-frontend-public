@@ -553,10 +553,13 @@
     }
     .swiper-pagination-clickable .swiper-pagination-bullet {
         opacity: 1;
-        background-color: #fff;
+        background-color: #1e1e1e;
         &.swiper-pagination-bullet-active {
             background-color: var(--primary-color);
         }
+    }
+    img {
+        user-select: none;
     }
 }
 

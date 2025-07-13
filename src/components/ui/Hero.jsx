@@ -16,7 +16,7 @@ import { useAppContext } from "../../../context/AppContext";
 export default function Hero() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSidebarModalOpen, setIsSidebarModalOpen] = useState(false);
-    const { state = {}, dispatch = () => {} } = useAppContext() || {};
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
 
     useEffect(() => {
@@ -35,13 +35,19 @@ export default function Hero() {
             />
             <AddBulkModal
                 open={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => {
+                    document.documentElement.classList.remove("clear-html")
+                    setIsModalOpen(false)
+                }}
             />
             <main className="hero-section" style={{ backgroundImage: `url(${hero.src})` }}>
                 <div className="hero-content">
                     <h1 className="hero-title text-center">{translation.heroTitle}</h1>
                     <QuickAdd openSidebar={() => setIsSidebarModalOpen(true)} />
-                    <button className='add-bulk-open-btn' onClick={() => setIsModalOpen(true)}>
+                    <button className='add-bulk-open-btn' onClick={() => {
+                        document.documentElement.classList.add("clear-html")
+                        setIsModalOpen(true)
+                    }}>
                         <i className="icon-element-plus"></i>
                         {translation.bulkTitle}
                     </button>
@@ -62,7 +68,7 @@ export default function Hero() {
                         style={{ objectFit: "contain" }}
                     />
                 </div>
-                <h2 className='adds-title'>Regional Leaders<br/> In Toy Distribution</h2>
+                <h2 className='adds-title'>Regional Leaders<br /> In Toy Distribution</h2>
             </main>
         </>
     );
