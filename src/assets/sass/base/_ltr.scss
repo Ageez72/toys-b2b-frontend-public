@@ -128,4 +128,9 @@
         border-right: none;
             border-left: 1px solid #ccd3d9;
     }
+    .search-results-listing .all-products {
+        .icon-arrow-left-01-round {
+            transform: rotate(180deg);
+        }
+    }
 }

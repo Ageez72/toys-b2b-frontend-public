@@ -18,10 +18,10 @@ export default function Breadcrumb({ items = [] }) {
                     const isLast = index === items.length - 1;
 
                     return (
-                        <li key={index} className="inline-flex items-center">
+                        <li key={index} className="inline-flex items-center m-0">
                             {index !== 0 && (
                                 <svg
-                                    className="rtl:rotate-180 w-3 h-3 mx-1"
+                                    className="rtl:rotate-180 w-3 h-3 mx-2"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -38,13 +38,13 @@ export default function Breadcrumb({ items = [] }) {
                             )}
 
                             {isLast ? (
-                                <span className="ms-1 md:ms-2 last">
+                                <span className="last">
                                     {item.label}
                                 </span>
                             ) : (
                                 <a
                                     href={item.href}
-                                    className="inline-flex items-center"
+                                    className="inline-flex items-center m-0"
                                 >
                                     {item.label}
                                 </a>
