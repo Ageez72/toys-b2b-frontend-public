@@ -217,5 +217,6 @@
   "productName": "Product Name",
   "avlQty": "Available Quantity",
   "orderQty": "Ordered Quantity",
-  "overOrderedNotice": "You have requested quantities for the following products that are currently unavailable."
+  "overOrderedNotice": "You have requested quantities for the following products that are currently unavailable.",
+  "noRelatedProducts": "No related products found at the moment."
 }
