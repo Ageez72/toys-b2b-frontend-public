@@ -43,8 +43,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
         const [_key, searchText] = queryKey;
         const filterItems = Cookies.get('store_filters') || '';
         const token = Cookies.get('token');
-        const url = `${BASE_API}${endpoints.products.list}&search=${searchText}&pageSize=${pageSize || 3}&${filterItems}&itemStatus=AVAILABLE&lang=${lang}&token=${token}`;
-
+        const url = `${BASE_API}${endpoints.products.list}&search=${encodeURIComponent(searchText)}&pageSize=${pageSize || 3}&${filterItems}&itemStatus=AVAILABLE&lang=${lang}&token=${token}`;
         const res = await axios.get(url, {});
 
         return res.data;
@@ -90,7 +89,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
                 onChange={handleInputChange}
             />
 
-            {showResults && (
+            {showResults && !isFetching && (
                 <div className={`search-results-listing ${bulk ? 'bulk-listing' : ''}`}>
                     {data.items.map((item) => (
                         <div className='search-item flex items-center justify-evenly' key={item.id}>
@@ -123,6 +122,11 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
             {data?.items?.length === 0 && !hasSelected && (
                 <div className={`search-results-listing no-results`}>
                     {translation.noResults}
+                </div>
+            )}
+            {isFetching && (
+                <div className={`search-results-listing no-results`}>
+                    {translation.loading}
                 </div>
             )}
         </>

@@ -5,25 +5,41 @@ import { addToCart, getCart } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
-import { showSuccessToast, showErrorToast, showWarningToast } from '@/actions/toastUtils';
+import { showSuccessToast, showErrorToast } from '@/actions/toastUtils';
 
 export default function AddToCart({ item }) {
   const [count, setCount] = useState(1);
   const { state = {}, dispatch = () => {} } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar); // default fallback
 
+  const lang = state.LANG || 'EN';
+
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
 
-  const lang = state.LANG || 'EN';
+  // Get existing qty of this item from the cart
+  const existingQty = (() => {
+    const cart = getCart();
+    const existing = cart.find(obj => obj.item === item.id);
+    return existing ? parseInt(existing.qty) : 0;
+  })();
 
-  const increase = () => setCount((prev) => prev + 1);
-  const decrease = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
+  const increase = () => {
+    if (count + existingQty < 10) {
+      setCount(prev => prev + 1);
+    }
+  };
+
+  const decrease = () => {
+    setCount(prev => (prev > 1 ? prev - 1 : 1));
+  };
 
   const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value);
-    setCount(isNaN(value) || value < 1 ? 1 : value);
+    let value = parseInt(e.target.value);
+    if (isNaN(value) || value < 1) value = 1;
+    if (value + existingQty > 10) value = 10 - existingQty;
+    setCount(value);
   };
 
   const handleAddToCart = () => {
@@ -45,7 +61,6 @@ export default function AddToCart({ item }) {
       if (storedCart) {
         dispatch({ type: 'STORED-ITEMS', payload: storedCart });
       }
-
       showSuccessToast(translation.addedToCart, lang, translation.success);
     }
   };
@@ -60,6 +75,7 @@ export default function AddToCart({ item }) {
           className="w-fit text-center"
           type="number"
           min={1}
+          max={10 - existingQty}
           value={count}
           onChange={handleQuantityChange}
         />
@@ -67,7 +83,11 @@ export default function AddToCart({ item }) {
           <i className="icon-add"></i>
         </button>
       </div>
-      <button onClick={handleAddToCart} className="primary-btn w-1/2 add-to-cart-btn">
+      <button
+        onClick={handleAddToCart}
+        className={`primary-btn w-1/2 add-to-cart-btn ${count + existingQty > 10 ? 'disabled' : null}`}
+        disabled={count + existingQty > 10}
+      >
         {translation.addCart}
       </button>
     </div>

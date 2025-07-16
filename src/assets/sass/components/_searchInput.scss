@@ -7,6 +7,9 @@
     text-align: start;
     padding: 15px 0;
     border: 1px solid #ccc;
+    @media (max-width: 660px) {
+        width: 91%;
+    }
 
     &.no-results {
         text-align: center;

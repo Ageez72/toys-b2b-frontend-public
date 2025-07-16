@@ -15,7 +15,7 @@ import { showSuccessToast, showWarningToast, showErrorToast } from '@/actions/to
 export default function AddBulkModal({ open, onClose }) {
   const [bulkItems, setBulkItems] = useState([{ isConfirmed: false }]);
   const [resetTriggers, setResetTriggers] = useState({});
-  const { state = {}, dispatch = () => {} } = useAppContext() || {};
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const translation = state.LANG === "EN" ? en : ar;
   const lang = state.LANG || 'EN';
 
@@ -71,7 +71,7 @@ export default function AddBulkModal({ open, onClose }) {
     setBulkItems(updated);
   };
 
-  const handleSubmit = () => {    
+  const handleSubmit = () => {
     const hasInvalidItem = bulkItems.some(item =>
       item.isConfirmed &&
       (!item.qty || item.qty <= 0 || item.qty > item.avlqty)
@@ -118,20 +118,21 @@ export default function AddBulkModal({ open, onClose }) {
   return (
     <Dialog open={open} onClose={onClose} className="relative z-999">
       <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div className="fixed inset-0 z-99999999 w-screen overflow-y-auto">
         <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0 w-full">
-          <DialogPanel className="relative add-bulk-modal transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all sm:my-8">
+          <DialogPanel className="relative add-bulk-modal transform overflow-hidden rounded-lg bg-white text-start shadow-xl transition-all my-25">
             <div className="p-32">
               <h2 className="modal-title">{translation.oneClick}</h2>
               <div className="add-bulk-table">
                 <div className="table-head flex gap-4">
                   <div className="name-qty flex items-center justify-between">
-                    <div className="name">{translation.name}</div>
+                    <div className="name mb-3 lg:mb-0">{translation.name}</div>
                     <div className="qty">{translation.qty}</div>
                   </div>
-                  <div className="info flex items-center justify-between">
+                  <div className="info flex items-center justify-between gap-1">
                     <div className="item flex-1">{translation.productNumber}</div>
                     <div className="item flex-1">{translation.availablity}</div>
+                    <div className="item flex-1">{translation.totalItems}</div>
                     <div className="item flex-1">{translation.itemPrice}</div>
                     <div className="item flex-1">{translation.totalPrice}</div>
                     <div className="item delete"></div>
@@ -143,10 +144,12 @@ export default function AddBulkModal({ open, onClose }) {
                     <div key={index} className="product-row flex items-center gap-4">
                       <div className="name-qty flex items-center justify-between">
                         <div className="name">
+                          <label className="mobile-title hidden">{translation.name}</label>
                           {item.isConfirmed ? (
                             <input
                               type="text"
                               value={item.name}
+                              title={item.name}
                               readOnly
                               className="w-full mobile-box"
                             />
@@ -163,6 +166,7 @@ export default function AddBulkModal({ open, onClose }) {
                           )}
                         </div>
                         <div className="qty">
+                          <label className="mobile-title hidden">{translation.qty}</label>
                           <input
                             type="number"
                             min="1"
@@ -179,19 +183,39 @@ export default function AddBulkModal({ open, onClose }) {
 
                       {item.isConfirmed && (
                         <div className="info flex items-center justify-between">
-                          <div className="item flex-1">{item.id}</div>
                           <div className="item flex-1">
-                            {item.status === 'AVAILABLE' ? translation.available : translation.notAvailable}
+                            <label className="mobile-title hidden">{translation.productNumber}</label>
+                            <span className="mobile-box">{item.id}</span>
                           </div>
                           <div className="item flex-1">
-                            {item.price?.toFixed(2)} {translation.jod}
+                            <label className="mobile-title hidden">{translation.availablity}</label>
+                            <span className="mobile-box">
+                              {item.status === 'AVAILABLE' ? translation.available : translation.notAvailable}
+                            </span>
                           </div>
                           <div className="item flex-1">
-                            {item.total?.toFixed(2)} {translation.jod}
+                              <label className="mobile-title hidden">{translation.totalItems}</label>
+                              <span className="mobile-box">{item.avlqty > 10 ? 10 : item.avlqty}</span>
+                            </div>
+                          <div className="item flex-1">
+                            <label className="mobile-title hidden">{translation.itemPrice}</label>
+                            <span className="mobile-box">
+                              {item.price?.toFixed(2)} {translation.jod}
+                            </span>
+                          </div>
+                          <div className="item flex-1">
+                            <label className="mobile-title hidden">{translation.totalPrice}</label>
+                            <span className="mobile-box">
+                              {item.total?.toFixed(2)} {translation.jod}
+                            </span>
                           </div>
                           <div className="item delete">
-                            <button className="delete-btn" onClick={() => removeRow(index)}>
+                            <button
+                              className="delete-btn"
+                              onClick={() => removeRow(index)}
+                            >
                               <i className="icon-minus"></i>
+                              <span className="mobile-title hidden">{translation.delete}</span>
                             </button>
                           </div>
                         </div>

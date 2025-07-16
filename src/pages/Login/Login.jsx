@@ -97,7 +97,7 @@ function Login() {
                   {...register('identifier', {
                     required: translation.login.errors.username.required,
                     pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$|^[a-zA-Z0-9._-]+$/,
+                      value: /^[a-zA-Z0-9._\- ]+$/,
                       message: translation.login.errors.username.invalid,
                     },
                   })}

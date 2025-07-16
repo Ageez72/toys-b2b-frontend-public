@@ -30,12 +30,13 @@ export default function Register() {
 
   useEffect(() => {
     setIsLoading(false);
-    document.title = state.LANG === 'AR' ? ar.login.register : en.login.register ;
+    document.title = state.LANG === 'AR' ? ar.login.register : en.login.register;
   }, []);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -56,6 +57,7 @@ export default function Register() {
         setIsModalOpen(true);
         setIsErrorModalOpen(false);
         setModalSuccessMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
+        reset(); // ✅ clear the form
       } else {
         setModalErrorMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR);
         setIsErrorModalOpen(true);
@@ -66,6 +68,7 @@ export default function Register() {
       setIsErrorModalOpen(true);
     }
   };
+
 
   return (
     <div className="container auth-wrapper">
@@ -122,7 +125,7 @@ export default function Register() {
                   {...register('username', {
                     required: translation.register.errors.username.required,
                     pattern: {
-                      value: /^[a-z0-9]+$/,
+                      value: /^[a-zA-Z0-9._\- ]+$/,
                       message: translation.register.errors.username.invalid,
                     },
                   })}

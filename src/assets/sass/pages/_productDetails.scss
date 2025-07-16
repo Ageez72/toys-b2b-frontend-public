@@ -1,5 +1,6 @@
 .product-details {
     padding: 60px 0;
+
     @media (max-width: 1023px) {
         padding: 60px 1rem;
     }
@@ -135,4 +136,25 @@ textarea {
 .rate-number {
     font-size: 14px;
     color: #7E818E;
+}
+
+.remove-rate-btn {
+    border: 1px solid #8d1a141f;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease-in-out;
+    
+    &:hover {
+        background-color: #8d1a141f;
+    }
+
+    i {
+        font-size: 20px;
+        &::before {
+            color: #8d1a14;
+        }
+    }
 }

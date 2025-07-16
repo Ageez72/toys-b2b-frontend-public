@@ -228,8 +228,7 @@
             @media (max-width: 992px) {
                 width: 100%;
                 flex-wrap: wrap;
-                padding-bottom: 0;
-                padding-top: 0;
+                padding: 0;
             }
 
             .name {
@@ -272,9 +271,12 @@
             }
 
             .item {
+                text-align: center;
+
                 @media (max-width: 992px) {
                     width: 100%;
                     flex: auto;
+                    text-align: start;
                 }
 
                 &.delete {

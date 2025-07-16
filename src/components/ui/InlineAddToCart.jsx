@@ -9,8 +9,12 @@ import { showWarningToast, showErrorToast } from '@/actions/toastUtils';
 
 export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh }) {
   const [count, setCount] = useState(0);
-  const { state = {}, dispatch = () => {} } = useAppContext() || {};
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar); // default fallback
+
+  const lang = state.LANG || "EN";
+
+  const MAX_QTY = 10;
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
@@ -55,19 +59,24 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
     if (onQtyChange) onQtyChange();
     onRefresh && onRefresh();
 
-    // Show toast when item is removed
-    showErrorToast(translation.itemRemoved, state.LANG, translation.warning);
+    showErrorToast(translation.itemRemoved, lang, translation.warning);
   };
 
   const increase = () => {
-    if (count + 1 > avlqty) {
+    const newQty = count + 1;
+
+    if (newQty > 10) return; // Hard limit: max 10 units per item
+
+    if (newQty > avlqty) {
       const msg = state.LANG === "EN"
         ? `Only ${avlqty} item(s) are available in total.`
         : `متوفر فقط ${avlqty} قطعة من هذا المنتج.`;
       showWarningToast(msg, state.LANG, translation.warning);
-      return;
     }
-    updateCart(count + 1);
+
+    if (newQty > avlqty) return; // Prevent going beyond available qty
+
+    updateCart(newQty);
     onRefresh && onRefresh();
   };
 
@@ -76,47 +85,60 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
     onRefresh && onRefresh();
   };
 
+  const handleManualChange = (e) => {
+    let value = parseInt(e.target.value);
+    if (isNaN(value)) value = 0;
+
+    if (value > avlqty) {
+      const msg = lang === "EN"
+        ? `Only ${avlqty} item(s) are available in total.`
+        : `متوفر فقط ${avlqty} قطعة من هذا المنتج.`;
+      showWarningToast(msg, lang, translation.warning);
+      value = avlqty;
+    }
+
+    if (value > 10) {
+      value = 10;
+    }
+
+    if (value < 0) value = 0;
+
+    updateCart(value);
+    onRefresh && onRefresh();
+  };
+
   return (
-<div className="add-to-cart flex gap-3">
-  <div className="product-card-quantity flex items-center gap-1 w-3/4">
-    <button onClick={decrease} className="btn btn-secondary w-fit">
-      <i className="icon-minus"></i>
-    </button>
+    <div className="add-to-cart flex gap-3">
+      <div className="product-card-quantity flex items-center gap-1 w-3/4">
+        <button onClick={decrease} className="btn btn-secondary w-fit">
+          <i className="icon-minus"></i>
+        </button>
 
-    <input
-      type="number"
-      className="min-w-[50px] w-[60px] text-center rounded px-1 py-0.5"
-      value={count}
-      min={0}
-      max={avlqty}
-      onChange={(e) => {
-        let value = parseInt(e.target.value);
-        if (isNaN(value)) value = 0;
-        if (value > avlqty) {
-          const msg = state.LANG === "EN"
-            ? `Only ${avlqty} item(s) are available in total.`
-            : `متوفر فقط ${avlqty} قطعة من هذا المنتج.`;
-          showWarningToast(msg, state.LANG, translation.warning);
-          value = avlqty;
-        }
-        updateCart(value);
-        onRefresh && onRefresh();
-      }}
-    />
+        <input
+          type="number"
+          className="min-w-[50px] w-[60px] text-center rounded px-1 py-0.5"
+          value={count}
+          min={0}
+          max={Math.min(avlqty, MAX_QTY)}
+          onChange={handleManualChange}
+        />
 
-    <button onClick={increase} className="btn btn-secondary w-fit">
-      <i className="icon-add"></i>
-    </button>
-  </div>
+        <button
+          onClick={increase}
+          className="btn btn-secondary w-fit"
+        // disabled={count >= Math.min(avlqty, MAX_QTY)}
+        >
+          <i className="icon-add"></i>
+        </button>
+      </div>
 
-  <div
-    className="w-1/4 text-center remove-cart-item flex items-center justify-center cursor-pointer"
-    onClick={removeFromCart}
-    title="Remove item"
-  >
-    <i className="icon-trash text-red-500"></i>
-  </div>
-</div>
-
+      <div
+        className="w-1/4 text-center remove-cart-item flex items-center justify-center cursor-pointer"
+        onClick={removeFromCart}
+        title="Remove item"
+      >
+        <i className="icon-trash text-red-500"></i>
+      </div>
+    </div>
   );
 }

@@ -120,76 +120,7 @@ function Cart() {
         setOpenConfirmOrder(true);
         handleRefresh();
       } else {
-        // console.log('Error in ADD ORDER:', response.data);
-        const res = {
-          "error": true,
-          "errorType": "qty",
-          "items": [
-            {
-              "name": "Little Tikes Clubhouse Swing Set- Natural Color",
-              "QTY": "6",
-              "AQTY": "2",
-              "ISERROR": "1",
-              "SUBTOTAL": "3620.640",
-              "DISCPER": "30",
-              "LPRICE": "603.440",
-              "DISC": "1086.192",
-              "TAX": "405.512",
-              "NET": "2939.960",
-              "QTYERROR": true,
-              "id": "171093",
-              "price": 699.99,
-              "priceAfterDisc": 489.993,
-              "status": "AVAILABLE",
-              "type": " LITTLE TIKES-OUTDOOR ",
-              "video": "",
-              "category": {
-                "id": "1990566510",
-                "description": "Little Tikes,Little Tikes Swing Sets and Swings"
-              },
-              "dimensions": "219.7x102.9x50.8",
-              "brand": {
-                "id": "00040",
-                "description": "MGA ENTERTAINMENTS "
-              },
-              "avlqty": 2,
-              "itemdisc": 30,
-            },
-            {
-              "name": "Little Tikes Clubhouse Swing 2",
-              "QTY": "13",
-              "AQTY": "2",
-              "ISERROR": "1",
-              "SUBTOTAL": "3620.640",
-              "DISCPER": "30",
-              "LPRICE": "603.440",
-              "DISC": "1086.192",
-              "TAX": "405.512",
-              "NET": "2939.960",
-              "QTYERROR": true,
-              "id": "171093",
-              "price": 699.99,
-              "priceAfterDisc": 489.993,
-              "status": "AVAILABLE",
-              "type": " LITTLE TIKES-OUTDOOR ",
-              "video": "",
-              "category": {
-                "id": "1990566510",
-                "description": "Little Tikes,Little Tikes Swing Sets and Swings"
-              },
-              "dimensions": "219.7x102.9x50.8",
-              "brand": {
-                "id": "00040",
-                "description": "MGA ENTERTAINMENTS "
-              },
-              "avlqty": 12,
-              "itemdisc": 30,
-            }
-          ]
-        }
-
-        // let exceededItems = getOverQtyItems(response?.data?.items);
-        let exceededItems = getOverQtyItems(res);
+        let exceededItems = getOverQtyItems(response?.data?.items);
         setErrorOrderResContent(exceededItems)
         setOpenSureOrder(false);
         setOpenErrorOrderResModal(true)

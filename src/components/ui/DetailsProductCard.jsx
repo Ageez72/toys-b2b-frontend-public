@@ -45,6 +45,11 @@ export default function DetailsProductCard({ item }) {
                         <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
                     )
                 }
+                {
+                    item.discountType !== 'CLEARANCE' && item.avlqty < 10 && (
+                        <Badge type={item.discountType !== 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
+                    )
+                }
                 <h1 className="product-card-title details-product-card-title" title={item.name}>{item.name}</h1>
                 <p className="product-card-description">
                     <Link href={`/products?brand=${item?.brand?.id}&itemStatus=AVAILABLE`}>
@@ -58,22 +63,23 @@ export default function DetailsProductCard({ item }) {
 
                 <div className="price flex items-center gap-3">
                     <span className="product-card-price">
-                        <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span>
+                        {/* <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span> */}
+                        <span className="price-number">{Number(item?.price).toFixed(2)}</span>
                         <span className="price-unit mx-1">{translation.jod}</span>
                     </span>
-                    {
+                    {/* {
                         item?.itemdisc ? (
                             <span className='flex gap-1 discount'>
                                 <span>{Number(item?.price).toFixed(2)}</span>
                                 <span>{translation.jod}</span>
                             </span>
                         ) : ""
-                    }
+                    } */}
                 </div>
 
                 <div className="stars flex items-center gap-2">
                     <StarsRate rate={rate} />
-                    <span className="rate-number">{`(${item?.reviews?.reviews?.length || 0} ${translation.reviews})`}</span>
+                    {/* <span className="rate-number">{`(${item?.reviews?.reviews?.length || 0} ${translation.reviews})`}</span> */}
                 </div>
                 <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description }} />
                 {

@@ -106,10 +106,10 @@ export default function OrderDetails() {
                                                             <span>{Number(item.subTotal).toFixed(2)}</span>
                                                             <span>{translation.jod}</span>
                                                         </p>
-                                                        <p className="flex gap-1 discount sm mb-0">
+                                                        {/* <p className="flex gap-1 discount sm mb-0">
                                                             <span>{Number(item.net).toFixed(2)}</span>
                                                             <span>{translation.jod}</span>
-                                                        </p>
+                                                        </p> */}
                                                     </div>
                                                 </div>
                                             </div>

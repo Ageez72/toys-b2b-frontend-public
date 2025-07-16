@@ -7,10 +7,16 @@ import Hero from "@/components/ui/Hero";
 import { useAppContext } from "../../context/AppContext";
 import en from "../../locales/en.json";
 import ar from "../../locales/ar.json";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { BASE_API, endpoints } from "../../constant/endpoints";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
-  const { state = {}, dispatch = () => {} } = useAppContext() || {};
-  const [translation, setTranslation] = useState(ar); // fallback to Arabic
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const [translation, setTranslation] = useState(ar);
+  const [desktopImage, setDesktopImage] = useState(null);
+  const [mobileImage, setMobileImage] = useState(null);
 
   useEffect(() => {
     if (state.LANG === "EN") {
@@ -51,9 +57,34 @@ export default function Home() {
     },
   ];
 
+
+  async function fetchHomeImages() {
+    const res = await axios.get(`${BASE_API}${endpoints.products.homeImages}&token=${Cookies.get('token')}`, {});
+    return res;
+  }
+  const { data, isLoading, error } = useQuery({
+    queryKey: [`home-images`],
+    queryFn: fetchHomeImages,
+  });
+
+  useEffect(() => {
+    if (data?.data[0]) {
+      const homeImage = data.data[0];
+      setDesktopImage(homeImage["image desktop"]);
+      setMobileImage(homeImage["image mobile"]);
+    }
+  }, [data]);
   return (
     <>
-      <Hero />
+     {
+  !isLoading && (
+    desktopImage && mobileImage ? (
+      <Hero desktopImage={desktopImage} mobileImage={mobileImage} exist={true} />
+    ) : (
+      <Hero exist={false} />
+    )
+  )
+}
       <div className="mt-90 py-4">
         <BrandsSwiper />
       </div>

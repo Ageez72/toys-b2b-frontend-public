@@ -22,7 +22,9 @@ export const endpoints = {
     review: "?action=ADD.REVIEW",
     checkout: "?action=CHECKOUT",
     order: "?action=ADDORDER",
-    myorders: "?action=MYORDERS"
+    myorders: "?action=MYORDERS",
+    removeReview: "?action=DELETE.REVIEW",
+    homeImages: "?action=home.images",
   },
 
 };

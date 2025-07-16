@@ -1,18 +1,45 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import RateModal from './RateModal'
+import RateRemoveModal from './RateRemoveModal';
 import Rate from './Rate'
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
+import { BASE_API, endpoints } from '../../../constant/endpoints';
 import { useAppContext } from '../../../context/AppContext';
+import { getProfile } from '@/actions/utils';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default function RateCard({ reviews, id, onRefresh }) {
     const [open, setOpen] = useState(false)
+    const [openRemoveModal, setOpenRemoveModal] = useState(false)
     const { state = {} } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
+
+
+    const handleSubmitRate = async () => {
+        const storedprofile = getProfile();
+
+        try {
+            // setLoading(true);
+            const response = await axios.get(`${BASE_API}${endpoints.products.removeReview}&token=${Cookies.get('token')}&id=${id}&username=${storedprofile.username}`);
+            if (response.data && !response.data.ERROR) {
+                console.log(response.data);
+                onRefresh && onRefresh()
+                setOpenRemoveModal(false)
+            } else {
+                console.log('Error in ADD ORDER:', response.data);
+            }
+        } catch (error) {
+            console.error('Order submission failed:', error);
+        } finally {
+            // setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -20,7 +47,7 @@ export default function RateCard({ reviews, id, onRefresh }) {
                 <div className="flex justify-between">
                     <h3 className="sub-title">{translation.productReviews}</h3>
                     {
-                        reviews.length ? (
+                        !reviews.length ? (
                             <button onClick={() => setOpen(true)} type="button" className="rate-button py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none cursor-pointer rounded border border-gray-200 bg-gray-100 hover:bg-white hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-100 transition-all">
                                 <i className="icon-add"></i>
                                 <span>{translation.addReview}</span>
@@ -31,7 +58,7 @@ export default function RateCard({ reviews, id, onRefresh }) {
                 {
                     reviews.length ? (
                         reviews?.map((review, index) => (
-                            <Rate item={review} key={index} />
+                            <Rate item={review} key={index} onOpen={() => setOpenRemoveModal(true)} />
                         ))
                     ) : (
                         <>
@@ -67,6 +94,7 @@ export default function RateCard({ reviews, id, onRefresh }) {
                 </button> */}
             </div>
             <RateModal itemId={id} open={open} setOpen={() => setOpen(false)} onRefresh={onRefresh} />
+            <RateRemoveModal open={openRemoveModal} setOpen={() => setOpenRemoveModal(false)} OnSubmit={handleSubmitRate} />
         </>
     )
 }
