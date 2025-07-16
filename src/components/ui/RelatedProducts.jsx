@@ -46,7 +46,8 @@ export default function RelatedProducts({ items }) {
                         <ProductCard key={item.id} type="h" item={item} related={true} />
                     ))
                 ) : (
-                    <p>{translation.noRelatedProducts}</p>
+                    null
+                    // <p>{translation.noRelatedProducts}</p>
                 )
                 }
             </div>
