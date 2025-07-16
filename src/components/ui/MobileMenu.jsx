@@ -17,20 +17,33 @@ export default function MobileMenu({ scroll, onGoTo }) {
     commingSoon: false,
     giveaway: false,
   });
-
-  useEffect(() => {
-    setLang(state.LANG || "AR"); // or read from cookie if needed
-    setCookiesState({
-      newArrivals: Cookies.get("has_items_NEW_ARRIVAL") === "true",
-      clearance: Cookies.get("has_items_CLEARANCE") === "true",
-      commingSoon: Cookies.get("has_items_COMING_SOON") === "true",
-      giveaway: Cookies.get("has_items_GIVEAWAY") === "true",
-    });
-  }, [state.LANG]);
-
-  const translation = lang === "EN" ? en : ar;
+  const [translation, setTranslation] = useState(ar);
   const pathname = usePathname();
   const isActive = (path) => pathname === path ? "active" : "";
+
+  useEffect(() => {
+    setTranslation(state.LANG === "EN" ? en : ar);
+    const checkCookies = () => {
+      setCookiesState({
+        newArrivals: Cookies.get("has_items_NEW_ARRIVAL") === "true",
+        clearance: Cookies.get("has_items_CLEARANCE") === "true",
+        commingSoon: Cookies.get("has_items_COMING_SOON") === "true",
+        giveaway: Cookies.get("has_items_GIVEAWAY") === "true",
+      });
+    };
+
+    checkCookies();
+
+    const interval = setInterval(checkCookies, 1000); // Check every second
+    const timeout = setTimeout(() => clearInterval(interval), 5000); // Stop after 5 seconds
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [state.LANG]);
+
+
 
   const handleChangeLanguage = (e) => {
     dispatch({ type: "LANG", payload: e });

@@ -24,6 +24,7 @@ export default function Menu({ scroll }) {
   const [translation, setTranslation] = useState(ar); // default fallback
 
   useEffect(() => {
+    setTranslation(state.LANG === "EN" ? en : ar);
     const checkCookies = () => {
       setCookiesState({
         newArrivals: Cookies.get("has_items_NEW_ARRIVAL") === "true",

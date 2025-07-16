@@ -97,10 +97,14 @@ function Login() {
                   {...register('identifier', {
                     required: translation.login.errors.username.required,
                     pattern: {
-                      value: /^[a-zA-Z0-9._\- ]+$/,
+                      value: /^(?!.*[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF])[\w@.\- ]+$/,
                       message: translation.login.errors.username.invalid,
                     },
                   })}
+                  onInput={e => {
+                    // Remove Arabic letters as user types
+                    e.target.value = e.target.value.replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]+/g, '');
+                  }}
                 />
               </div>
               {errors.identifier && <span className="error-msg text-red-500">{errors.identifier.message}</span>}
