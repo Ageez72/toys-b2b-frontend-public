@@ -12,18 +12,18 @@ import Cookies from 'js-cookie';
 import { BASE_API, endpoints } from "../../constant/endpoints";
 import { useQuery } from "@tanstack/react-query";
 
+// fallback images
+import fallbackDesktopImage from "@/assets/imgs/hero-bg.png";
+import fallbackMobileImage from "@/assets/imgs/hero.png";
+
 export default function Home() {
-  const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const { state = {}, dispatch = () => {} } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
-  const [desktopImage, setDesktopImage] = useState(null);
-  const [mobileImage, setMobileImage] = useState(null);
+  const [imagePairs, setImagePairs] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    if (state.LANG === "EN") {
-      setTranslation(en);
-    } else {
-      setTranslation(ar);
-    }
+    setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
 
   const searchTypes = [
@@ -57,34 +57,57 @@ export default function Home() {
     },
   ];
 
-
-  async function fetchHomeImages() {
-    const res = await axios.get(`${BASE_API}${endpoints.products.homeImages}&token=${Cookies.get('token')}`, {});
+  const fetchHomeImages = async () => {
+    const res = await axios.get(
+      `${BASE_API}${endpoints.products.homeImages}&token=${Cookies.get("token")}`
+    );
     return res;
-  }
+  };
+
   const { data, isLoading, error } = useQuery({
     queryKey: [`home-images`],
     queryFn: fetchHomeImages,
   });
 
   useEffect(() => {
-    if (data?.data[0]) {
-      const homeImage = data.data[0];
-      setDesktopImage(homeImage["image desktop"]);
-      setMobileImage(homeImage["image mobile"]);
+    if (data?.data?.length > 0) {
+      const validPairs = data.data
+        .filter(item => item["image desktop"] && item["image mobile"])
+        .map(item => ({
+          desktop: item["image desktop"],
+          mobile: item["image mobile"],
+        }));
+      setImagePairs(validPairs);
     }
   }, [data]);
+
+  // Slider effect: every 5 seconds, change image
+  useEffect(() => {
+    if (imagePairs.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % imagePairs.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [imagePairs]);
+
+  const currentImagePair = imagePairs[currentIndex] || {
+    desktop: fallbackDesktopImage.src,
+    mobile: fallbackMobileImage.src,
+  };
+
   return (
     <>
-     {
-  !isLoading && (
-    desktopImage && mobileImage ? (
-      <Hero desktopImage={desktopImage} mobileImage={mobileImage} exist={true} />
-    ) : (
-      <Hero exist={false} />
-    )
-  )
-}
+      {
+        !isLoading && (
+          <Hero
+            desktopImage={currentImagePair.desktop}
+            mobileImage={currentImagePair.mobile}
+            exist={imagePairs.length > 0}
+          />
+        )
+      }
+
       <div className="mt-90 py-4">
         <BrandsSwiper />
       </div>

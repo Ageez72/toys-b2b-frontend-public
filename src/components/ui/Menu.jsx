@@ -9,7 +9,7 @@ import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 
 export default function Menu({ scroll }) {
-  const { state = {}, dispatch = () => {} } = useAppContext() || {};
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const pathname = usePathname();
 
   const isActive = (path) => pathname === path ? "active" : "";
@@ -24,17 +24,26 @@ export default function Menu({ scroll }) {
   const [translation, setTranslation] = useState(ar); // default fallback
 
   useEffect(() => {
-    // Read cookies safely after mount
-    setCookiesState({
-      newArrivals: Cookies.get("has_items_NEW_ARRIVAL") === "true",
-      clearance: Cookies.get("has_items_CLEARANCE") === "true",
-      commingSoon: Cookies.get("has_items_COMING_SOON") === "true",
-      giveaway: Cookies.get("has_items_GIVEAWAY") === "true",
-    });
+    const checkCookies = () => {
+      setCookiesState({
+        newArrivals: Cookies.get("has_items_NEW_ARRIVAL") === "true",
+        clearance: Cookies.get("has_items_CLEARANCE") === "true",
+        commingSoon: Cookies.get("has_items_COMING_SOON") === "true",
+        giveaway: Cookies.get("has_items_GIVEAWAY") === "true",
+      });
+    };
 
-    // Set translation based on language from context (safe after hydration)
-    setTranslation(state.LANG === "EN" ? en : ar);
+    checkCookies();
+
+    const interval = setInterval(checkCookies, 1000); // Check every second
+    const timeout = setTimeout(() => clearInterval(interval), 5000); // Stop after 5 seconds
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
   }, [state.LANG]);
+
 
   return (
     <ul className="menu-list font-medium flex items-center flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8  md:mt-0 md:border-0 md:bg-white dark:border-gray-700">

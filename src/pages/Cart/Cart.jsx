@@ -169,10 +169,14 @@ function Cart() {
                           <span>{Number(item.NET).toFixed(2)}</span>
                           <span>{translation.jod}</span>
                         </p>
-                        <p className="flex gap-1 discount sm mb-0">
-                          <span>{Number(item.SUBTOTALWITHTAX).toFixed(2)}</span>
-                          <span>{translation.jod}</span>
-                        </p>
+                        {
+                          Number(item.NET).toFixed(2) !== Number(item.SUBTOTALWITHTAX).toFixed(2) && (
+                            <p className="flex gap-1 discount sm mb-0">
+                              <span>{Number(item.SUBTOTALWITHTAX).toFixed(2)}</span>
+                              <span>{translation.jod}</span>
+                            </p>
+                          )
+                        }
                       </div>
                     </div>
                     <div className="actions w-48">

@@ -23,6 +23,10 @@ export default ({ title, route, badgeType, type, id }) => {
     }
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
+    const [soonDisplay, setSoonDisplay] = useState(false)
+    const [clearanceDisplay, setClearanceDisplay] = useState(false)
+    const [newArivalsDisplay, setNewArivals] = useState(false)
+    const [giveawayDisplay, setGiveawayDisplay] = useState(false)
 
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
@@ -46,7 +50,7 @@ export default ({ title, route, badgeType, type, id }) => {
         const hasItems = data?.data?.items?.length > 0;
 
         Cookies.set(cookieKey, hasItems.toString());
-    }
+    }    
 
     return (
         <>
