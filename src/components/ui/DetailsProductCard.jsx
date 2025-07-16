@@ -41,13 +41,13 @@ export default function DetailsProductCard({ item }) {
                     )
                 }
                 {
-                    item.discountType === 'CLEARANCE' && (
-                        <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
+                    item.discountType === 'CLEARANCE' && item.avlqty > 0 && (
+                        <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${item.avlqty === 1 ? translation.pieceOne : item.avlqty > 10 ? translation.pieceOnly : translation.piecesOnly}`} />
                     )
                 }
                 {
                     item.discountType !== 'CLEARANCE' && item.avlqty < 10 && (
-                        <Badge type={item.discountType !== 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.pieces}`} />
+                        <Badge type={item.discountType !== 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${item.avlqty === 1 ? translation.pieceOne : translation.piecesOnly}`} />
                     )
                 }
                 <h1 className="product-card-title details-product-card-title" title={item.name}>{item.name}</h1>

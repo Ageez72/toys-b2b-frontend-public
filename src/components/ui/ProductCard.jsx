@@ -52,12 +52,12 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 }
                 {
                     item.discountType === 'CLEARANCE' && item.avlqty > 0 && (
-                        <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${item.avlqty > 10 ? translation.pieceOnly : translation.piecesOnly}`} />
+                        <Badge type={item.discountType === 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${item.avlqty === 1 ? translation.pieceOne : item.avlqty > 10 ? translation.pieceOnly : translation.piecesOnly}`} />
                     )
                 }
                 {
                     item.discountType !== 'CLEARANCE' && item.avlqty < 10 && (
-                        <Badge type={item.discountType !== 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${translation.piecesOnly}`} />
+                        <Badge type={item.discountType !== 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${item.avlqty === 1 ? translation.pieceOne : translation.piecesOnly}`} />
                     )
                 }
                 <h2 className="product-card-title cursor-pointer short-title" title={item.name}>
