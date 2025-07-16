@@ -170,7 +170,7 @@ function Cart() {
                           <span>{translation.jod}</span>
                         </p>
                         <p className="flex gap-1 discount sm mb-0">
-                          <span>{Number(item.SUBTOTAL).toFixed(2)}</span>
+                          <span>{Number(item.SUBTOTALWITHTAX).toFixed(2)}</span>
                           <span>{translation.jod}</span>
                         </p>
                       </div>
