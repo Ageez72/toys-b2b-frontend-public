@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 
 // fallback images
 import fallbackDesktopImage from "@/assets/imgs/hero-bg.png";
-import fallbackMobileImage from "@/assets/imgs/hero.png";
+import fallbackMobileImage from "@/assets/imgs/hero-bg.png";
 
 export default function Home() {
   const { state = {}, dispatch = () => {} } = useAppContext() || {};
