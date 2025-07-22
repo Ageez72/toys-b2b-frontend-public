@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import "./globals.scss";
 import ContactTools from "@/components/ui/ContactTools";
 import { Toaster } from 'react-hot-toast';
+import Script from 'next/script';
 
 
 // export const metadata = {
@@ -55,7 +56,7 @@ export default function RootLayout({ children }) {
         <body
           className={`antialiased ${!isAuthPage ? "header-padding" : ""}`}
         >
-           <Toaster position={"top-left"} toastOptions={{ duration: 4000 }} />
+          <Toaster position={"top-left"} toastOptions={{ duration: 4000 }} />
           <AppProvider>
             {!isAuthPage && (
               <>
@@ -79,6 +80,18 @@ export default function RootLayout({ children }) {
             {!isAuthPage && <Footer />}
             {!isAuthPage && <ContactTools />}
           </AppProvider>
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-TE73NGSFDB"
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-TE73NGSFDB');
+            `}
+          </Script>
         </body>
       </html>
     </ReactQueryProvider>
