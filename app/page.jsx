@@ -21,10 +21,10 @@ export default function Home() {
     queryKey: ['profile'],
     queryFn: fetchProfile,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: (failureCount, error) => {
-      if (error?.response?.status === 401) return false;
-      return failureCount < 3;
-    },
+    // retry: (failureCount, error) => {
+    //   if (error?.response?.status === 401) return false;
+    //   return failureCount < 3;
+    // },
   });
 
   if (isLoading) return <Loader />;
@@ -42,6 +42,7 @@ export default function Home() {
     Cookies.set('profile', JSON.stringify(profile));
     push("/home")
   }
+  // if (error instanceof Error) return push("/");
 
   return (
     <>

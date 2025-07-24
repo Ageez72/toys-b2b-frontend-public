@@ -28,7 +28,7 @@ export default function Header({ scroll, handleOffCanvas }) {
                   >
                   {
                       <Image
-                        className={`logo-img ${scroll && isActive("/home") && 'hide-logo'}`}
+                        className={`logo-img`}
                         src={logo}
                         alt="My Image"
                         width={166}
