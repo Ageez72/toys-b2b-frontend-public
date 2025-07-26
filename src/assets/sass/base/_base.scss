@@ -121,6 +121,10 @@ input::-webkit-inner-spin-button {
     margin-top: 40px;
 }
 
+.pb-40 {
+    padding-bottom: 40px;
+}
+
 .mt-90 {
     margin-top: 90px;
 }
@@ -165,4 +169,12 @@ hr {
 .clear-html {
     overflow: visible !important;
     padding: 0 !important;
+}
+
+.custom-py-40 {
+    padding: 40px 0 !important;
+    
+    @media (max-width: 600px) {
+       padding: 40px 20px !important; 
+    }
 }

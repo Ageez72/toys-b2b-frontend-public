@@ -17,7 +17,7 @@ import fallbackDesktopImage from "@/assets/imgs/hero-bg.png";
 import fallbackMobileImage from "@/assets/imgs/hero-bg.png";
 
 export default function Home() {
-  const { state = {}, dispatch = () => {} } = useAppContext() || {};
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
   const [imagePairs, setImagePairs] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -108,22 +108,20 @@ export default function Home() {
         )
       }
 
-      <div className="mt-90 py-4">
+      <div className="custom-py-40 mt-40">
         <BrandsSwiper />
       </div>
 
-      <div className="max-w-screen-xl mx-auto p-4 space-y-16">
-        {searchTypes.map((grid, i) => (
-          <GridSwiper
-            key={i}
-            title={grid.title}
-            badgeType={grid.badgeType}
-            type={grid.type}
-            route={grid.route}
-            id={grid.id}
-          />
-        ))}
-      </div>
+      {searchTypes.map((grid, i) => (
+        <GridSwiper
+          key={i}
+          title={grid.title}
+          badgeType={grid.badgeType}
+          type={grid.type}
+          route={grid.route}
+          id={grid.id}
+        />
+      ))}
     </>
   );
 }

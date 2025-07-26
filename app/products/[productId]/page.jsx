@@ -202,7 +202,7 @@ export default function Page() {
       {
         details?.relatedItems.length && (
           <>
-            <h3 className="sub-title mb-3 mt-10">{translation.relatedProducts}</h3>
+            <h3 className="sub-title mb-7 mt-12">{translation.relatedProducts}</h3>
             <RelatedProducts items={details?.relatedItems} />
           </>
         )
