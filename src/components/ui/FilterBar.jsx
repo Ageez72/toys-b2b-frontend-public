@@ -13,7 +13,6 @@ import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 
 
-
 export default function FilterBar({ isProductsPage, close, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
@@ -181,38 +180,46 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
     // get all options
     const fetchCategoriesOptions = async (ch, brands = []) => {
+        try {
+            const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}&token=${Cookies.get('token')}`, {});
 
-        const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}&token=${Cookies.get('token')}`, {});
-
-        setCategoriesAllOptions(res.data);
-        const arr = res.data.filter(item => category.includes(item.categoryId));
-        let selected = [];
-        arr?.map(item => (
-            selected.push({
-                label: item.description,
-                value: item.categoryId
-            })
-        ))
-        if (!ch) {
-            setCategoryOpen(true)
+            setCategoriesAllOptions(res.data);
+            const arr = res.data.filter(item => category.includes(item.categoryId));
+            let selected = [];
+            arr?.map(item => (
+                selected.push({
+                    label: item.description,
+                    value: item.categoryId
+                })
+            ))
+            if (!ch) {
+                setCategoryOpen(true)
+            }
+            setSelectedCategoriesOptions(selected)
+        } catch (error) {
+            error.status === 401 && router.push("/");
         }
-        setSelectedCategoriesOptions(selected)
+
     }
 
     const fetchCatalogsOptions = async () => {
         const lang = Cookies.get('lang') || 'AR';
-        const res = await axios.get(`${BASE_API}${catalogEndpoint}&lang=${lang}&token=${Cookies.get('token')}`, {});
-        setCatalogsAllOptions(res.data);
-        const arr = res?.data?.catalogs?.filter(item => catalog.includes(item.code));
-        let selected = [];
-        arr?.map(item => (
-            selected.push({
-                label: item.name,
-                value: item.categoryId
-            })
-        ))
-        setCatalogOpen(true)
-        setSelectedCatalogsOptions(selected)
+        try {
+            const res = await axios.get(`${BASE_API}${catalogEndpoint}&lang=${lang}&token=${Cookies.get('token')}`, {});
+            setCatalogsAllOptions(res.data);
+            const arr = res?.data?.catalogs?.filter(item => catalog.includes(item.code));
+            let selected = [];
+            arr?.map(item => (
+                selected.push({
+                    label: item.name,
+                    value: item.categoryId
+                })
+            ))
+            setCatalogOpen(true)
+            setSelectedCatalogsOptions(selected)
+        } catch (error) {
+            error.status === 401 && router.push("/");
+        }
     }
 
     useEffect(() => {

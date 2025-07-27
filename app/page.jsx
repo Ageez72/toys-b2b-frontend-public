@@ -21,10 +21,10 @@ export default function Home() {
     queryKey: ['profile'],
     queryFn: fetchProfile,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    // retry: (failureCount, error) => {
-    //   if (error?.response?.status === 401) return false;
-    //   return failureCount < 3;
-    // },
+    retry: (failureCount, error) => {
+      if (error?.status === 401) return false;
+      return failureCount < 1;
+    },
   });
 
   if (isLoading) return <Loader />;

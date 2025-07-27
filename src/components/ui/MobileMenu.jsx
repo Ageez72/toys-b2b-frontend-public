@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation"
 import { useAppContext } from "../../../context/AppContext";
 import MenuControl from "./MenuControl";
 import Cookies from 'js-cookie';
@@ -19,7 +19,15 @@ export default function MobileMenu({ scroll, onGoTo }) {
   });
   const [translation, setTranslation] = useState(ar);
   const pathname = usePathname();
+    const searchParams = useSearchParams();
   const isActive = (path) => pathname === path ? "active" : "";
+
+    const isClearanceActive = () => {
+    return (
+      pathname === "/products" &&
+      searchParams.get("itemType") === "CLEARANCE"
+    );
+  };
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
@@ -50,6 +58,17 @@ export default function MobileMenu({ scroll, onGoTo }) {
     window.location.reload(); // this is fine for now
   };
 
+    useEffect(() => {
+    const itemType = searchParams.get("itemType");
+    setTimeout(() => {      
+      if (pathname === "/products" && itemType === "CLEARANCE") {
+        document.title = translation.clearance;
+      } else {
+        document.title = state.LANG === 'AR' ? ar.allProducts : en.allProducts;
+      }
+    }, 100);
+  }, [pathname, searchParams]);
+
   return (
     <div className="mobile-menu fix mb-3 mean-container">
       <div className="mean-bar">
@@ -64,13 +83,13 @@ export default function MobileMenu({ scroll, onGoTo }) {
           <li className={isActive("/home")} onClick={() => onGoTo()}>
             <Link href="/home">{translation.home}</Link>
           </li>
-          <li className={isActive("/products")} onClick={() => onGoTo()}>
+          <li className={isActive("/products") && !isClearanceActive() ? "active" : ""} onClick={() => onGoTo()}>
             <Link href="/products?itemStatus=AVAILABLE">{translation.allProducts}</Link>
           </li>
           <li className={isActive("/brands")} onClick={() => onGoTo()}>
             <Link href="/brands">{translation.brands}</Link>
           </li>
-          <li className={isActive("/products?itemType=CLEARANCE&itemStatus=AVAILABLE")}>
+          <li className={isClearanceActive() ? "active" : ""}>
             <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE" className="block py-2 px-3">{translation.clearance}</Link>
           </li>
         </ul>

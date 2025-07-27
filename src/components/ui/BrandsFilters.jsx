@@ -10,19 +10,25 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
+import { useRouter } from 'next/navigation';
 
-async function fetchBrandsFilters() {
-    const lang = Cookies.get('lang') || 'AR';
-    const res = await axios.get(`${BASE_API}${endpoints.products.brandsFilters}&lang=${lang}&token=${Cookies.get('token')}`, {});
-    return res;
-}
 
 export default function BrandsFilters({ selected = [], parentOptions }) {
     const [selectedMap, setSelectedMap] = useState({});
     const [allSelected, setAllSelected] = useState(selected); // flat array of selected IDs
-
+    const router = useRouter();
+    
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
+    async function fetchBrandsFilters() {
+        try {        
+            const lang = Cookies.get('lang') || 'AR';
+            const res = await axios.get(`${BASE_API}${endpoints.products.brandsFilters}&lang=${lang}&token=${Cookies.get('token')}`, {});
+            return res;
+        } catch (error) {
+            error.status === 401 && router.push("/");
+        }
+    }
 
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);

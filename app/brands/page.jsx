@@ -13,11 +13,6 @@ import en from "../../locales/en.json";
 import ar from "../../locales/ar.json";
 import { useAppContext } from '../../context/AppContext';
 
-async function fetchBrandsPage() {
-  const lang = Cookies.get('lang') || 'AR';
-  const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}&token=${Cookies.get('token')}`, {});
-  return res;
-}
 
 export default function Page() {
   const { push } = useRouter();
@@ -27,6 +22,12 @@ export default function Page() {
     setTranslation(state.LANG === "EN" ? en : ar);
     document.title = state.LANG === 'AR' ? ar.brands : en.brands;
   }, [state.LANG]);
+  
+  async function fetchBrandsPage() {
+    const lang = Cookies.get('lang') || 'AR';
+    const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}&token=${Cookies.get('token')}`, {});
+    return res;
+  }
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['brandsPage'],

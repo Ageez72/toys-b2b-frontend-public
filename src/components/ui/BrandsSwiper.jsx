@@ -14,14 +14,20 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import CardLoader from './Loaders/CardLoader';
 
 
-async function fetchHomeBrands() {
-    const lang = Cookies.get('lang') || 'AR';
-    const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}&token=${Cookies.get('token')}`, {});
-    return res;
-}
-
 export default () => {
+    const router = useRouter();
+    
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
+
+    async function fetchHomeBrands() {
+        const lang = Cookies.get('lang') || 'AR';
+        try {        
+            const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}&token=${Cookies.get('token')}`, {});
+            return res;
+        } catch (error) {
+            error.status === 401 && router.push("/");
+        }
+    }
 
     const { data, isLoading, error } = useQuery({
         queryKey: ['homeBrands'],
@@ -29,7 +35,7 @@ export default () => {
     });
 
     if (isLoading) return <CardLoader />;
-    if (error instanceof Error) return push("/");
+    if (error instanceof Error) return router.push("/");
 
     return (
         <Swiper
