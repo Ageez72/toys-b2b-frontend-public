@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import FilterSingleItem from './FilterSingleItem';
 import Select2Form from './Select2Form';
 import MultiRangeSlider from './MultiRangeSlider';
@@ -61,6 +61,10 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
             value: "CLEARANCE"
         },
     ]
+
+
+
+
     const router = useRouter();
     const useParams = useSearchParams();
     const lang = Cookies.get('lang') || 'AR';
@@ -81,6 +85,25 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
     const [selectedCatalogsOptions, setSelectedCatalogsOptions] = useState([])
     const [categoryOpen, setCategoryOpen] = useState(false)
     const [catalogOpen, setCatalogOpen] = useState(false)
+
+    useEffect(() => {
+        const url = new URL(window.location.href);
+        const itemType = url.searchParams.get("itemType");
+        const allTab = document.querySelectorAll(".allProductsTab");
+        const clearanceTab = document.querySelectorAll(".clearanceTab");
+        console.log(clearanceTab);
+        
+
+        if (itemType === "CLEARANCE") {
+            clearanceTab?.forEach(tab => tab.classList.add("active"));
+            allTab?.forEach(tab => tab.classList.remove("active"));
+            document.title = state.LANG === "AR" ? ar.clearance : en.clearance;
+        } else {
+            allTab?.forEach(tab => tab.classList.add("active"));
+            clearanceTab?.forEach(tab => tab.classList.remove("active"));
+            document.title = state.LANG === "AR" ? ar.allProducts : en.allProducts;
+        }
+    }, [itemType]);
 
     const handleApplyFilters = () => {
 
@@ -272,7 +295,9 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
                     }
                 </div>
                 <div className="filter-body">
-                    <MultiRangeSlider title={translation.priceRange} min={0} max={1600} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <MultiRangeSlider title={translation.priceRange} min={0} max={1600} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                    </Suspense>
                     <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
                     <BrandsFilters selected={brand} parentOptions={parentOptions} />
                     {

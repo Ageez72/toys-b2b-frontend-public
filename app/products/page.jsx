@@ -263,11 +263,13 @@ export default function Page() {
       </div>
       { 
         data?.data?.items?.length > 0 && (
-          <Pagination
-            currentPage={Number(data?.data?.page) || 1}
-            pagesToken={data?.data?.pagesToken}
-            totalPages={data?.data?.pages}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Pagination
+              currentPage={Number(data?.data?.page) || 1}
+              pagesToken={data?.data?.pagesToken}
+              totalPages={data?.data?.pages}
+              />
+            </Suspense>
         )
       }
     </div>

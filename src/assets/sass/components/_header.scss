@@ -72,6 +72,9 @@ footer {
 
     li {
         margin-bottom: 24px;
+        &.active a {
+    color: var(--primary-color);
+}
     }
 }
 
