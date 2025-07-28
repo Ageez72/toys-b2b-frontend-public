@@ -22,7 +22,9 @@ import NotFound from '../../not-found';
 let breadcrumbItems = [];
 export default function Page() {
   const [refresh, setRefresh] = useState(false);
-  const { productId } = useParams();
+  const params = useParams();
+  const productId = params.productId; 
+  
   const lang = Cookies.get('lang') || 'AR';
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar); // default fallback
@@ -31,6 +33,8 @@ export default function Page() {
   }, [state.LANG]);
 
   const { push } = useRouter();
+  console.log(useParams()); // E3308
+  
   async function fetchProductDetails() {
     const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${productId}&token=${Cookies.get('token')}`, {});
     return res;

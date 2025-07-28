@@ -270,6 +270,15 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
         }
     }, [useParams.toString()]);
 
+    useEffect(() => {
+        // Cleanup on unmount: remove 'active' class from header links
+        return () => {
+            document.querySelectorAll(".allProductsTab, .clearanceTab").forEach(tab => {
+                tab.classList.remove("active");
+            });
+        };
+    }, []);
+
     return (
         <>
             <div className={`filter-bar card ${isProductsPage ? "filter-products-page" : "hero-filter"}`}>

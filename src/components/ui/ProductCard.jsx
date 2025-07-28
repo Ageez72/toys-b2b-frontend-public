@@ -30,7 +30,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
     return (
         <div className={`card product-card ${type === 'grid' ? 'grid-card flex items-center gap-3' : 'list-card'}`}>
             <div className="product-card-image">
-                <Link href={`/products/${item.id}`}>
+                <Link href={`/products/${encodeURIComponent(item.id)}`}>
                     <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive"  title={item.name}/>
                 </Link>
             </div>
@@ -61,7 +61,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     )
                 }
                 <h2 className="product-card-title cursor-pointer short-title" title={item.name}>
-                    <Link href={`/products/${item.id}`}>
+                    <Link href={`/products/${encodeURIComponent(item.id)}`}>
                         {item.name}
                     </Link>
                 </h2>
