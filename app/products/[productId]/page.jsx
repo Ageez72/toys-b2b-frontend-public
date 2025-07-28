@@ -33,7 +33,6 @@ export default function Page() {
   }, [state.LANG]);
 
   const { push } = useRouter();
-  console.log(useParams()); // E3308
   
   async function fetchProductDetails() {
     const res = await axios.get(`${BASE_API}${endpoints.products.list}&lang=${lang}&id=${productId}&token=${Cookies.get('token')}`, {});

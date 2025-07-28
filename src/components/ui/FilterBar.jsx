@@ -91,17 +91,16 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
         const itemType = url.searchParams.get("itemType");
         const allTab = document.querySelectorAll(".allProductsTab");
         const clearanceTab = document.querySelectorAll(".clearanceTab");
-        console.log(clearanceTab);
-        
-
-        if (itemType === "CLEARANCE") {
-            clearanceTab?.forEach(tab => tab.classList.add("active"));
-            allTab?.forEach(tab => tab.classList.remove("active"));
-            document.title = state.LANG === "AR" ? ar.clearance : en.clearance;
-        } else {
-            allTab?.forEach(tab => tab.classList.add("active"));
-            clearanceTab?.forEach(tab => tab.classList.remove("active"));
-            document.title = state.LANG === "AR" ? ar.allProducts : en.allProducts;
+        if (isProductsPage) {
+            if (itemType === "CLEARANCE") {
+                clearanceTab?.forEach(tab => tab.classList.add("active"));
+                allTab?.forEach(tab => tab.classList.remove("active"));
+                document.title = state.LANG === "AR" ? ar.clearance : en.clearance;
+            } else {
+                allTab?.forEach(tab => tab.classList.add("active"));
+                clearanceTab?.forEach(tab => tab.classList.remove("active"));
+                document.title = state.LANG === "AR" ? ar.allProducts : en.allProducts;
+            }
         }
     }, [itemType]);
 
