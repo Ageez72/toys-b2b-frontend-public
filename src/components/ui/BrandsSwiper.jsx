@@ -16,12 +16,12 @@ import CardLoader from './Loaders/CardLoader';
 
 export default () => {
     const router = useRouter();
-    
+
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
 
     async function fetchHomeBrands() {
         const lang = Cookies.get('lang') || 'AR';
-        try {        
+        try {
             const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}&token=${Cookies.get('token')}`, {});
             return res;
         } catch (error) {
@@ -47,6 +47,7 @@ export default () => {
                 delay: 5000,
                 disableOnInteraction: false,
             }}
+            className='brands-swiper'
             loop={true}
             breakpoints={{
                 450: {
@@ -66,17 +67,26 @@ export default () => {
             {
                 data?.data.map((slide, i) => (
                     <SwiperSlide key={slide.description + slide.brandID}>
-                        <Link href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`}>
-                            <div className="relative brands card" style={{ height: "132px" }}>
+                        <div className="relative group brands card" style={{ height: "132px" }}>
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                <div className="relative w-max px-3 py-2 text-sm text-white bg-gray-800 rounded-md shadow">
+                                    {slide.description}
+                                    <div className="absolute top-[90%] left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                                </div>
+                            </div>
+                            <Link
+                                href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`}
+                                className="block w-full h-full relative z-10"
+                            >
                                 <Image
-                                    className='brand-logo'
+                                    className="brand-logo pointer-events-auto"
                                     src={slide.image !== "" ? slide.image : Placeholder}
                                     alt={slide.description !== "" ? slide.description : 'Brand'}
                                     fill
                                     style={{ objectFit: 'contain' }}
                                 />
-                            </div>
-                        </Link>
+                            </Link>
+                        </div>
                     </SwiperSlide>
                 ))
             }

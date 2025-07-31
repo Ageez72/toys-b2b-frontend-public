@@ -22,7 +22,7 @@ export default function Page() {
     setTranslation(state.LANG === "EN" ? en : ar);
     document.title = state.LANG === 'AR' ? ar.brands : en.brands;
   }, [state.LANG]);
-  
+
   async function fetchBrandsPage() {
     const lang = Cookies.get('lang') || 'AR';
     const res = await axios.get(`${BASE_API}${endpoints.home.brandsSwiper}&lang=${lang}&token=${Cookies.get('token')}`, {});
@@ -43,17 +43,27 @@ export default function Page() {
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-40">
         {
           data?.data.map((brand, i) => (
-            <Link href={`/products?brand=${brand.brandID}&itemStatus=AVAILABLE`} key={brand.brandID}>
-              <div className="relative brands card" style={{ height: "132px" }}>
+            <div key={brand.brandID} className="relative group brands card" style={{ height: "132px" }}>
+              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div className="relative w-max px-3 py-2 text-sm text-white bg-gray-800 rounded-md shadow">
+                  {brand.description}
+                  <div className="absolute top-[90%] left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                </div>
+              </div>
+
+              <Link
+                href={`/products?brand=${brand.brandID}&itemStatus=AVAILABLE`}
+                className="block w-full h-full relative z-10"
+              >
                 <Image
-                  className='brand-logo'
+                  className='brand-logo pointer-events-auto'
                   src={brand.image !== "" ? brand.image : Placeholder}
                   alt={brand.description !== "" ? brand.description : 'Brand'}
                   fill
                   style={{ objectFit: 'contain' }}
                 />
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))
         }
       </div>
