@@ -84,7 +84,7 @@ export default function ProfileDropdown({ onGoTo }) {
         return [first.toUpperCase(), last.toUpperCase()];
     };
 
-    if(!data?.data?.name && !JSON.parse(Cookies.get('profile'))?.name ){
+    if(!data?.data?.name || !JSON.parse(Cookies.get('profile'))?.name ){
         location.reload()
     }
     const [firstInitial, lastInitial] = getInitials(data?.data?.name || JSON.parse(Cookies.get('profile'))?.name || '');
