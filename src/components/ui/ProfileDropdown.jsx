@@ -74,7 +74,7 @@ export default function ProfileDropdown({ onGoTo }) {
         Cookies.set('profile', JSON.stringify(profile));
     }
     if (isLoading) return <Loader />;
-    if (error instanceof Error) return push("/");
+    if (error instanceof Error) return push("/");    
 
     const getInitials = (str) => {
         if (!str) return ['', ''];
@@ -83,8 +83,7 @@ export default function ProfileDropdown({ onGoTo }) {
         const last = words[words.length - 1]?.[0] || '';
         return [first.toUpperCase(), last.toUpperCase()];
     };
-    const [firstInitial, lastInitial] = getInitials(data?.data?.name);
-
+    const [firstInitial, lastInitial] = getInitials(data?.data?.name || JSON.parse(Cookies.get('profile'))?.name || '');
 
     return (
         <>
