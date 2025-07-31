@@ -108,7 +108,7 @@ export default function Home() {
         )
       }
 
-      <div className="custom-py-40 mt-40">
+      <div className="custom-py-40 pt-0 mt-40">
         <BrandsSwiper />
       </div>
 

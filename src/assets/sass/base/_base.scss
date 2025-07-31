@@ -173,6 +173,10 @@ hr {
 
 .custom-py-40 {
     padding: 40px 0 !important;
+
+    &.pt-0 {
+        padding-top: 0 !important;
+    }
     
     @media (max-width: 600px) {
        padding: 40px 20px !important; 
