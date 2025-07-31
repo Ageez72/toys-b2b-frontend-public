@@ -18,7 +18,7 @@ export default function MenuControl({onGoTo}) {
       <LangSwitcher top={true} />
       <div className="flex items-center justify-between gap-3">
         <div className="vl"></div>
-        <Link href="/cart" onClick={()=> onGoTo()}>
+        <Link href="/cart" onClick={()=> onGoTo && onGoTo()}>
           <div className="circle-icon-container">
             <span className='cart-icon relative'>
               {cartLength > 0 && (

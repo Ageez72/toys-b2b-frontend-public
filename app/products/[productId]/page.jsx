@@ -41,6 +41,7 @@ export default function Page() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [`product-details-${productId}`],
     queryFn: fetchProductDetails,
+    retry: false,
   });
 
   // Effect to re-call the API whenever refresh is changed

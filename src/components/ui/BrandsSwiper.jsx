@@ -32,6 +32,7 @@ export default () => {
     const { data, isLoading, error } = useQuery({
         queryKey: ['homeBrands'],
         queryFn: fetchHomeBrands,
+        retry: false,
     });
 
     if (isLoading) return <CardLoader />;

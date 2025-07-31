@@ -32,6 +32,7 @@ export default function Page() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['brandsPage'],
     queryFn: fetchBrandsPage,
+    retry: false,
   });
 
   if (isLoading) return <Loader />;

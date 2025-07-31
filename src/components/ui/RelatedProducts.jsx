@@ -27,6 +27,7 @@ export default function RelatedProducts({ items }) {
         queryKey: ['related-products'],
         queryFn: fetchRelatedProducts,
         cacheTime: 0,
+        retry: false,
     });
 
 

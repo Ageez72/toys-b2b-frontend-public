@@ -174,6 +174,7 @@ export default function Page() {
     queryKey: [`allProducts`, apiParams],
     queryFn: fetchProducts,
     cacheTime: 0,
+    retry: false,
   });
 
   // if (isLoading) return <VerticalLoader />;

@@ -67,6 +67,7 @@ export default function Home() {
   const { data, isLoading, error } = useQuery({
     queryKey: [`home-images`],
     queryFn: fetchHomeImages,
+    retry: false
   });
 
   useEffect(() => {
