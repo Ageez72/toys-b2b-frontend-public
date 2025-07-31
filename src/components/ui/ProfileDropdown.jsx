@@ -83,6 +83,9 @@ export default function ProfileDropdown({ onGoTo }) {
         const last = words[words.length - 1]?.[0] || '';
         return [first.toUpperCase(), last.toUpperCase()];
     };
+
+    // alert(data?.data?.name)
+    // alert(JSON.parse(Cookies.get('profile'))?.name)
     const [firstInitial, lastInitial] = getInitials(data?.data?.name || JSON.parse(Cookies.get('profile'))?.name || '');
 
     return (
