@@ -1,4 +1,5 @@
 "use client";
+import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import Image from 'next/image';
@@ -15,8 +16,8 @@ import CardLoader from './Loaders/CardLoader';
 
 
 export default () => {
+    const [activeTooltip, setActiveTooltip] = useState(null);
     const router = useRouter();
-
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
 
     async function fetchHomeBrands() {
@@ -37,6 +38,10 @@ export default () => {
 
     if (isLoading) return <CardLoader />;
     if (error instanceof Error) return router.push("/");
+
+    const toggleTooltip = (key) => {
+        setActiveTooltip(activeTooltip === key ? null : key);
+    }
 
     return (
         <Swiper
@@ -68,17 +73,22 @@ export default () => {
             {
                 data?.data.map((slide, i) => (
                     <SwiperSlide key={slide.description + slide.brandID}>
-                        <div className="relative group brands card" style={{ height: "132px" }}>
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                                <div className="relative w-max px-3 py-2 text-sm text-white bg-gray-800 rounded-md shadow">
-                                    {slide.description}
-                                    <div className="absolute top-[90%] left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                        <Link
+                            href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`}
+                            className="block w-full h-full relative z-10"
+                        >
+                            <div className="relative group brands card" style={{ height: "132px" }} onClick={() => toggleTooltip(slide.description)}>
+                                <div className={`
+                                absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-50 
+                                transition-opacity duration-300 
+                                ${activeTooltip === slide.description ? "opacity-100" : "opacity-0"} 
+                                group-hover:opacity-100 pointer-events-none
+                            `}>
+                                    <div className="relative w-max px-3 py-2 text-sm text-white bg-gray-800 rounded-md shadow">
+                                        {slide.description}
+                                        <div className="absolute top-[90%] left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <Link
-                                href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`}
-                                className="block w-full h-full relative z-10"
-                            >
                                 <Image
                                     className="brand-logo pointer-events-auto"
                                     src={slide.image !== "" ? slide.image : Placeholder}
@@ -86,8 +96,8 @@ export default () => {
                                     fill
                                     style={{ objectFit: 'contain' }}
                                 />
-                            </Link>
-                        </div>
+                            </div>
+                        </Link>
                     </SwiperSlide>
                 ))
             }
