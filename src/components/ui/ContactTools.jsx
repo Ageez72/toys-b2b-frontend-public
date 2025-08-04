@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
@@ -8,26 +8,42 @@ const ContactTools = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Mark component as mounted
     setMounted(true);
 
-    // Setup scroll listener
+    // Scroll listener
     const handleScroll = () => {
       setShowButton(window.scrollY > 300);
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Read cookie on client only
-    const profileCookie = Cookies.get('profile');
-    if (profileCookie) {
+    // Initial cookie load
+    let previousCookie = Cookies.get('profile');
+    if (previousCookie) {
       try {
-        setProfile(JSON.parse(profileCookie));
+        setProfile(JSON.parse(previousCookie));
       } catch (e) {
         console.error('Invalid profile cookie:', e);
       }
     }
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Poll for cookie changes every 1 second
+    const interval = setInterval(() => {
+      const currentCookie = Cookies.get('profile');
+      if (currentCookie !== previousCookie) {
+        previousCookie = currentCookie;
+        try {
+          setProfile(currentCookie ? JSON.parse(currentCookie) : null);
+        } catch (e) {
+          console.error('Invalid profile cookie:', e);
+          setProfile(null);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(interval);
+    };
   }, []);
 
   const scrollToTop = () => {
@@ -36,71 +52,65 @@ const ContactTools = () => {
 
   const toggleOpen = (e) => {
     e.stopPropagation();
-    document.querySelector(".socials")?.classList.toggle("open");
-    document.querySelector(".contact-tools")?.classList.toggle("open");
+    document.querySelector('.socials')?.classList.toggle('open');
+    document.querySelector('.contact-tools')?.classList.toggle('open');
   };
 
-  function getWhatsAppLink(phone) {
-  // Remove any non-digit characters for safety
-  const cleaned = phone.replace(/\D/g, '');
+  const getWhatsAppLink = (phone) => {
+    const cleaned = phone.replace(/\D/g, '');
+    if (cleaned.startsWith('962')) {
+      return `https://wa.me/+${cleaned}`;
+    } else if (cleaned.startsWith('00962')) {
+      return `https://wa.me/+${cleaned.slice(2)}`;
+    } else {
+      return `https://wa.me/+962${cleaned}`;
+    }
+  };
 
-  if (cleaned.startsWith('962')) {
-    // If it starts with +962 or 00962 (cleaned becomes 962...)
-    return `https://wa.me/+${cleaned}`;
-  } else if (cleaned.startsWith('00962')) {
-    return `https://wa.me/+${cleaned.slice(2)}`; // remove the 00
-  } else {
-    // Default to adding +962 before the number
-    return `https://wa.me/+962${cleaned}`;
-  }
-}
+  if (!mounted) return null;
 
+  const hasContact = profile?.contactEmail || profile?.contactPhone;
 
-  if (!mounted) return null; // prevent rendering until mounted
-  
   return (
-    <div className='contact-tools'>
-      <button onClick={scrollToTop} className={`back-to-top circle-icon-container ${showButton ? "show" : "not-allowed"}`}>
+    <div className="contact-tools">
+      <button
+        onClick={scrollToTop}
+        className={`back-to-top circle-icon-container ${showButton ? 'show' : 'not-allowed'}`}
+      >
         <i className="icon-arrow-up"></i>
       </button>
-      {
-        profile?.contactEmail || profile?.contactPhone && (
-      <div className='contact-link circle-icon-container contact-btn' onClick={toggleOpen}>
-        <i className="icon-multiplication-sign close"></i>
-        <i className="icon-call-center call"></i>
-      </div>
-        )
-      }
-      {
-        profile?.contactEmail || profile?.contactPhone && (
-          <div className="socials">
-            {
-              profile?.contactEmail && (
-                <a
-                  href={`mailto:${profile?.contactEmail}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className='contact-link circle-icon-container mb-2 contact-email'
-                >
-                  <i className="icon-sms"></i>
-                </a>
-              )
-            }
-            {
-              profile?.contactPhone && (
-                <a
-                  href={`${getWhatsAppLink(profile?.contactPhone)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className='contact-link circle-icon-container mb-2 contact-phone'
-                >
-                  <i className="icon-whatsapp-brands"></i>
-                </a>
-              )
-            }
+
+      {hasContact && (
+        <>
+          <div className="contact-link circle-icon-container contact-btn" onClick={toggleOpen}>
+            <i className="icon-multiplication-sign close"></i>
+            <i className="icon-call-center call"></i>
           </div>
-        )
-      }
+
+          <div className="socials">
+            {profile?.contactEmail && (
+              <a
+                href={`mailto:${profile.contactEmail}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-link circle-icon-container mb-2 contact-email"
+              >
+                <i className="icon-sms"></i>
+              </a>
+            )}
+            {profile?.contactPhone && (
+              <a
+                href={getWhatsAppLink(profile.contactPhone)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-link circle-icon-container mb-2 contact-phone"
+              >
+                <i className="icon-whatsapp-brands"></i>
+              </a>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -82,7 +82,7 @@ export function getLang() {
 }
 
 export function logout() {
-    // Cookies.remove('profile');
+    Cookies.remove('profile');
     Cookies.remove('token');
     Cookies.remove('cart');
     window.location.href = '/';
