@@ -60,14 +60,14 @@
         }
 
         .search-input {
-            width: 70%;
+            width: 50%;
             @media (max-width: 1023px) {
                 width: 100%;
             }
         }
 
         .filters-sort-display {
-            width: 30%;
+            width: 50%;
             @media (max-width: 1023px) {
                 width: 100%;
             }
@@ -85,7 +85,7 @@
                     display: flex;
                     align-items: center;
                     outline: none;
-                    font-size: 16px;
+                    font-size: 13px;
                     color: #7E818E;
                     font-weight: 400;
                 }
