@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -13,6 +13,7 @@ export default function ProductGallery({ images, main }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const { state = {}, dispatch = () => {} } = useAppContext() || {};
+    const videoRef = useRef(null); // 👈 Ref for the video element
 
     const isYouTubeLink = (url) => /youtube\.com|youtu\.be/.test(url);
     const isVideoFile = (url) => url.endsWith('.mp4') || url.includes('.mp4');
@@ -20,6 +21,13 @@ export default function ProductGallery({ images, main }) {
         const match = url.match(/(?:youtube\.com.*[?&]v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
         return match ? match[1] : null;
     };
+
+    // 🔁 Reload video if selectedImage is a video
+    useEffect(() => {
+        if (isVideoFile(selectedImage) && videoRef.current) {
+            videoRef.current.load();
+        }
+    }, [selectedImage]);
 
     const openModal = (index) => {
         setActiveIndex(index);
@@ -34,10 +42,13 @@ export default function ProductGallery({ images, main }) {
         return (
             <button
                 key={index}
-                onClick={() => setSelectedImage(img)}
+                onClick={() => {
+                    setSelectedImage(img);
+                    setActiveIndex(index); // 👈 Keep index in sync
+                }}
                 className={`border rounded-md p-1 ${selectedImage === img ? 'border-red-500' : 'border-transparent'}`}
             >
-                <span className='relative block'>
+                <span className="relative block">
                     {(isYouTube || isVideo) && (
                         <i className="icon-circle-play-regular player-icon absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xl"></i>
                     )}
@@ -46,8 +57,8 @@ export default function ProductGallery({ images, main }) {
                             isYouTube && youtubeId
                                 ? `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`
                                 : isVideo
-                                    ? main
-                                    : img
+                                ? main
+                                : img
                         }
                         alt={`Thumbnail ${index + 1}`}
                         className="w-16 h-16 object-cover rounded"
@@ -77,6 +88,7 @@ export default function ProductGallery({ images, main }) {
         } else if (isVideo) {
             content = (
                 <video
+                    ref={videoRef}
                     controls
                     className="w-full max-h-[500px] w-auto max-w-full rounded object-contain"
                 >
@@ -97,7 +109,7 @@ export default function ProductGallery({ images, main }) {
         const selectedIndex = images.indexOf(selectedImage);
 
         return (
-            <div className="relative group w-full max-w-full overflow-hidden">
+            <div className="group w-full max-w-full overflow-hidden">
                 <div className="w-full max-h-[500px] aspect-video flex items-center justify-center">
                     {content}
                 </div>
@@ -122,7 +134,7 @@ export default function ProductGallery({ images, main }) {
                 </div>
 
                 {/* Main Display */}
-                <div className="flex-1 main-image w-full">
+                <div className="relative flex-1 main-image w-full">
                     {renderMainContent()}
                 </div>
             </div>
@@ -131,7 +143,7 @@ export default function ProductGallery({ images, main }) {
             {isModalOpen && (
                 <div
                     className="product-gallery-modal fixed inset-0 bg-black/90 z-[999999999] flex items-center justify-center p-4"
-                    onClick={() => setIsModalOpen(false)} // close on backdrop click
+                    onClick={() => setIsModalOpen(false)}
                 >
                     <button
                         onClick={() => setIsModalOpen(false)}
@@ -139,11 +151,10 @@ export default function ProductGallery({ images, main }) {
                     >
                         ×
                     </button>
-                    {/* Prevent click from bubbling to backdrop */}
-                    <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-5xl">
-                        {/* Close Button */}
 
+                    <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-5xl">
                         <Swiper
+                            key={activeIndex} // force re-init on open
                             initialSlide={activeIndex}
                             navigation
                             pagination={{ clickable: true }}
@@ -186,7 +197,6 @@ export default function ProductGallery({ images, main }) {
                     </div>
                 </div>
             )}
-
         </>
     );
 }
