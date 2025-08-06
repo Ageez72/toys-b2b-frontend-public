@@ -46,7 +46,7 @@ export default function DetailsProductCard({ item }) {
                     )
                 }
                 {
-                    item.discountType !== 'CLEARANCE' && item.avlqty < 10 && (
+                    item.discountType !== 'CLEARANCE' && item.avlqty < 10 && item.avlqty > 1 && (
                         <Badge type={item.discountType !== 'CLEARANCE' && 'red'} text={`${translation.only} ${item.avlqty} ${item.avlqty === 1 ? translation.pieceOne : translation.piecesOnly}`} />
                     )
                 }

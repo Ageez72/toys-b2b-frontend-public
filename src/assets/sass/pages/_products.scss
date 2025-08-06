@@ -67,6 +67,10 @@
 
             input {
                 font-size: 13px;
+
+                @media (min-width: 1500px) {
+                    font-size: 16px;
+                }
             }
         }
 
@@ -96,6 +100,10 @@
                     font-size: 13px;
                     color: #7E818E;
                     font-weight: 400;
+
+                    @media (min-width: 1500px) {
+                    font-size: 16px;
+                }
                 }
             }
 
@@ -107,6 +115,9 @@
                 &.option-item {
                     font-size: 13px;
                     color: #4A4A49;
+                    @media (min-width: 1500px) {
+                    font-size: 16px;
+                }
                 }
 
                 span {
