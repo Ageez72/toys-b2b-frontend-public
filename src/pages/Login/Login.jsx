@@ -43,11 +43,11 @@ function Login() {
       const username = encodeURIComponent(data.identifier);
       const password = encodeURIComponent(data.password);
       const res = await axios.get(`${BASE_API + endpoints.auth.login}&username=${username}&password=${password}`)
-
-      if (res.data.error) {
+      
+      if (res.data.error === true) {
         setIsModalOpen(true);
         setModalMessage(state.LANG === "EN" ? res.data.messageEN : res.data.messageAR)
-      } else {
+      } else {        
         Cookies.set('token', res.data.token);
         router.push('/home')
       }
