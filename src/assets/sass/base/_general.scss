@@ -656,6 +656,10 @@ input.disabled {
     min-height: calc(100vh - 217px);
 }
 
+.section-min-2 {
+    min-height: calc(100vh - 257px);
+}
+
 .sku-number {
     font-size: 14px;
 }
@@ -663,4 +667,8 @@ input.disabled {
 .brands-swiper {
     padding-top: 45px;
     margin-top: -5px;
+}
+
+img {
+    user-select: none;
 }
