@@ -34,39 +34,53 @@ export default function ProductGallery({ images, main }) {
         setIsModalOpen(true);
     };
 
-    const renderThumbnail = (img, index) => {
-        const isYouTube = isYouTubeLink(img);
-        const isVideo = isVideoFile(img);
-        const youtubeId = getYouTubeId(img);
+const renderThumbnail = (img, index) => {
+    const isYouTube = isYouTubeLink(img);
+    const isVideo = isVideoFile(img);
+    const youtubeId = getYouTubeId(img);
 
-        return (
-            <button
-                key={index}
-                onClick={() => {
-                    setSelectedImage(img);
-                    setActiveIndex(index); // 👈 Keep index in sync
-                }}
-                className={`border rounded-md p-1 ${selectedImage === img ? 'border-red-500' : 'border-transparent'}`}
-            >
-                <span className="relative block">
-                    {(isYouTube || isVideo) && (
-                        <i className="icon-circle-play-regular player-icon absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xl"></i>
-                    )}
+    return (
+        <button
+            key={index}
+            onClick={() => {
+                setSelectedImage(img);
+                setActiveIndex(index);
+            }}
+            className={`border rounded-md p-1 ${
+                selectedImage === img ? 'border-red-500' : 'border-transparent'
+            }`}
+        >
+            <span className="relative block w-16 h-16">
+                {(isYouTube || isVideo) && (
+                    <i className="icon-circle-play-regular player-icon absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xl"></i>
+                )}
+
+                {isYouTube && youtubeId ? (
                     <img
-                        src={
-                            isYouTube && youtubeId
-                                ? `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`
-                                : isVideo
-                                ? main
-                                : img
-                        }
+                        src={`https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`}
                         alt={`Thumbnail ${index + 1}`}
                         className="w-16 h-16 object-cover rounded"
                     />
-                </span>
-            </button>
-        );
-    };
+                ) : isVideo ? (
+                    <video
+                        src={`${img}#t=0.5`} // Seek to 0.5s for thumbnail preview
+                        muted
+                        loop
+                        playsInline
+                        className="w-16 h-16 object-cover rounded"
+                    />
+                ) : (
+                    <img
+                        src={img}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-16 h-16 object-cover rounded"
+                    />
+                )}
+            </span>
+        </button>
+    );
+};
+
 
     const renderMainContent = () => {
         const isYouTube = isYouTubeLink(selectedImage);
