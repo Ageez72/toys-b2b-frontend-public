@@ -52,7 +52,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
     const { data, isFetching, error } = useQuery({
         queryKey: [`products-search-list`, debouncedSearchText],
         queryFn: fetchProducts,
-        enabled: debouncedSearchText.length >= 3 && !hasSelected,
+        enabled: debouncedSearchText.length >= 3 && !hasSelected && !resetTrigger,
         cacheTime: 0,
     });
 
@@ -124,7 +124,7 @@ export default function SearchInput({ bulk, onCollectBulkItems, pageSize, onColl
                     {translation.noResults}
                 </div>
             )}
-            {isFetching && (
+            {isFetching && searchText && (
                 <div className={`search-results-listing no-results`}>
                     {translation.loading}
                 </div>

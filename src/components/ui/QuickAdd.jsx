@@ -22,8 +22,18 @@ export default function QuickAdd({ openSidebar }) {
     }, [state.LANG]);
 
     const handleQuantityChange = (e) => {
-        const value = parseInt(e.target.value);
-        setCount(isNaN(value) || value < 1 ? 1 : value);
+        let value = parseInt(e.target.value, 10);
+
+        if (isNaN(value)) {
+            setCount('');
+            return;
+        }
+
+        // Clamp the value between 1 and 10
+        if (value < 1) value = 1;
+        if (value > 10) value = 10;
+
+        setCount(value);
     };
 
     const getSelectedProduct = (item) => {
@@ -52,7 +62,7 @@ export default function QuickAdd({ openSidebar }) {
         });
 
         if (!result.success) {
-            showErrorToast(result.message || translation.defaultError , lang, translation.error);
+            showErrorToast(result.message || translation.defaultError, lang, translation.error);
         } else {
             setCount('');
             setSelectedItem([]);
@@ -100,6 +110,8 @@ export default function QuickAdd({ openSidebar }) {
                                 value={count}
                                 type="number"
                                 min="0"
+                                max="10"
+                                maxLength={10}
                                 onChange={handleQuantityChange}
                             />
                         </div>
