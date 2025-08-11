@@ -65,6 +65,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                         {item.name}
                     </Link>
                 </h2>
+                <h3 className="font-bold sku-number">{item?.id}</h3>
                 <p className='product-card-description'>
                     <Link href={`/products?brand=${item?.brand?.id}&itemStatus=AVAILABLE`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>

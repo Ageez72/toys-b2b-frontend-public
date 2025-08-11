@@ -51,6 +51,7 @@ export default function DetailsProductCard({ item }) {
                     )
                 }
                 <h1 className="product-card-title details-product-card-title" title={item.name}>{item.name}</h1>
+                <h3 className="font-bold sku-number">{item?.id}</h3>
                 <p className="product-card-description">
                     <Link href={`/products?brand=${item?.brand?.id}&itemStatus=AVAILABLE`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>

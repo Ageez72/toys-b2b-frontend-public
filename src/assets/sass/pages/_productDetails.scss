@@ -16,6 +16,20 @@
             max-height: max-content;
             -webkit-line-clamp: none;
         }
+
+        .product-card-description {
+            color: #666876;
+            max-height: fit-content;
+            font-size: 16px;
+        }
+
+        .stars i {
+            font-size: 16px;
+        }
+
+        .price {
+            margin-bottom: 16px;
+        }
     }
 
     .product-description {

@@ -21,6 +21,7 @@
         flex-direction: column;
         justify-content: space-between;
     }
+
     &.grid-card {
         @media screen and (max-width: 650px) {
             flex-wrap: wrap;
@@ -70,6 +71,10 @@
         -webkit-box-orient: vertical;
     }
 
+    .sku-number {
+        margin-bottom: 6px;
+    }
+
     .product-card-description {
         font-size: 14px;
         color: #666876;
@@ -99,7 +104,7 @@
         font-size: 16px;
         font-weight: 700;
         color: #8D1A14;
-        
+
         &.details-product-card-price {
             font-size: 20px;
         }
@@ -180,6 +185,7 @@
     font-weight: 700;
     color: #C2C5D2;
     text-decoration: line-through;
+
     &.sm {
         font-size: 14px;
     }
