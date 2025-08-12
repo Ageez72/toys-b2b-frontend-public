@@ -15,6 +15,7 @@
             font-weight: 700 !important;
             max-height: max-content;
             -webkit-line-clamp: none;
+            margin-bottom: 16px;
         }
 
         .product-card-description {
@@ -23,12 +24,16 @@
             font-size: 16px;
         }
 
-        .stars i {
-            font-size: 16px;
+        .stars {
+            margin-bottom: 16px;
+
+            i {
+                font-size: 16px;
+            }
         }
 
-        .price {
-            margin-bottom: 16px;
+        .sku-number {
+            font-size: 16px;
         }
     }
 

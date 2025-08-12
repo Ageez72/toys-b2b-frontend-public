@@ -61,7 +61,7 @@
         font-size: 18px;
         font-weight: 400;
         color: #1E1E1E;
-        margin-bottom: 16px;
+        margin-bottom: 8px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -72,13 +72,13 @@
     }
 
     .sku-number {
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
 
     .product-card-description {
         font-size: 14px;
         color: #666876;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -195,4 +195,11 @@
     color: red;
     font-size: 16px;
     margin: 0;
+}
+
+
+.related-listing {
+    .product-card-title {
+        font-size: 16px;
+    }
 }

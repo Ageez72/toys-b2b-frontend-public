@@ -73,6 +73,7 @@ export default function Page() {
   }
 
   return details ? (
+    <>
     <div className="max-w-screen-xl mx-auto p-4 product-details">
       <Breadcrumb items={breadcrumbItems} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5 pt-5 pb-5 details-card">
@@ -203,6 +204,8 @@ export default function Page() {
         }
       </div>
       <RateCard reviews={details?.reviews.reviews} id={details?.id} onRefresh={() => setRefresh(true)} />
+    </div>
+    <div className="max-w-screen-xl mx-auto">
       {
         details?.relatedItems.length && (
           <>
@@ -212,5 +215,6 @@ export default function Page() {
         )
       }
     </div>
+    </>
   ) : null;
 }
