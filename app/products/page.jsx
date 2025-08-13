@@ -18,7 +18,7 @@ import { useAppContext } from '../../context/AppContext';
 
 export default function Page() {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
-  const [translation, setTranslation] = useState(ar); 
+  const [translation, setTranslation] = useState(ar);
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
     // document.title = state.LANG === 'AR' ? ar.allProducts : en.allProducts;
@@ -51,7 +51,7 @@ export default function Page() {
       value: "PRICED"
     },
   ]
-  
+
   const displayOptions = [
     {
       id: 1,
@@ -123,7 +123,7 @@ export default function Page() {
   const [searchTerm, setSearchTerm] = useState(queryObject.search || '');
   const [sortItem, setSortItem] = useState(queryObject.sort || sortingOptions[0].value);
   const [pageSizeItem, setPageSizeItem] = useState(queryObject.pageSize || displayOptions[0].value);
-  
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
@@ -180,6 +180,11 @@ export default function Page() {
   // if (isLoading) return <VerticalLoader />;
   if (error instanceof Error) return push("/");
 
+  const handleSortingPageSize = () => {
+    setPageSizeItem(12);
+    setSortItem("");
+  }
+
   return (
     <div className="max-w-screen-xl mx-auto p-4 all-products-container section-min">
       <div className="flex gap-4 filters-gap">
@@ -188,7 +193,7 @@ export default function Page() {
         </div>
         <div className="w-1/4 products-filter-side">
           <Suspense fallback={<div>Loading filters...</div>}>
-            <FilterBar key={queryString} isProductsPage={true} searchParams={queryString || []} catalogEndpoint={`${endpoints.products.catalogList}`} categoriesEndpoint={`${endpoints.products.categoriesList}`} searchTerm={searchTerm} sortItem={sortItem} pageSizeItem={pageSizeItem} />
+            <FilterBar key={queryString} isProductsPage={true} searchParams={queryString || []} catalogEndpoint={`${endpoints.products.catalogList}`} categoriesEndpoint={`${endpoints.products.categoriesList}`} searchTerm={searchTerm} sortItem={sortItem} pageSizeItem={pageSizeItem} resetUpperFilters={handleSortingPageSize} />
           </Suspense>
           <div className="back" onClick={() => handleFilterOnMobile("close")}></div>
         </div>
@@ -262,15 +267,15 @@ export default function Page() {
           </div>
         </div>
       </div>
-      { 
+      {
         data?.data?.items?.length > 0 && (
           <Suspense fallback={<div>Loading...</div>}>
             <Pagination
               currentPage={Number(data?.data?.page) || 1}
               pagesToken={data?.data?.pagesToken}
               totalPages={data?.data?.pages}
-              />
-            </Suspense>
+            />
+          </Suspense>
         )
       }
     </div>

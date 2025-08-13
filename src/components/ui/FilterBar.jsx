@@ -13,7 +13,7 @@ import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 
 
-export default function FilterBar({ isProductsPage, close, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose }) {
+export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
     useEffect(() => {
@@ -160,6 +160,7 @@ export default function FilterBar({ isProductsPage, close, catalogEndpoint, cate
 
             setSelectedCategoriesOptions([]);
             setSelectedCatalogsOptions([]);
+            resetUpperFilters && resetUpperFilters()
 
             // Push clean URL
             router.push('/products?itemStatus=AVAILABLE');

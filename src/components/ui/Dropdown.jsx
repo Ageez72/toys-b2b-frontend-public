@@ -5,12 +5,12 @@ import { useAppContext } from "../../../context/AppContext";
 
 export default function Dropdown({ options = [], name, defaultValue = null, onChange }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState("");    
 
     useEffect(() => {
         // Notify parent about initial selection
         setSelected(options.find(option => option.value === defaultValue)|| options[0])
-    }, [selected]);
+    }, [defaultValue, options]);
 
     const handleSelect = (option) => {
         setSelected(option);
