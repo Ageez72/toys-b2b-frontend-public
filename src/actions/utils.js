@@ -44,7 +44,7 @@ export function addToCart(newItem) {
         // Step 6: Add new item to cart
         
         cart.push({
-            // id: newItem.id,
+            id: newItem.id,
             item: newItem.item,
             qty: newItem.qty.toString(),
             // avlqty: newItem.avlqty.toString(),
