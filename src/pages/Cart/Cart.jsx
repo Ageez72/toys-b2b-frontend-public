@@ -104,7 +104,7 @@ function Cart() {
     const data = {
       notes: notes,
       deliveryDate: "",
-      location: selectedAddressId,
+      address: selectedAddressId,
       items: storedCart.map(item => ({
         item: item.id,
         qty: item.qty
