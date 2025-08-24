@@ -33,7 +33,7 @@ export default function FilterSingleItem({
 
           <DisclosurePanel className="text-gray-500">
             <div className="options-list">
-              {options.map((option) => (
+              {options?.map((option) => (
                 <div className="form-group flex items-center gap-3" key={option.id}>
                   <input
                     className="cursor-pointer"

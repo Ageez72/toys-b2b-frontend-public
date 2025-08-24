@@ -77,7 +77,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     const [catalog, setCatalog] = useState(useParams.get('catalog') ? useParams.get('catalog').split(',') : ""); // الاستخدامات
     const [itemStatus, setItemStatus] = useState(useParams.get('itemStatus') || "AVAILABLE"); // حالة التوفر
     const [categoriesAllOptions, setCategoriesAllOptions] = useState(filtersSections?.categories || []);
-    const [catalogsAllOptions, setCatalogsAllOptions] = useState([]);
+    const [catalogsAllOptions, setCatalogsAllOptions] = useState(filtersSections?.catalogs?.catalogs || []);;
     const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([]);
     const [selectedCatalogsOptions, setSelectedCatalogsOptions] = useState([]);
     const [categoryOpen, setCategoryOpen] = useState(false);
@@ -192,8 +192,6 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     }
 
     const parentOptions = (st, options) => {
-        // console.log(options);
-
         setBrand(options)
         fetchCategoriesOptions(st, options)
     }
@@ -202,7 +200,6 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     const fetchCategoriesOptions = async (ch, brands = []) => {
         try {
             const res = await axios.get(`${BASE_API}${categoriesEndpoint}&brand=${brands?.join(',')}&lang=${lang}&token=${Cookies.get('token')}`, {});
-
             setCategoriesAllOptions(res.data);
             const arr = res.data.filter(item => category.includes(item.categoryId));
             let selected = [];
@@ -223,11 +220,9 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     }
 
     const fetchCatalogsOptions = async () => {
-        const lang = Cookies.get('lang') || 'AR';
         try {
-            const res = await axios.get(`${BASE_API}${catalogEndpoint}&lang=${lang}&token=${Cookies.get('token')}`, {});
-            setCatalogsAllOptions(res.data);
-            const arr = res?.data?.catalogs?.filter(item => catalog.includes(item.code));
+            setCatalogsAllOptions(filtersSections?.catalogs);
+            const arr = filtersSections?.catalogs?.filter(item => catalog.includes(item.code));
             let selected = [];
             arr?.map(item => (
                 selected.push({
@@ -249,7 +244,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
         // }else {
         //     fetchCategoriesOptions(true, brand)
         // }
-    }, [])
+    }, [filtersSections])
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -275,8 +270,6 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             });
         };
     }, []);
-
-    console.log(filtersSections);
 
     return (
         <>
@@ -307,7 +300,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                 </div>
                 <div className="filter-body">
                     {
-                        filtersSections && (
+                        filtersSections ? (
                             <>
                                 <BrandsFilters selected={brand} parentOptions={parentOptions} brandsOptions={filtersSections?.brands} />
                                 {
@@ -315,7 +308,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                         <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0} />
                                     )
                                 }
-                                <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
+                                <FilterSingleItem title={translation.sectors} selected={itemType} options={filtersSections?.types} name="itemType" handleSingleItem={changeSingleItem} />
                                 <Suspense fallback={<div>Loading...</div>}>
                                     <MultiRangeSlider title={translation.priceRange} min={filtersSections?.price_min} max={filtersSections?.price_max} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
                                 </Suspense>
@@ -324,20 +317,21 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                         <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} initiallyOpen={selectedCatalogsOptions.length > 0} />
                                     )
                                 }
+                                <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+                                <div className="action-btns flex gap-3 mt-4">
+                                    <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button>
+                                    {showClearButton && (
+                                        <button className="gray-btn flex-1" onClick={handleClearFilter}>
+                                            {translation.clear}
+                                        </button>
+                                    )}
+                                </div>
                             </>
-                        )
+                        ) :
+                        <div className='text-center py-4'>
+                            <span className="filters-loader"></span>
+                        </div>
                     }
-
-                    <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
-
-                    <div className="action-btns flex gap-3 mt-4">
-                        <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button>
-                        {showClearButton && (
-                            <button className="gray-btn flex-1" onClick={handleClearFilter}>
-                                {translation.clear}
-                            </button>
-                        )}
-                    </div>
                 </div>
             </div>
         </>

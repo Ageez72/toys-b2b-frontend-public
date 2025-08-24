@@ -38,7 +38,7 @@ export default function Select2Form({ title, name, initiallyOpen = false, option
   const handleSelectChange = selected => {
     setSelectedOptions(selected);
     handleMultiItem(name, selected);
-  };
+  };  
 
   // Avoid rendering until hydrated and state is ready
   if (!hydrated || !state.LANG) return null;
