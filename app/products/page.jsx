@@ -213,7 +213,7 @@ export default function Page() {
         </div>
         <div className="w-1/4 products-filter-side">
           <Suspense fallback={<div>Loading filters...</div>}>
-            <FilterBar key={queryString} isProductsPage={true} searchParams={queryString || []} catalogEndpoint={`${endpoints.products.catalogList}`} categoriesEndpoint={`${endpoints.products.categoriesList}`} searchTerm={searchTerm} sortItem={sortItem} pageSizeItem={pageSizeItem} resetUpperFilters={handleSortingPageSize} count={result} />
+            <FilterBar key={queryString} isProductsPage={true} searchParams={queryString || []} catalogEndpoint={`${endpoints.products.catalogList}`} categoriesEndpoint={`${endpoints.products.categoriesList}`} searchTerm={searchTerm} sortItem={sortItem} pageSizeItem={pageSizeItem} resetUpperFilters={handleSortingPageSize} count={result} filtersSections={data?.data?.filters}/>
           </Suspense>
           <div className="back" onClick={() => handleFilterOnMobile("close")}></div>
         </div>

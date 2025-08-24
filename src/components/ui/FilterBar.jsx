@@ -13,7 +13,7 @@ import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 
 
-export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose, count }) {
+export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose, count, filtersSections }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
     useEffect(() => {
@@ -76,12 +76,12 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     const [category, setCategory] = useState(useParams.get('category') ? useParams.get('category').split(',') : ""); // التصنيفات
     const [catalog, setCatalog] = useState(useParams.get('catalog') ? useParams.get('catalog').split(',') : ""); // الاستخدامات
     const [itemStatus, setItemStatus] = useState(useParams.get('itemStatus') || "AVAILABLE"); // حالة التوفر
-    const [categoriesAllOptions, setCategoriesAllOptions] = useState([])
-    const [catalogsAllOptions, setCatalogsAllOptions] = useState([])
-    const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([])
-    const [selectedCatalogsOptions, setSelectedCatalogsOptions] = useState([])
-    const [categoryOpen, setCategoryOpen] = useState(false)
-    const [catalogOpen, setCatalogOpen] = useState(false)
+    const [categoriesAllOptions, setCategoriesAllOptions] = useState(filtersSections?.categories || []);
+    const [catalogsAllOptions, setCatalogsAllOptions] = useState([]);
+    const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([]);
+    const [selectedCatalogsOptions, setSelectedCatalogsOptions] = useState([]);
+    const [categoryOpen, setCategoryOpen] = useState(false);
+    const [catalogOpen, setCatalogOpen] = useState(false);
 
     useEffect(() => {
         const url = new URL(window.location.href);
@@ -276,6 +276,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
         };
     }, []);
 
+    console.log(filtersSections);
 
     return (
         <>
@@ -305,21 +306,28 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                     }
                 </div>
                 <div className="filter-body">
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <MultiRangeSlider title={translation.priceRange} min={0} max={1600} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
-                    </Suspense>
-                    <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
-                    <BrandsFilters selected={brand} parentOptions={parentOptions} />
                     {
-                        categoryOpen && (
-                            <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0} />
+                        filtersSections && (
+                            <>
+                                <BrandsFilters selected={brand} parentOptions={parentOptions} brandsOptions={filtersSections?.brands} />
+                                {
+                                    categoryOpen && (
+                                        <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0} />
+                                    )
+                                }
+                                <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <MultiRangeSlider title={translation.priceRange} min={filtersSections?.price_min} max={filtersSections?.price_max} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                                </Suspense>
+                                {
+                                    catalogOpen && (
+                                        <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} initiallyOpen={selectedCatalogsOptions.length > 0} />
+                                    )
+                                }
+                            </>
                         )
                     }
-                    {
-                        catalogOpen && (
-                            <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} initiallyOpen={selectedCatalogsOptions.length > 0} />
-                        )
-                    }
+
                     <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
 
                     <div className="action-btns flex gap-3 mt-4">
