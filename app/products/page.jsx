@@ -185,15 +185,35 @@ export default function Page() {
     setSortItem("");
   }
 
+  function checkFilterParams(queryString) {
+    const paramsToCheck = ['fromPrice', 'toPrice', 'itemType', 'brand', 'fromAge', 'toAge', 'catalog', 'category'];
+    let count = 0;
+
+    paramsToCheck.forEach(param => {
+      if (queryString.includes(`${param}=`)) {
+        count++;
+      }
+    });
+
+    return {
+      hasAny: count > 0,
+      count: count
+    };
+  }
+  const result = checkFilterParams(queryString);
+
   return (
     <div className="max-w-screen-xl mx-auto p-4 all-products-container section-min">
       <div className="flex gap-4 filters-gap">
-        <div className="filter-mobile">
+        <div className={`filter-mobile ${result.hasAny ? "has-filters" : ""}`}>
+          {
+            result.count > 0 ? <span className="red-filter">{result.count}</span> : null
+          }
           <i className="icon-filter-search" onClick={handleFilterOnMobile}></i>
         </div>
         <div className="w-1/4 products-filter-side">
           <Suspense fallback={<div>Loading filters...</div>}>
-            <FilterBar key={queryString} isProductsPage={true} searchParams={queryString || []} catalogEndpoint={`${endpoints.products.catalogList}`} categoriesEndpoint={`${endpoints.products.categoriesList}`} searchTerm={searchTerm} sortItem={sortItem} pageSizeItem={pageSizeItem} resetUpperFilters={handleSortingPageSize} />
+            <FilterBar key={queryString} isProductsPage={true} searchParams={queryString || []} catalogEndpoint={`${endpoints.products.catalogList}`} categoriesEndpoint={`${endpoints.products.categoriesList}`} searchTerm={searchTerm} sortItem={sortItem} pageSizeItem={pageSizeItem} resetUpperFilters={handleSortingPageSize} count={result} />
           </Suspense>
           <div className="back" onClick={() => handleFilterOnMobile("close")}></div>
         </div>
@@ -212,7 +232,7 @@ export default function Page() {
                 <input className='w-full h-full ps-10 p-2.5' type='text' placeholder={translation.searchProduct} value={searchTerm} onChange={handleSearchChange} />
               </div>
             </div>
-            <div className="filters-sort-display flex gap-3">
+            <div className="filters-sort-display flex flex-wrap gap-3">
               <div className="flex-1">
                 <Dropdown
                   options={sortingOptions}

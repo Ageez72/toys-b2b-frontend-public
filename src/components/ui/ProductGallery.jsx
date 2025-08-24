@@ -12,7 +12,7 @@ export default function ProductGallery({ images, main }) {
     const [selectedImage, setSelectedImage] = useState(images[0]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
-    const { state = {}, dispatch = () => {} } = useAppContext() || {};
+    const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const videoRef = useRef(null); // 👈 Ref for the video element
 
     const isYouTubeLink = (url) => /youtube\.com|youtu\.be/.test(url);
@@ -34,110 +34,115 @@ export default function ProductGallery({ images, main }) {
         setIsModalOpen(true);
     };
 
-const renderThumbnail = (img, index) => {
-    const isYouTube = isYouTubeLink(img);
-    const isVideo = isVideoFile(img);
-    const youtubeId = getYouTubeId(img);
-
-    return (
-        <button
-            key={index}
-            onClick={() => {
-                setSelectedImage(img);
-                setActiveIndex(index);
-            }}
-            className={`border rounded-md p-1 ${
-                selectedImage === img ? 'border-red-500' : 'border-transparent'
-            }`}
-        >
-            <span className="relative block w-16 h-16">
-                {(isYouTube || isVideo) && (
-                    <i className="icon-circle-play-regular player-icon absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xl"></i>
-                )}
-
-                {isYouTube && youtubeId ? (
-                    <img
-                        src={`https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`}
-                        alt={`Thumbnail ${index + 1}`}
-                        className="w-16 h-16 object-cover rounded"
-                    />
-                ) : isVideo ? (
-                    <video
-                        src={`${img}#t=0.5`} // Seek to 0.5s for thumbnail preview
-                        muted
-                        loop
-                        playsInline
-                        className="w-16 h-16 object-cover rounded"
-                    />
-                ) : (
-                    <img
-                        src={img}
-                        alt={`Thumbnail ${index + 1}`}
-                        className="w-16 h-16 object-cover rounded"
-                    />
-                )}
-            </span>
-        </button>
-    );
-};
-
-
-    const renderMainContent = () => {
-        const isYouTube = isYouTubeLink(selectedImage);
-        const isVideo = isVideoFile(selectedImage);
-        const youtubeId = getYouTubeId(selectedImage);
-
-        let content;
-
-        if (isYouTube && youtubeId) {
-            content = (
-                <iframe
-                    className="w-full h-full aspect-video"
-                    src={`https://www.youtube.com/embed/${youtubeId}`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                ></iframe>
-            );
-        } else if (isVideo) {
-            content = (
-                <video
-                    ref={videoRef}
-                    controls
-                    className="w-full max-h-[500px] w-auto max-w-full rounded object-contain"
-                >
-                    <source src={selectedImage} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            );
-        } else {
-            content = (
-                <img
-                    src={selectedImage}
-                    alt="Selected product"
-                    className="max-h-[500px] w-auto max-w-full object-contain rounded"
-                />
-            );
-        }
-
-        const selectedIndex = images.indexOf(selectedImage);
+    const renderThumbnail = (img, index) => {
+        const isYouTube = isYouTubeLink(img);
+        const isVideo = isVideoFile(img);
+        const youtubeId = getYouTubeId(img);
 
         return (
-            <div className="group w-full max-w-full overflow-hidden">
-                <div className="w-full max-h-[500px] aspect-video flex items-center justify-center">
-                    {content}
-                </div>
+            <button
+                key={index}
+                onClick={() => {
+                    setSelectedImage(img);
+                    setActiveIndex(index);
 
-                {/* Expand icon opens swiper modal */}
+                    console.log(img);
+                    
+                }}
+                className={`border rounded-md p-1 ${selectedImage === img ? 'border-red-500' : 'border-transparent'
+                    }`}
+            >
+                <span className="relative block w-16 h-16">
+                    {(isYouTube || isVideo) && (
+                        <i className="icon-circle-play-regular player-icon absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xl"></i>
+                    )}
+
+                    {isYouTube && youtubeId ? (
+                        <img
+                            src={`https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="w-16 h-16 object-cover rounded"
+                        />
+                    ) : isVideo ? (
+                        <video
+                            src={`${img}#t=0.5`} // Seek to 0.5s for thumbnail preview
+                            muted
+                            loop
+                            playsInline
+                            className="w-16 h-16 object-cover rounded"
+                        />
+                    ) : (
+                        <img
+                            src={img}
+                            alt={`Thumbnail ${index + 1}`}
+                            className="w-16 h-16 object-cover rounded"
+                        />
+                    )}
+                </span>
+            </button>
+        );
+    };
+
+
+ const renderMainContent = () => {
+    const isYouTube = isYouTubeLink(selectedImage);
+    const isVideo = isVideoFile(selectedImage);
+    const youtubeId = getYouTubeId(selectedImage);
+
+    let content;
+
+    if (isYouTube && youtubeId) {
+        content = (
+            <iframe
+                className="w-full h-full aspect-video"
+                src={`https://www.youtube.com/embed/${youtubeId}`}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+            ></iframe>
+        );
+    } else if (isVideo) {
+        content = (
+            <video
+                ref={videoRef}
+                controls
+                className="w-full max-h-[500px] w-auto max-w-full rounded object-contain"
+            >
+                <source src={selectedImage} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        );
+    } else {
+        content = (
+            <img
+                src={selectedImage}
+                alt="Selected product"
+                className="max-h-[500px] w-auto max-w-full object-contain rounded"
+            />
+        );
+    }
+
+    const selectedIndex = images.indexOf(selectedImage);
+
+    return (
+        <div className="group w-full max-w-full overflow-hidden">
+            <div className="w-full max-h-[500px] aspect-video flex items-center justify-center">
+                {content}
+            </div>
+
+            {/* ✅ Show expand button ONLY if selected is NOT video */}
+            {!isYouTube && !isVideo && (
                 <button
                     onClick={() => openModal(selectedIndex)}
                     className={`absolute top-2 ${state.LANG === 'AR' ? 'right-2' : 'left-2'} z-10 text-white bg-black/50 p-2 rounded-full flex items-center justify-center cursor-pointer`}
                 >
                     <i className="icon-expand-solid text-xl"></i>
                 </button>
-            </div>
-        );
-    };
+            )}
+        </div>
+    );
+};
+
 
     return (
         <>

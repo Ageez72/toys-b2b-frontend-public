@@ -13,7 +13,7 @@ import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 
 
-export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose }) {
+export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose, count }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
     useEffect(() => {
@@ -62,15 +62,12 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
         },
     ]
 
-
-
-
     const router = useRouter();
     const useParams = useSearchParams();
     const lang = Cookies.get('lang') || 'AR';
 
     const [fromPrice, setFromPrice] = useState(useParams.get('fromPrice') || 0); // نطاق السعر
-    const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 1600); // نطاق السعر
+    const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 0); // نطاق السعر
     const [itemType, setItemType] = useState(useParams.get('itemType') || ""); // الاقسام
     const [brand, setBrand] = useState(() => {
         const value = useParams.get('brand');
@@ -279,11 +276,15 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
         };
     }, []);
 
+
     return (
         <>
             <div className={`filter-bar card ${isProductsPage ? "filter-products-page" : "hero-filter"}`}>
                 <div className="filter-header flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className={`flex items-center gap-3 ${isProductsPage && count.hasAny ? "has-filters" : ""}`}>
+                        {
+                            isProductsPage && count.count > 0 ? <span className="red-filter">{count.count}</span> : null
+                        }
                         <i className="icon-filter-search"></i>
                         <span className='filter-title'>{translation.filterResults}</span>
                     </div>

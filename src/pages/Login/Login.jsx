@@ -87,13 +87,14 @@ function Login() {
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='form-group'>
-              <label className='block mb-2'>{translation.login.username}</label>
+              <label className='block mb-2'>{translation.login.username} <span className='required'>*</span></label>
               <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                   <i className="icon-sms"></i>
                 </div>
                 <input
                   className='w-full ps-10 p-2.5'
+                  placeholder={translation.login.username}
                   {...register('identifier', {
                     required: translation.login.errors.username.required,
                     pattern: {
@@ -111,7 +112,7 @@ function Login() {
             </div>
 
             <div className='form-group'>
-              <label className='block mb-2'>{translation.login.password}</label>
+              <label className='block mb-2'>{translation.login.password} <span className='required'>*</span></label>
               <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                   <i className="icon-shield-security"></i>
@@ -126,6 +127,7 @@ function Login() {
                 <input
                   className='w-full ps-10 pe-10 p-2.5'
                   type={`${showPassword ? 'text' : 'password'}`}
+                  placeholder={translation.login.password}
                   {...register('password', {
                     required: translation.login.errors.password.required,
                     minLength: {

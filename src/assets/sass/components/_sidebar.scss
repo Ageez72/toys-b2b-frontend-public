@@ -31,13 +31,37 @@
             overflow: auto;
             z-index: 99999;
             border-radius: 0;
-            width: 400px;
+            width: 500px;
             max-width: 100%;
+        }
+
+
+        @media (max-width: 1023px) {
+            .action-btns {
+                opacity: 0;
+                transition: all 0.5s ease-in-out;
+            }
         }
 
         &.active {
             @media (max-width: 1023px) {
                 right: 0;
+                padding-bottom: 68px;
+            }
+
+            .action-btns {
+                @media (max-width: 1023px) {
+                    background: #fff;
+                    border-top: 1px solid #c2c5d2;
+                    width: 500px;
+                    max-width: 100%;
+                    position: fixed;
+                    bottom: 0;
+                    right: 0;
+                    padding: 10px 20px;
+                    opacity: 1;
+                    // transform: translateX(-50%);
+                }
             }
 
             &+.back {
@@ -47,6 +71,11 @@
                 position: fixed;
                 inset: 0;
                 z-index: 9999;
+                display: none;
+
+                @media (max-width: 1023px) {
+                    display: block;
+                }
             }
         }
 

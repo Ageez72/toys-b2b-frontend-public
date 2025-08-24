@@ -133,4 +133,12 @@
             transform: rotate(180deg);
         }
     }
+
+    .has-filters .red-filter {
+        right: auto;
+        left: 0;
+    }
+    .filter-mobile.has-filters .red-filter {
+        left: 10px;
+    }
 }
