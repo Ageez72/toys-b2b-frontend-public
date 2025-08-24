@@ -105,7 +105,11 @@
 
                 input {
                     border: none;
-                    width: 140px;
+                    text-align: center;
+                    @media (max-width: 992px) {
+                        width: 140px;
+                        text-align: start;
+                    }
                 }
             }
         }
