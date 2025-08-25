@@ -305,16 +305,16 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                     }
                 </div>
                 <div className="filter-body">
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <MultiRangeSlider title={translation.priceRange} min={0} max={1600} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
-                    </Suspense>
-                    <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
                     <BrandsFilters selected={brand} parentOptions={parentOptions} />
                     {
                         categoryOpen && (
                             <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0} />
                         )
                     }
+                    <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <MultiRangeSlider title={translation.priceRange} min={0} max={1600} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                    </Suspense>
                     {
                         catalogOpen && (
                             <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} initiallyOpen={selectedCatalogsOptions.length > 0} />
