@@ -31,7 +31,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
         <div className={`card product-card ${type === 'grid' ? 'grid-card flex items-center gap-3' : 'list-card'}`}>
             <div className="product-card-image">
                 <Link href={`/products/${encodeURIComponent(item.id)}`}>
-                    <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive"  title={item.name}/>
+                    <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive" title={item.name} />
                 </Link>
             </div>
             <div className="product-card-content">
@@ -79,22 +79,18 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     <StarsRate rate={rate} />
                 </div>
                 <div className="price flex items-center gap-3">
-                    <span className="product-card-price">
-                        {/* <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span> */}
-                        <span className="price-number">{Number(item?.price).toFixed(2)}</span>
-                        <span className="price-unit mx-1">{translation.jod}</span>
-                    </span>
-                    {/* {
-                        item?.itemdisc ? (
-                            <span className='flex gap-1 discount'>
-                                <span>{Number(item?.price).toFixed(2)}</span>
-                                <span>{translation.jod}</span>
+                    {
+                        !item.commingSoon && (
+                            <span className="product-card-price">
+                                {/* <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span> */}
+                                <span className="price-number">{Number(item?.price).toFixed(2)}</span>
+                                <span className="price-unit mx-1">{translation.jod}</span>
                             </span>
-                        ) : ""
-                    } */}
+                        )
+                    }
                 </div>
                 {
-                    item?.status === "AVAILABLE" ? (
+                    item?.status === "AVAILABLE" && !item.commingSoon ? (
                         <AddToCart item={item} />
                     ) : (
                         <p className='out-stock-btn'>{translation.notAvailable}</p>
