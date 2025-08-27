@@ -92,7 +92,7 @@ export default function DetailsProductCard({ item }) {
                     item?.status === "AVAILABLE" && !item.commingSoon ? (
                         <AddToCart item={item} />
                     ) : (
-                        <p className='out-stock-btn'>{translation.notAvailable}</p>
+                        <p className='out-stock-btn'>{!item.commingSoon ? translation.notAvailable : translation.availableSoon}</p>
                     )
                 }
 
