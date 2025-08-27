@@ -40,11 +40,11 @@ export default function ProductCard({ type, badgeType, related, item }) {
                         <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
                     )
                 }
-                {
+                {/* {
                     item.commingSoon && (
                         <Badge type={item.commingSoon && 'yellow'} text={`${translation.soon}`} />
                     )
-                }
+                } */}
                 {
                     item.itemdisc > 0 && item.hideDiscount != "false" && (
                         <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
@@ -93,7 +93,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     item?.status === "AVAILABLE" && !item.commingSoon ? (
                         <AddToCart item={item} />
                     ) : (
-                        <p className='out-stock-btn'>{!item.commingSoon ? translation.notAvailable : translation.availableSoon}</p>
+                        <p className={`out-stock-btn ${!item.commingSoon ? '' : 'yellow'}`}>{!item.commingSoon ? translation.notAvailable : translation.availableSoon}</p>
                     )
                 }
 
