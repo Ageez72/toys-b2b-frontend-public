@@ -100,6 +100,7 @@
   "all": "All",
   "available": "In Stock",
   "notAvailable": "Out of Stock",
+  "availableSoon": "Available Soon",
   "totalItems": "Total Items",
   "itemPrice": "Item Price",
   "totalPrice": "Total Price",

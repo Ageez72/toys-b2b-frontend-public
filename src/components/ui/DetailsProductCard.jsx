@@ -30,11 +30,11 @@ export default function DetailsProductCard({ item }) {
                         <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
                     )
                 }
-                {
+                {/* {
                     item.commingSoon && (
                         <Badge type={item.commingSoon && 'yellow'} text={`${translation.soon}`} />
                     )
-                }
+                } */}
                 {
                     item.itemdisc > 0 && (
                         <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
@@ -62,13 +62,19 @@ export default function DetailsProductCard({ item }) {
                     </Link>
                 </p>
 
-                <div className="price flex items-center gap-3">
-                    <span className="product-card-price details-product-card-price">
-                        {/* <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span> */}
-                        <span className="price-number">{Number(item?.price).toFixed(2)}</span>
-                        <span className="price-unit mx-1">{translation.jod}</span>
-                    </span>
-                    {/* {
+                {
+                    !item.commingSoon && (
+                        <div className="price flex items-center gap-3">
+                            <span className="product-card-price">
+                                {/* <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span> */}
+                                <span className="price-number">{Number(item?.price).toFixed(2)}</span>
+                                <span className="price-unit mx-1">{translation.jod}</span>
+                            </span>
+                        </div>
+                    )
+                }
+
+                {/* {
                         item?.itemdisc ? (
                             <span className='flex gap-1 discount'>
                                 <span>{Number(item?.price).toFixed(2)}</span>
@@ -76,7 +82,6 @@ export default function DetailsProductCard({ item }) {
                             </span>
                         ) : ""
                     } */}
-                </div>
 
                 <div className="stars flex items-center gap-2">
                     <StarsRate rate={rate} />
@@ -84,13 +89,12 @@ export default function DetailsProductCard({ item }) {
                 </div>
                 <p className="product-description" dangerouslySetInnerHTML={{ __html: item?.description }} />
                 {
-                    item?.status === "AVAILABLE" ? (
+                    item?.status === "AVAILABLE" && !item.commingSoon ? (
                         <AddToCart item={item} />
                     ) : (
-                        <p className='out-stock-btn'>{translation.notAvailable}</p>
+                        <p className={`out-stock-btn ${!item.commingSoon ? '' : 'yellow'}`}>{!item.commingSoon ? translation.notAvailable : translation.availableSoon}</p>
                     )
                 }
-
             </div>
         </div>
     )
