@@ -220,16 +220,30 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     }
 
     const fetchCatalogsOptions = async () => {
+        const lang = Cookies.get('lang') || 'AR';
         try {
-            setCatalogsAllOptions(filtersSections?.catalogs);
-            const arr = filtersSections?.catalogs?.filter(item => catalog.includes(item.code));
-            let selected = [];
-            arr?.map(item => (
-                selected.push({
-                    label: item.name,
-                    value: item.categoryId
-                })
-            ))
+            if (isProductsPage) {
+                const res = await axios.get(`${BASE_API}${catalogEndpoint}&lang=${lang}&token=${Cookies.get('token')}`, {});
+                setCatalogsAllOptions(res.data);
+                const arr = res?.data?.catalogs?.filter(item => catalog.includes(item.code));
+                let selected = [];
+                arr?.map(item => (
+                    selected.push({
+                        label: item.name,
+                        value: item.categoryId
+                    })
+                ))
+            } else {
+                setCatalogsAllOptions(filtersSections?.catalogs);
+                const arr = filtersSections?.catalogs?.filter(item => catalog.includes(item.code));
+                let selected = [];
+                arr?.map(item => (
+                    selected.push({
+                        label: item.name,
+                        value: item.categoryId
+                    })
+                ))
+            }
             setCatalogOpen(true)
             setSelectedCatalogsOptions(selected)
         } catch (error) {
@@ -239,7 +253,9 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
 
     useEffect(() => {
         fetchCatalogsOptions()
-        parentOptions(false, brand)
+        if (brand.length > 0) {
+            parentOptions(false, brand);
+        }
         // if(brand.length){
         // }else {
         //     fetchCategoriesOptions(true, brand)
@@ -302,7 +318,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                     {
                         filtersSections ? (
                             <>
-                                <BrandsFilters selected={brand} parentOptions={parentOptions} brandsOptions={filtersSections?.brands} />
+                                <BrandsFilters selected={brand} parentOptions={parentOptions} brandsOptions={filtersSections?.brands} isFiltersPage={true} />
                                 {
                                     categoryOpen && (
                                         <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0} />
@@ -327,10 +343,38 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                     )}
                                 </div>
                             </>
+                        ) : !isProductsPage ? (
+                            <>
+                                <BrandsFilters selected={brand} parentOptions={parentOptions} />
+                                {
+                                    categoryOpen && (
+                                        <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0} />
+                                    )
+                                }
+                                <FilterSingleItem title={translation.sectors} selected={itemType} options={itemTypeOptions} name="itemType" handleSingleItem={changeSingleItem} />
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <MultiRangeSlider title={translation.priceRange} min={0} max={1600} selectedFrom={fromPrice} selectedTo={toPrice} handlePriceFrom={changePriceFrom} handlePriceTo={changePriceTo} />
+                                </Suspense>
+                                {
+                                    catalogOpen && (
+                                        <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={selectedCatalogsOptions} initiallyOpen={selectedCatalogsOptions.length > 0} />
+                                    )
+                                }
+                                <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+
+                                <div className="action-btns flex gap-3 mt-4">
+                                    <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button>
+                                    {showClearButton && (
+                                        <button className="gray-btn flex-1" onClick={handleClearFilter}>
+                                            {translation.clear}
+                                        </button>
+                                    )}
+                                </div>
+                            </>
                         ) :
-                        <div className='text-center py-4'>
-                            <span className="filters-loader"></span>
-                        </div>
+                            <div className='text-center py-4'>
+                                <span className="filters-loader"></span>
+                            </div>
                     }
                 </div>
             </div>
