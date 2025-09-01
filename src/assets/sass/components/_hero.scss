@@ -92,7 +92,7 @@
             }
 
             .quantatity-container {
-                width: 25%;
+                width: 28%;
                 gap: 16px;
                 padding: 6px 8px;
                 border-radius: 8px;
@@ -104,8 +104,10 @@
                 }
 
                 input {
+                    width: 100px;
                     border: none;
                     text-align: center;
+
                     @media (max-width: 992px) {
                         width: 140px;
                         text-align: start;
