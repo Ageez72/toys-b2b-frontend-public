@@ -7,8 +7,9 @@
     text-align: start;
     padding: 15px 0;
     border: 1px solid #ccc;
+    
     @media (max-width: 660px) {
-        width: 91%;
+        width: 100%;
     }
 
     &.no-results {
