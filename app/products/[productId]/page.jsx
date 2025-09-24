@@ -88,14 +88,6 @@ export default function Page() {
           }
           <div className="specifications-table lg:w-1/2 mb-10">
             {
-              details?.id && (
-                <div className="item flex w-full">
-                  <div className="title w-1/2"><strong>{translation.productNumber}</strong></div>
-                  <div className="info w-1/2">{details?.id}</div>
-                </div>
-              )
-            }
-            {
               details?.brand.description && (
                 <div className="item flex w-full">
                   <div className="title w-1/2"><strong>{translation.brand}</strong></div>
@@ -112,18 +104,10 @@ export default function Page() {
               )
             }
             {
-              details?.dimentions && (
+              details?.id && (
                 <div className="item flex w-full">
-                  <div className="title w-1/2"><strong>{translation.dimentions}</strong></div>
-                  <div className="info w-1/2">{details?.dimentions}</div>
-                </div>
-              )
-            }
-            {
-              details?.grossWeightKg && (
-                <div className="item flex w-full">
-                  <div className="title w-1/2"><strong>{translation.weight}</strong></div>
-                  <div className="info w-1/2">{details?.grossWeightKg} {translation.kg}</div>
+                  <div className="title w-1/2"><strong>{translation.productNumber}</strong></div>
+                  <div className="info w-1/2">{details?.id}</div>
                 </div>
               )
             }
@@ -141,7 +125,29 @@ export default function Page() {
                 <div className="item flex w-full">
                   <div className="title w-1/2"><strong>{translation.age}</strong></div>
                   <div className="info w-1/2">{details?.constants.AGES}</div>
+                </div>
+              )
+            }
+            {
+              Array.isArray(details?.constants["GROUP-PLAY"]) &&
+              details.constants["GROUP-PLAY"].some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.groupPlay}</strong></div>
+                  <div className="info w-1/2">{details?.constants["GROUP-PLAY"]}</div>
                   {/* <div className="info w-1/2">+{getAge(details?.constants.AGES)} {translation.years}</div> */}
+                </div>
+              )
+            }
+            {
+              Array.isArray(details?.constants.CHARACTERS) &&
+              details.constants.CHARACTERS.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.characters}</strong></div>
+                  <div className="info w-1/2">{
+                    details?.constants.CHARACTERS.map((el, index) => (
+                      <span key={index}>{el} {index !== details?.constants.CHARACTERS.length - 1 && `${state.LANG === "AR" ? '، ' : ', '}`}</span>
+                    ))
+                  }</div>
                 </div>
               )
             }
@@ -177,6 +183,98 @@ export default function Page() {
                 </div>
               )
             }
+            {
+              details?.grossWeightKg && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.weight}</strong></div>
+                  <div className="info w-1/2">{details?.grossWeightKg} {translation.kg}</div>
+                </div>
+              )
+            }
+            {
+              Array.isArray(details?.constants?.COUNTRY_OF_ORIGIN) &&
+              details.constants.COUNTRY_OF_ORIGIN.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.countryOfOrigin}</strong></div>
+                  <div className="info w-1/2">{details?.constants.COUNTRY_OF_ORIGIN}</div>
+                  {/* <div className="info w-1/2">+{getAge(details?.constants.AGES)} {translation.years}</div> */}
+                </div>
+              )
+            }
+            {/* {
+              Array.isArray(details?.constants.COLOR) &&
+              details.constants.COLOR.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.colors}</strong></div>
+                  <div className="info w-1/2">{details?.constants.COLOR}</div>
+                </div>
+              )
+            } */}
+            {
+              Array.isArray(details?.constants.B_TYPES) &&
+              details.constants.B_TYPES.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.batteryType}</strong></div>
+                  <div className="info w-1/2">{details?.constants.B_TYPES}</div>
+                  {/* <div className="info w-1/2">+{getAge(details?.constants.AGES)} {translation.years}</div> */}
+                </div>
+              )
+            }
+            {
+              Array.isArray(details?.constants.BATTERY_CHARGER_INCLUDED) &&
+              details.constants.BATTERY_CHARGER_INCLUDED.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.batteryChargerIncluded}</strong></div>
+                  <div className="info w-1/2">{details?.constants.BATTERY_CHARGER_INCLUDED}</div>
+                </div>
+              )
+            }
+            {
+              Array.isArray(details?.constants.BATTERY_DURATION) &&
+              details.constants.BATTERY_DURATION.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.batteryDuration}</strong></div>
+                  <div className="info w-1/2">{details?.constants.BATTERY_DURATION}</div>
+                </div>
+              )
+            }
+            {
+              Array.isArray(details?.constants.MAX_WEIGHT) &&
+              details.constants.MAX_WEIGHT.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.maxWeight}</strong></div>
+                  <div className="info w-1/2">{details?.constants.MAX_WEIGHT}</div>
+                </div>
+              )
+            }
+
+            {
+              Array.isArray(details?.constants.MAX_SPEED) &&
+              details.constants.MAX_SPEED.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.maxSpeed}</strong></div>
+                  <div className="info w-1/2">{details?.constants.MAX_SPEED}</div>
+                </div>
+              )
+            }
+            {/* {
+              Array.isArray(details?.constants.LANGUAGE) &&
+              details.constants.LANGUAGE.some(el => el.trim() !== "") && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.language}</strong></div>
+                  <div className="info w-1/2">{details?.constants.LANGUAGE}</div>
+                </div>
+              )
+            } */}
+            {
+              details?.dimentions && (
+                <div className="item flex w-full">
+                  <div className="title w-1/2"><strong>{translation.dimentions}</strong></div>
+                  <div className="info w-1/2">{details?.dimentions}</div>
+                </div>
+              )
+            }
+
           </div>
           {
             details?.warning && (
@@ -202,6 +300,7 @@ export default function Page() {
               </>
             )
           }
+
         </div>
         <RateCard reviews={details?.reviews.reviews} id={details?.id} onRefresh={() => setRefresh(true)} />
       </div>

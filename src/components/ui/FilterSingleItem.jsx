@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react'
+import Cookies from 'js-cookie';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 
 export default function FilterSingleItem({
@@ -15,6 +16,7 @@ export default function FilterSingleItem({
 
   const handleCheck = (value) => {
     const newValue = selectedValue === value ? null : value; // toggle behavior
+    Cookies.set('filterstatus', "filter");
     setSelectedValue(newValue);
     handleSingleItem(name, newValue); // send null if unselected
   };
@@ -33,7 +35,7 @@ export default function FilterSingleItem({
 
           <DisclosurePanel className="text-gray-500">
             <div className="options-list">
-              {options.map((option) => (
+              {options?.map((option) => (
                 <div className="form-group flex items-center gap-3" key={option.id}>
                   <input
                     className="cursor-pointer"

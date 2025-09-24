@@ -6,6 +6,8 @@ import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 import { showWarningToast, showErrorToast } from '@/actions/toastUtils';
+import { BASE_API, endpoints } from '../../../constant/endpoints';
+import axios from 'axios';
 
 export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh }) {
   const [count, setCount] = useState(0);
@@ -26,7 +28,7 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
     if (item) setCount(parseInt(item.qty));
   }, [itemId]);
 
-  const updateCart = (newQty) => {
+  const updateCart = async (newQty) => {
     let cart = getCart();
     const index = cart.findIndex(i => i.item === itemId);
 
@@ -41,17 +43,32 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
     }
 
     Cookies.set('cart', JSON.stringify(cart), { expires: 7, path: '/' });
+    // Send updated cart to backend
+    const res = await axios.post(
+      `${BASE_API}${endpoints.products.setCart}?lang=${lang}&token=${Cookies.get('token')}`,
+      {
+        "items": cart
+      }
+    );
     const storedCart = getCart();
-    if (storedCart) dispatch({ type: "STORED-ITEMS", payload: storedCart });
-
+    if (storedCart) {
+      dispatch({ type: "STORED-ITEMS", payload: storedCart });
+    }
     setCount(newQty);
     if (onQtyChange) onQtyChange();
   };
 
-  const removeFromCart = () => {
+  const removeFromCart = async () => {
     let cart = getCart();
     const newCart = cart.filter(item => item.item !== itemId);
     Cookies.set('cart', JSON.stringify(newCart), { expires: 7, path: '/' });
+    // Send updated cart to backend
+    const res = await axios.post(
+      `${BASE_API}${endpoints.products.setCart}?lang=${lang}&token=${Cookies.get('token')}`,
+      {
+        "items": newCart
+      }
+    );
     const storedCart = getCart();
     if (storedCart) dispatch({ type: "STORED-ITEMS", payload: storedCart });
 
@@ -110,7 +127,7 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
   return (
     <div className="add-to-cart flex gap-3">
       <div className="product-card-quantity flex items-center gap-1 w-3/4">
-        <button onClick={decrease} className="btn btn-secondary w-fit">
+        <button onClick={decrease} className="btn btn-secondary w-fit" aria-label="minus icon">
           <i className="icon-minus"></i>
         </button>
 
@@ -124,6 +141,7 @@ export default function InlineAddToCart({ itemId, avlqty, onQtyChange, onRefresh
         />
 
         <button
+          aria-label="add icon"
           onClick={increase}
           className="btn btn-secondary w-fit"
         // disabled={count >= Math.min(avlqty, MAX_QTY)}

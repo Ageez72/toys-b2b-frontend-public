@@ -13,15 +13,16 @@ import { useAppContext } from '../../../context/AppContext';
 import { useRouter } from 'next/navigation';
 
 
-export default function BrandsFilters({ selected = [], parentOptions }) {
+export default function BrandsFilters({ selected = [], parentOptions, brandsOptions, isFiltersPage }) {
     const [selectedMap, setSelectedMap] = useState({});
     const [allSelected, setAllSelected] = useState(selected); // flat array of selected IDs
     const router = useRouter();
-    
+
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
+
     async function fetchBrandsFilters() {
-        try {        
+        try {
             const lang = Cookies.get('lang') || 'AR';
             const res = await axios.get(`${BASE_API}${endpoints.products.brandsFilters}&lang=${lang}&token=${Cookies.get('token')}`, {});
             return res;
@@ -30,17 +31,29 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
         }
     }
 
+
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
 
+
     const { data, isLoading, error } = useQuery({
         queryKey: ['brandsFilters'],
         queryFn: fetchBrandsFilters,
-    });
+    })
+
 
     useEffect(() => {
-        if (selected.length > 0 && data?.data?.length) {
+        if (selected.length > 0 && brandsOptions?.length) {
+            const initialMap = {};
+            brandsOptions.forEach((brandGroup) => {
+                initialMap[brandGroup.code] = brandGroup.brands
+                    .filter((b) => selected.includes(b.brandID))
+                    .map((b) => b.brandID);
+            });
+
+            setSelectedMap(initialMap);
+        } else if (selected.length > 0 && data?.data?.length) {
             const initialMap = {};
             data.data.forEach((brandGroup) => {
                 initialMap[brandGroup.code] = brandGroup.brands
@@ -50,7 +63,7 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
 
             setSelectedMap(initialMap);
         }
-    }, [data, selected]);
+    }, [data, brandsOptions, selected]);
 
     const handleOptionsChange = (brandCode, selectedItems) => {
         setSelectedMap((prev) => {
@@ -75,18 +88,37 @@ export default function BrandsFilters({ selected = [], parentOptions }) {
                         </DisclosureButton>
 
                         <DisclosurePanel>
-                            {data?.data?.map((brand) => (
-                                <FilterMultiItem
-                                    key={brand.code}
-                                    title={brand.code}
-                                    options={brand.brands}
-                                    name="brand"
-                                    selected={selectedMap[brand.code] || []}
-                                    onOptionsChange={(code, selectedItems) =>
-                                        handleOptionsChange(code, selectedItems)
-                                    }
-                                />
-                            ))}
+                            <DisclosurePanel>
+                                {isFiltersPage && brandsOptions ? brandsOptions?.map((brand) =>
+                                    brand.brands?.length > 0 && (
+                                        <FilterMultiItem
+                                            key={brand.code}
+                                            title={brand.code}
+                                            options={brand.brands}
+                                            name="brand"
+                                            selected={selectedMap[brand.code] || []}
+                                            onOptionsChange={(code, selectedItems) =>
+                                                handleOptionsChange(code, selectedItems)
+                                            }
+                                        />
+                                    )
+                                ) : null}
+                                {!isFiltersPage && data?.data ? data?.data?.map((brand) =>
+                                    data?.data?.length > 0 && (
+                                        <FilterMultiItem
+                                            key={brand.code}
+                                            title={brand.code}
+                                            options={brand.brands}
+                                            name="brand"
+                                            selected={selectedMap[brand.code] || []}
+                                            onOptionsChange={(code, selectedItems) => {
+                                                handleOptionsChange(code, selectedItems)
+                                            }
+                                            }
+                                        />
+                                    )
+                                ) : null}
+                            </DisclosurePanel>
                         </DisclosurePanel>
                     </div>
                 )}

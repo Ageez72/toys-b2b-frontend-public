@@ -224,11 +224,27 @@
     font-size: 16px;
     transition: all 0.3s ease-in-out;
     background-color: #fff;
-
+    
     &:hover {
         background-color: #8D1A14;
         color: #fff;
     }
+
+    &.no-bg {
+        background-color: transparent;
+
+        &:hover {
+            background-color: #8D1A14;
+            color: #fff;
+        }
+    }
+}
+
+.sm-primary-btn {
+    font-size: 13px;
+    padding: 8px 16px;
+    margin-bottom: 16px;
+    margin-top: -8px;
 }
 
 .grid-card-container {
@@ -705,4 +721,9 @@ img {
     .red-filter {
         top: 7px;
     }
+}
+
+.reset-password-form-desc {
+    width: 90%;
+    line-height: 1.8;
 }
