@@ -103,7 +103,7 @@ export default function StatementOfAccount({ order }) {
                             placeholder={translation.accountNumber}
                             type="text"
                             className={`w-full p-2.5 disabled`}
-                            defaultValue={getProfileData?.account || ''}
+                            defaultValue={getProfileData?.accountNumber || ''}
                         />
                     </div>
                     <div className='form-group'>
@@ -112,7 +112,7 @@ export default function StatementOfAccount({ order }) {
                             placeholder={translation.accountName}
                             type="text"
                             className={`w-full p-2.5 disabled`}
-                            defaultValue={getProfileData?.accountName || ''}
+                            defaultValue={getProfileData?.account || ''}
                         />
                     </div>
 

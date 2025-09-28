@@ -19,7 +19,7 @@ export default function SellingGoals({ order }) {
 
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
-        document.title = state.LANG === 'AR' ? ar.statementOfAccount : en.statementOfAccount;
+        document.title = state.LANG === 'AR' ? ar.sellingTargetsProgress : en.sellingTargetsProgress;
         getTargetData();
     }, [state.LANG]);
 
@@ -52,8 +52,8 @@ export default function SellingGoals({ order }) {
                 formattedData.push({
                     type: key.includes("brand") && !key.includes("group") ? "brand"
                         : key.includes("group brand") ? "group"
-                            : key.includes("group stock") ? "product"
-                                : key.includes("group common") ? "classification"
+                            : key.includes("product") ? "product"
+                                : key.includes("classification") ? "classification"
                                     : "other",
                     items: obj[key]
                 });
