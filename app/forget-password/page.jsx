@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Cookies from "js-cookie";
-import ResetPassword from "@/pages/ResetPassword/ResetPassword";
+import ForgetPassword from "@/pages/ForgetPassword/ForgetPassword";
 import { BASE_API, endpoints } from "../../constant/endpoints";
 import Loader from "@/components/ui/Loaders/Loader";
 
 export default function page() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showForgetPassword, setShowForgetPassword] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -44,13 +44,13 @@ export default function page() {
           router.push("/home");
         } else {
           console.warn("Profile data missing. Redirecting to /");
-          setShowResetPassword(true);
-          router.push(`/reset-password?${location.search}`);
+          setShowForgetPassword(true);
+          router.push("/forget-password");
         }
       } catch (error) {
         console.error("Profile fetch failed:", error);
-        setShowResetPassword(true);
-        router.push(`/reset-password${location.search}`);
+        setShowForgetPassword(true);
+        router.push("/forget-password");
       } finally {
         setLoading(false);
       }
@@ -61,5 +61,5 @@ export default function page() {
 
   if (loading) return <Loader />;
 
-  return showResetPassword ? <ResetPassword /> : null;
+  return showForgetPassword ? <ForgetPassword /> : null;
 }

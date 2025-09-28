@@ -20,6 +20,7 @@ import { BASE_API, endpoints } from "../../../constant/endpoints";
 
 export default function AddBulkModal({ open, onClose }) {
   const [isImporting, setIsImporting] = useState(false);
+  const [importSummary, setImportSummary] = useState(null);
   const [importPopup, setImportPopup] = useState({
     open: false,
     success: false,
@@ -171,7 +172,6 @@ export default function AddBulkModal({ open, onClose }) {
         const worksheet = workbook.Sheets[sheetName];
         const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // First row is headers -> find indexes
         const header = rows[0].map((h) => String(h).toLowerCase().trim());
         const skuIndex = header.findIndex((h) => h === "sku");
         const qtyIndex = header.findIndex((h) => h === "quantity");
@@ -182,7 +182,6 @@ export default function AddBulkModal({ open, onClose }) {
           return;
         }
 
-        // 1) Aggregate quantities by SKU
         const skuQtyMap = {};
         rows.slice(1).forEach((row) => {
           const rawSku = row[skuIndex];
@@ -198,40 +197,38 @@ export default function AddBulkModal({ open, onClose }) {
 
         const skus = Object.keys(skuQtyMap);
         if (skus.length === 0) {
-          showToastError(
-            translation.noProductsSelected
-          );
+          showToastError(translation.noProductsSelected);
           setIsImporting(false);
           return;
         }
 
-        // 2) Fetch products
         const productFetches = skus.map((sku) => fetchProductBySku(sku));
         const fetchedProducts = await Promise.all(productFetches);
 
-        // 3) Build importedItems list
         const importedItems = [];
+        const errors = [];
+        let successCount = 0;
+
         for (let i = 0; i < skus.length; i++) {
           const sku = skus[i];
           const product = fetchedProducts[i];
           const qty = skuQtyMap[sku];
 
           if (!product) {
-            console.warn(`❌ Product not found for SKU: ${sku}`);
+            errors.push({
+              index: i + 1, // الصنف رقم
+              sku,
+              reason: "غير متوفر أو رقم المنتج غير صحيح",
+            });
             continue;
           }
 
-          const unitPrice = Number(product.priceAfterDisc ?? product.price ?? 0);
+          const unitPrice = Number(product.price);          
 
-          // Clamp qty
           let finalQty = Number(qty);
           const maxAllowed = Math.min(product.avlqty, 10);
           if (finalQty > maxAllowed) {
-            showWarningToast(
-              `${translation.quantityExceeded} ${maxAllowed}`,
-              lang,
-              translation.warning
-            );
+            showWarningToast(`${translation.quantityExceeded} ${maxAllowed}`, lang, translation.warning);
             finalQty = maxAllowed;
           }
 
@@ -242,39 +239,25 @@ export default function AddBulkModal({ open, onClose }) {
             total: unitPrice * finalQty,
             isConfirmed: true,
           });
+          successCount++;
         }
 
-        // 4) Merge into state (add old qty + new qty)
+        // merge with state
         setBulkItems((prev) => {
-          const confirmed = prev
-            .filter((it) => it.isConfirmed)
-            .map((it) => ({ ...it, qty: Number(it.qty || 0) }));
+          const confirmed = prev.filter((it) => it.isConfirmed).map((it) => ({ ...it, qty: Number(it.qty || 0) }));
 
           for (const newItem of importedItems) {
             const idx = confirmed.findIndex((it) => it.id === newItem.id);
             if (idx >= 0) {
-              // Add old qty + new qty
               const oldQty = Number(confirmed[idx].qty || 0);
               let updatedQty = oldQty + newItem.qty;
-
               const maxAllowed = Math.min(confirmed[idx].avlqty, 10);
               if (updatedQty > maxAllowed) {
-                showWarningToast(
-                  `${translation.quantityExceeded} ${maxAllowed}`,
-                  lang,
-                  translation.warning
-                );
+                showWarningToast(`${translation.quantityExceeded} ${maxAllowed}`, lang, translation.warning);
                 updatedQty = maxAllowed;
               }
-
-              confirmed[idx].qty = updatedQty;
-              const unit = Number(
-                confirmed[idx].priceAfterDisc ??
-                confirmed[idx].unitPrice ??
-                confirmed[idx].price ??
-                newItem.unitPrice ??
-                0
-              );
+              confirmed[idx].qty = updatedQty;              
+              const unit = Number(confirmed[idx].unitPrice ?? confirmed[idx].price ?? newItem.unitPrice ?? 0);
               confirmed[idx].total = unit * updatedQty;
             } else {
               confirmed.push(newItem);
@@ -284,12 +267,33 @@ export default function AddBulkModal({ open, onClose }) {
           return [...confirmed, { isConfirmed: false }];
         });
 
+        // ✅ Build summary
+        const summaryArray = [
+          translation.importSummary.success
+            .replace("{success}", successCount)
+            .replace("{errors}", errors.length),
+          ...errors.map((err) =>
+            translation.importSummary.errorItem.replace("{sku}", err.sku)
+          ),
+        ];
+
+
+        setImportSummary(summaryArray);
         setIsImporting(false);
-        setImportPopup({
-          open: true,
-          success: true,
-          message: translation.importSuccess || "Products imported successfully!",
-        });
+        if (successCount > 0) {
+          setImportPopup({
+            open: true,
+            success: true,
+            message: translation.importSuccess || "Products imported successfully!",
+          });
+        } else {
+          setImportPopup({
+            open: true,
+            success: false,
+            message: summaryArray[0] || "Import failed. Please try again.",
+          });
+        }
+
       } catch (err) {
         console.error("❌ Import failed", err);
         setIsImporting(false);
@@ -300,7 +304,6 @@ export default function AddBulkModal({ open, onClose }) {
         });
         showToastError(translation.importFailed || "Import failed");
       } finally {
-        // ✅ Clear the input value so the same file can be selected again
         fileInput.value = "";
       }
     };
@@ -308,7 +311,28 @@ export default function AddBulkModal({ open, onClose }) {
     reader.readAsArrayBuffer(file);
   };
 
+  const handleExport = () => {
+    // Only export confirmed items
+    const exportItems = bulkItems.filter(item => item.isConfirmed);
 
+    if (exportItems.length === 0) return;
+
+    const worksheetData = exportItems.map(item => ({
+      Name: item.name,
+      SKU: item.id,
+      Quantity: item.qty,
+      Price: item.price,
+      Total: item.total,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+
+    XLSX.writeFile(workbook, "bulk-items.xlsx");
+  };
+
+  const hasExportItems = bulkItems.some(item => item.isConfirmed);
 
   return (
     <>
@@ -316,7 +340,10 @@ export default function AddBulkModal({ open, onClose }) {
         <SuccessModal
           icon="icon-document-download"
           open={importPopup.success}
-          message={importPopup.message}
+          // message={importPopup.message}
+          message={importSummary[0]}
+          summary={importSummary}
+          style={{ fontWeight: 'bold' }}
           onClose={() => setImportPopup({ open: false, success: false, message: "" })}
         />
       )}
@@ -324,6 +351,8 @@ export default function AddBulkModal({ open, onClose }) {
         <ErrorModal
           open={!importPopup.success}
           message={importPopup.message}
+          summary={importSummary}
+          style={{ fontWeight: 'bold' }}
           onClose={() => setImportPopup({ open: false, success: false, message: "" })}
         />
       )}
@@ -414,41 +443,64 @@ export default function AddBulkModal({ open, onClose }) {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="action-btns flex flex-wrap gap-3 mt-4">
+                  <div className="bulk-action-btns flex justify-between items-center flex-wrap gap-3">
                     <button
-                      className={`primary-btn ${isSubmitDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={`submit-bulk-btn primary-btn ${isSubmitDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                       onClick={handleSubmit}
                       disabled={isSubmitDisabled}
                     >
                       {translation.add}
                     </button>
-                    <div>
-                      <label className="import-btn">
-                        <input
-                          type="file"
-                          accept=".xlsx,.xls"
-                          onChange={handleImport}
-                          disabled={isImporting}
-                          style={{ display: "none" }}
-                          id="importExcel"
-                        />
-                      </label>
-                      <button
-                        className="flex items-center gap-1 outline-btn cursor-pointer"
-                        onClick={() => document.getElementById("importExcel").click()}
-                      >
-                        {isImporting && <span className="spinner"></span>}
-                        <i className="icon-export text-lg"></i>
-                        {translation.importExcel}
-                      </button>
-                    </div>
-                    <a className="flex items-center gap-1 outline-btn cursor-pointer" href="https://alekha-dev.s3.amazonaws.com/bulk_add_items_import_templates.xlsx" download>
+
+                    <div className="flex flex-wrap gap-3">
+                      <div>
+                        <label className="import-btn">
+                          <input
+                            type="file"
+                            accept=".xlsx,.xls"
+                            onChange={handleImport}
+                            disabled={isImporting}
+                            style={{ display: "none" }}
+                            id="importExcel"
+                          />
+                        </label>
+                        <button
+                          className={`flex items-center gap-1 outline-btn ${!hasExportItems ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          onClick={handleExport}
+                          disabled={!hasExportItems}
+                        >
+                          <i className="icon-import text-lg"></i>
+                          {translation.exportExcel}
+                        </button>
+                      </div>
+                      <div>
+                        <label className="import-btn">
+                          <input
+                            type="file"
+                            accept=".xlsx,.xls"
+                            onChange={handleImport}
+                            disabled={isImporting}
+                            style={{ display: "none" }}
+                            id="importExcel"
+                          />
+                        </label>
+                        <button
+                          className="flex items-center gap-1 outline-btn cursor-pointer"
+                          onClick={() => document.getElementById("importExcel").click()}
+                        >
+                          {isImporting && <span className="spinner"></span>}
+                          <i className="icon-export text-lg"></i>
+                          {translation.importExcel}
+                        </button>
+                      </div>
+                      {/* <a className="flex items-center gap-1 outline-btn cursor-pointer" href="https://alekha-dev.s3.amazonaws.com/bulk_add_items_import_templates.xlsx" download>
                       <i className="icon-import text-lg"></i>
                       {translation.downloadExcel}
-                    </a>
-                    <button className="gray-btn" onClick={onClose}>
-                      {translation.cancel}
-                    </button>
+                    </a> */}
+                      <button className="gray-btn" onClick={onClose}>
+                        {translation.cancel}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

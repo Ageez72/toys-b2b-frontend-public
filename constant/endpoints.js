@@ -1,4 +1,4 @@
-export const BASE_API = 'https://pick.alekha.com:8443/pick/faces/redirect/b2b'; 
+export const BASE_API = 'https://pick.alekha.com:8443/pick/faces/redirect/b2b';
 
 export const endpoints = {
   auth: {
@@ -6,7 +6,9 @@ export const endpoints = {
     register: "?action=REGISTER",
     logout: "/auth/logout",
     refreshToken: "/auth/refresh-token",
-    updateProfile: "?action=UPDATE.PROFILE"
+    updateProfile: "?action=UPDATE.PROFILE",
+    forgotPassword: "?action=forgot.pwd",
+    resetPassword: "?action=reset.pwd",
   },
   user: {
     profile: "?action=USERINFO",
@@ -28,6 +30,8 @@ export const endpoints = {
     getCart: "?action=get.cart",
     setCart: "?action=set.cart&cart=json",
     requestOutOfStock: "?action=request.outofstock",
+    getStatement: "?action=get.statement",
+    getTarget: "?action=get.target&type=html&month=1",
   },
 
 };

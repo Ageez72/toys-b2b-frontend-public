@@ -17,6 +17,7 @@ import { showWarningToast } from "@/actions/toastUtils";
 import ErrorOrderResModal from "@/components/ui/ErrorOrderResModal";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useRouter } from 'next/navigation';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -30,6 +31,7 @@ function Cart() {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [orderSummary, setOrderSummary] = useState(null);
+  const router = useRouter()
 
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
@@ -64,15 +66,23 @@ function Cart() {
   const handleGetOrder = async () => {
     const items = state.STOREDITEMS;
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}&token=${Cookies.get('token')}`, items, {});
       setOrderSummary(response.data);
     } catch (error) {
       console.error('Failed to get order summary:', error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!state.isCorporate) {
+      setLoading(true)
+      router.push('/cart');
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     loadCart();
@@ -148,16 +158,16 @@ function Cart() {
 
     // Map the data you want to export
     const exportData = orderSummary.ITEMS.map((item) => ({
-      [translation.sku]: item.id,
-      [translation.barcode]: item.barcode,
-      [translation.productName]: item.name,
-      [translation.sellingPrice]: item.RSP,
-      [translation.price]: item.LPRICE,
-      [translation.costPrice]: item.PRICEAFTERDISCOUNT,
-      [translation.tax]: `${Number(item.TAX).toFixed(2)}%`,
-      [`${translation.brand} - ${translation.type}`]: `${item.brand.description} - ${item.category.description}`,
-      [translation.qty]: item.qty || item.QTY,
-      [translation.totalPrice]: Number(item.NET).toFixed(2),
+      ["SKU"]: item.id,
+      ["Barcode"]: item.barcode,
+      ["Product Name"]: item.name,
+      ["Selling Price"]: item.RSP,
+      ["Price"]: item.LPRICE,
+      ["Cost"]: item.PRICEAFTERDISCOUNT,
+      ["Tax"]: `${Number(item.TAX).toFixed(2)}%`,
+      [`Brand - Category`]: `${item.brand.description} - ${item.category.description}`,
+      ["Quantity"]: item.qty || item.QTY,
+      ["Total Price"]: Number(item.NET).toFixed(2),
     }));
 
     // Create a worksheet
@@ -177,7 +187,7 @@ function Cart() {
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page section-min">
-      {/* {loading && <Loader />} */}
+      {loading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
       {/* <PaymentForm /> */}
       <div className="order-side mt-5 pt-5">

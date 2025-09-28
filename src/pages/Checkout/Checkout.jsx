@@ -15,7 +15,7 @@ import Cookies from 'js-cookie';
 import Loader from "@/components/ui/Loaders/Loader";
 import { showWarningToast } from "@/actions/toastUtils";
 import ErrorOrderResModal from "@/components/ui/ErrorOrderResModal";
-import PaymentForm from "@/components/ui/PaymentForm";
+import { useRouter } from 'next/navigation';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -29,13 +29,15 @@ function Cart() {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [orderSummary, setOrderSummary] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("COD");
+  const router = useRouter()
 
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
-    document.title = state.LANG === 'AR' ? ar.cart : en.cart;
+    document.title = state.LANG === 'AR' ? ar.goTopayment : en.goTopayment;
   }, [state.LANG]);
 
   const loadCart = () => {
@@ -63,15 +65,23 @@ function Cart() {
   const handleGetOrder = async () => {
     const items = getCart();
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}&token=${Cookies.get('token')}`, items, {});
       setOrderSummary(response.data);
     } catch (error) {
       console.error('Failed to get order summary:', error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!state.isCorporate) {
+      setLoading(true)
+      router.push('/cart');
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     loadCart();
@@ -106,6 +116,7 @@ function Cart() {
       notes: notes,
       deliveryDate: "",
       address: selectedAddressId,
+      PM: selectedPaymentMethod,
       items: storedCart.map(item => ({
         item: item.id,
         qty: item.qty
@@ -116,6 +127,13 @@ function Cart() {
       const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`, data, {});
       if (response.data && !response.data.ERROR) {
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
+        // Send updated cart to backend
+        const res = await axios.post(
+          `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
+          {
+            "items": []
+          }
+        );
         dispatch({ type: 'STORED-ITEMS', payload: [] });
         setOpenSureOrder(false);
         setOpenConfirmOrder(true);
@@ -139,12 +157,13 @@ function Cart() {
 
   const breadcrumbItems = [
     { label: translation.home, href: '/home' },
-    { label: translation.cart }
+    { label: translation.cart, href: '/corporate-cart' },
+    { label: translation.goTopayment }
   ];
 
   return (
-    <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page section-min">
-      {/* {loading && <Loader />} */}
+    <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page checkout-page section-min">
+      {loading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
       {/* <PaymentForm /> */}
       <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">
@@ -182,6 +201,47 @@ function Cart() {
                 )
                 }
               </div>
+
+              <h3 className="sub-title mb-4 mt-8">{translation.paymentMethod}</h3>
+              <div className="payment-methods flex flex-wrap md:flex-nowrap gap-3">
+                <label htmlFor="cashOnDelivery" className="block w-full md:w-1/2">
+                  <div className={`card ${selectedPaymentMethod === "COD" ? 'selected' : ''}`}>
+                    <div className="payment-method">
+                      <i className="icon-money-3"></i>
+                      <span className="icon-tick-circle"></span>
+                      <input
+                        className="hidden"
+                        type="radio"
+                        name="paymentMethod"
+                        id="cashOnDelivery"
+                        value="COD"
+                        checked={selectedPaymentMethod === "COD"}
+                        onChange={() => setSelectedPaymentMethod("COD")}
+                      />
+                      <span className="block mt-2">{translation.cashOnDelivery}</span>
+                    </div>
+                  </div>
+                </label>
+                {/* <label htmlFor="creditCardPayment" className="block w-full md:w-1/2">
+                  <div className={`card ${selectedPaymentMethod === "creditCardPayment" ? 'selected' : ''}`}>
+                    <div className="payment-method">
+                      <i className="icon-cards"></i>
+                      <span className="icon-tick-circle"></span>
+                      <input
+                        className="hidden"
+                        type="radio"
+                        name="paymentMethod"
+                        id="creditCardPayment"
+                        value="creditCardPayment"
+                        checked={selectedPaymentMethod === "creditCardPayment"}
+                        onChange={() => setSelectedPaymentMethod("creditCardPayment")}
+                      />
+                      <span className="block mt-2">{translation.creditCardPayment}</span>
+                    </div>
+                  </div>
+                </label> */}
+              </div>
+
               <h3 className="sub-title mb-4 mt-8">{translation.orderNotes}</h3>
               <div className="card">
                 <textarea
@@ -241,6 +301,14 @@ function Cart() {
               <p className="mb-0">{translation.discount}</p>
               <p className="mb-0 flex items-center gap-1">
                 <span>{cartItems.length ? Number(orderSummary?.DISCOUNT).toFixed(2) : 0}</span>
+                <span>{translation.jod}</span>
+              </p>
+            </div>
+            <div className="order-item flex justify-between items-center mb-4">
+              <p className="mb-0">{translation.deliveryFees}</p>
+              <p className="mb-0 flex items-center gap-1">
+                {/* <span>{cartItems.length ? Number(orderSummary?.DISCOUNT).toFixed(2) : 0}</span> */}
+                <span>0</span>
                 <span>{translation.jod}</span>
               </p>
             </div>

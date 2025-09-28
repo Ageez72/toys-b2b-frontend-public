@@ -17,6 +17,7 @@ import { showWarningToast } from "@/actions/toastUtils";
 import ErrorOrderResModal from "@/components/ui/ErrorOrderResModal";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useRouter } from 'next/navigation';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -30,6 +31,7 @@ function Cart() {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [orderSummary, setOrderSummary] = useState(null);
+  const router = useRouter()
 
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
@@ -39,7 +41,7 @@ function Cart() {
     document.title = state.LANG === 'AR' ? ar.cart : en.cart;
   }, [state.LANG]);
 
-const loadCart = () => {
+  const loadCart = () => {
     const items = state.STOREDITEMS;
     setCartItems(items);
   };
@@ -64,15 +66,23 @@ const loadCart = () => {
   const handleGetOrder = async () => {
     const items = state.STOREDITEMS;
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}&token=${Cookies.get('token')}`, items, {});
       setOrderSummary(response.data);
     } catch (error) {
       console.error('Failed to get order summary:', error);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (state.isCorporate) {
+      setLoading(true)
+      router.push('/corporate-cart');
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     loadCart();
@@ -82,7 +92,7 @@ const loadCart = () => {
   useEffect(() => {
     handleGetOrder();
     loadCart();
-  }, [refresh,state.STOREDITEMS]);
+  }, [refresh, state.STOREDITEMS]);
 
   const handleSubmitChecker = () => {
     const storedCart = state.STOREDITEMS;
@@ -103,6 +113,8 @@ const loadCart = () => {
   const handleSubmitOrder = async () => {
     const storedCart = state.STOREDITEMS;
 
+    console.log(selectedAddressId);
+
     const data = {
       notes: notes,
       deliveryDate: "",
@@ -117,6 +129,13 @@ const loadCart = () => {
       const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`, data, {});
       if (response.data && !response.data.ERROR) {
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
+        // Send updated cart to backend
+        const res = await axios.post(
+          `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
+          {
+            "items": []
+          }
+        );
         dispatch({ type: 'STORED-ITEMS', payload: [] });
         setOpenSureOrder(false);
         setOpenConfirmOrder(true);
@@ -148,16 +167,16 @@ const loadCart = () => {
 
     // Map the data you want to export
     const exportData = orderSummary.ITEMS.map((item) => ({
-      [translation.sku]: item.id,
-      [translation.barcode]: item.barcode,
-      [translation.productName]: item.name,
-      [translation.sellingPrice]: item.RSP,
-      [translation.price]: item.LPRICE,
-      [translation.costPrice]: item.PRICEAFTERDISCOUNT,
-      [translation.tax]: `${Number(item.TAX).toFixed(2)}%`,
-      [`${translation.brand} - ${translation.type}`]: `${item.brand.description} - ${item.category.description}`,
-      [translation.qty]: item.qty || item.QTY,
-      [translation.totalPrice]: Number(item.NET).toFixed(2),
+      ["SKU"]: item.id,
+      ["Barcode"]: item.barcode,
+      ["Product Name"]: item.name,
+      ["Selling Price"]: item.RSP,
+      ["Price"]: item.LPRICE,
+      ["Cost"]: item.PRICEAFTERDISCOUNT,
+      ["Tax"]: `${Number(item.TAX).toFixed(2)}%`,
+      [`Brand - Category`]: `${item.brand.description} - ${item.category.description}`,
+      ["Quantity"]: item.qty || item.QTY,
+      ["Total Price"]: Number(item.NET).toFixed(2),
     }));
 
     // Create a worksheet
@@ -177,7 +196,7 @@ const loadCart = () => {
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page section-min">
-      {/* {loading && <Loader />} */}
+      {loading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
       <div className="mt-5 pt-5">
         <div className="flex justify-between items-center gap-5 mb-5">
