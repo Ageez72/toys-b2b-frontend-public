@@ -52,8 +52,8 @@ export default function SellingGoals({ order }) {
                 formattedData.push({
                     type: key.includes("brand") && !key.includes("group") ? "brand"
                         : key.includes("group brand") ? "group"
-                            : key.includes("product") ? "product"
-                                : key.includes("classification") ? "classification"
+                            : key.includes("group stock") ? "product"
+                                : key.includes("group common") ? "classification"
                                     : "other",
                     items: obj[key]
                 });
