@@ -61,6 +61,9 @@ export default function OrderDetails() {
         status = "closed"
     }
 
+    console.log(orderDetails);
+    
+
     return (
         <>
             {
@@ -139,7 +142,7 @@ export default function OrderDetails() {
                                                         <label className="flex justify-between items-center">
                                                             <span className="flex items-center gap-2">
                                                                 <i className="icon-location location"></i>
-                                                                <span>{orderDetails.address}</span>
+                                                                <span>{orderDetails["branch name"] ? orderDetails["branch name"]+ " -" : null}  {orderDetails.address}</span>
                                                             </span>
                                                         </label>
                                                     </div>
