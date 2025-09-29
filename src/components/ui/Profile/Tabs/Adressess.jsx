@@ -65,7 +65,7 @@ export default function Adressess() {
             <div key={index} className="flex justify-between items-center adress-item mb-5">
               <span className="flex items-center gap-2">
                 <i className="icon-location location"></i>
-                <span>{add["branch name"]} - {add.address}</span>
+                <span>{add["branch name"] ? add["branch name"]+ " -" : null}  {add.address}</span>
               </span>
             </div>
           ))

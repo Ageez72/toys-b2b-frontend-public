@@ -572,7 +572,7 @@ function Cart() {
                             <label htmlFor={`address-${index}`} className="flex justify-between items-center">
                               <span className="flex items-center gap-2">
                                 <i className="icon-location location"></i>
-                                <span>{add["branch name"]} - {add.address}</span>
+                                <span>{add["branch name"] ? add["branch name"]+ " -" : null}  {add.address}</span>
                               </span>
                               <i className="icon-tick-circle check"></i>
                             </label>

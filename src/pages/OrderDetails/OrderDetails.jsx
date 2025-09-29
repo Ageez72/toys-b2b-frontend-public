@@ -59,10 +59,7 @@ export default function OrderDetails() {
         status = "in-progress"
     } else if (orderDetails.statusCode == 2) {
         status = "closed"
-    }
-
-    console.log(orderDetails);
-    
+    }    
 
     return (
         <>
