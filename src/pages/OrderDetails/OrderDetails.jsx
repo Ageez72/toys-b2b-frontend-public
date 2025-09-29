@@ -162,7 +162,7 @@ export default function OrderDetails() {
                         <div className="card p-4">
                             <h3 className="sub-title mb-6">{translation.orderSummary}</h3>
                             <div className="order-item flex justify-between items-center mb-4">
-                                <p className="mb-0">{translation.itemCount}</p>
+                                <p className="mb-0">{translation.CNT}</p>
                                 <p className="mb-0">{orderDetails?.details?.length}</p>
                             </div>
                             <div className="order-item flex justify-between items-center mb-4">
