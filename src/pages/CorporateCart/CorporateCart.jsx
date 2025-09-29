@@ -173,7 +173,8 @@ function Cart() {
 
         const header = rows[0].map((h) => String(h).toLowerCase().trim());
         const skuIndex = header.findIndex((h) => h === "sku");
-        const qtyIndex = header.findIndex((h) => h === "quantity");
+        const qtyHeaders = ["quantity", "qty", "quantities", "quantitiy"];
+        const qtyIndex = header.findIndex((h) => qtyHeaders.includes(h));
 
         if (skuIndex === -1 || qtyIndex === -1) {
           showToastError(translation.errorImportingFile);
