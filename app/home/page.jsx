@@ -123,7 +123,7 @@ export default function Home() {
         )
       }
       <div className="home-sections-container">
-        <div className="py-60">
+        <div className="custom-py-60">
           <BrandsSwiper />
         </div>
 
