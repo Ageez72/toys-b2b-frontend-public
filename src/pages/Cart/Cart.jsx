@@ -133,7 +133,8 @@ function Cart() {
     const data = {
       notes: notes,
       deliveryDate: "",
-      address: selectedAddressId,
+      address: selectedAddressId.address,
+      'branch name': selectedAddressId["branch name"],
       items: storedCart.map(item => ({
         item: item.id,
         qty: item.qty
@@ -565,8 +566,8 @@ function Cart() {
                               name="address"
                               id={`address-${index}`}
                               value={add.id}
-                              checked={selectedAddressId === add.id}
-                              onChange={() => setSelectedAddressId(add.id)}
+                              checked={selectedAddressId.id === add.id}
+                              onChange={() => setSelectedAddressId(add)}
                             />
                             <label htmlFor={`address-${index}`} className="flex justify-between items-center">
                               <span className="flex items-center gap-2">
