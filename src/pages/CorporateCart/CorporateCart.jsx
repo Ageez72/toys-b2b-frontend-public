@@ -75,7 +75,8 @@ function Cart() {
   };
 
   useEffect(() => {
-    if (!state.isCorporate) {
+    const profile = getProfile(); 
+    if (!profile.isCorporate) {
       setLoading(true)
       router.push('/cart');
       return;
