@@ -279,6 +279,7 @@
     "goTopayment": "إتمام الطلب",
     "corporate_login_success": "تم تفعيل حسابك بنجاح. يمكنك الآن تسجيل الدخول.",
     "corporate_login_error": "انتهت صلاحية رابط التفعيل. يرجى إعادة التسجيل.",
+    "is_activated": "تم تفعيل حسابك مسبقًا.",
     "sellingGoals": "هدف المبيعات لعام",
     "sellingTargetsProgress": "هدف المبيعات",
     "group": "المجموعة",
