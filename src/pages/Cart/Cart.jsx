@@ -40,6 +40,9 @@ function Cart() {
     success: false,
     message: "",
   });
+  const [addOrderError, setAddOrderError] = useState(false)
+  const [addOrderErrorFlag, setAddOrderErrorFlag] = useState(false)
+  const [addOrderErrorList, setAddOrderErrorList] = useState([]);
   const router = useRouter()
 
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -79,7 +82,7 @@ function Cart() {
   };
 
   const handleGetOrder = async () => {
-    const items = state.STOREDITEMS;
+    const items =getCart();
     try {
       // setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}&token=${Cookies.get('token')}`, items, {});
@@ -89,10 +92,13 @@ function Cart() {
     } finally {
       // setLoading(false);
     }
+
+    console.log("ddd");
+    
   };
 
   useEffect(() => {
-    const profile = getProfile(); 
+    const profile = getProfile();
     if (profile.isCorporate) {
       setLoading(true)
       router.push('/corporate-cart');
@@ -108,7 +114,7 @@ function Cart() {
   useEffect(() => {
     handleGetOrder();
     loadCart();
-  }, [refresh, state.STOREDITEMS]);
+  }, [refresh, state.STOREDITEM, addOrderErrorFlag]);
 
   const handleSubmitChecker = () => {
     const storedCart = state.STOREDITEMS;
@@ -128,12 +134,10 @@ function Cart() {
 
   const handleSubmitOrder = async () => {
     const storedCart = state.STOREDITEMS;
-
-    console.log(selectedAddressId);
-
     const data = {
       notes: notes,
       deliveryDate: "",
+      branchNo: selectedAddressId.id,
       address: selectedAddressId.address,
       'branch name': selectedAddressId["branch name"],
       items: storedCart.map(item => ({
@@ -144,7 +148,8 @@ function Cart() {
     try {
       setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`, data, {});
-      if (response.data && !response.data.ERROR) {
+      console.log(response);
+      if (response.data && !response.data?.ERROR && !response.data.errorType) {        
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
         // Send updated cart to backend
         const res = await axios.post(
@@ -157,6 +162,11 @@ function Cart() {
         setOpenSureOrder(false);
         setOpenConfirmOrder(true);
         handleRefresh();
+      } if (response.data && response.data.error && response.data.errorType === "qty") {
+        setAddOrderError(true);
+        setOpenSureOrder(false);
+        setAddOrderErrorFlag(!addOrderErrorFlag)
+        setAddOrderErrorList(response.data.items || [])
       } else {
         let exceededItems = getOverQtyItems(response?.data?.items);
         setErrorOrderResContent(exceededItems)
@@ -168,7 +178,7 @@ function Cart() {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   const handleRefresh = () => {
     setRefresh(prev => !prev);
@@ -398,6 +408,12 @@ function Cart() {
           onClose={() => setImportPopup({ open: false, success: false, message: "" })}
         />
       )}
+      <ErrorModal
+        open={addOrderError}
+        title={translation.addOrderErrorTitle}
+        message={translation.addOrderErrorMsg}
+        onClose={() => setAddOrderError(false)}
+      />
       {loading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
       <div className="mt-5 pt-5">
@@ -501,7 +517,7 @@ function Cart() {
               <tbody>
                 <>
                   {orderSummary?.ITEMS?.map((item) => (
-                    <tr className="bg-white" key={item.id}>
+                    <tr className={`bg-white ${addOrderErrorList?.map(String).includes(String(item.id)) ? "hass-qty-error" : ""} ${item.id}`} key={item.id}>
                       <td className="px-3 py-3 text-center">
                         <Link href={`/products/${item.id}`} className="w-full h-full flex justify-center items-center">
                           <img src={item.images["800"].main} width={80} alt={item.name || "Product"} />
@@ -573,7 +589,7 @@ function Cart() {
                             <label htmlFor={`address-${index}`} className="flex justify-between items-center">
                               <span className="flex items-center gap-2">
                                 <i className="icon-location location"></i>
-                                <span>{add["branch name"] ? add["branch name"]+ " -" : null}  {add.address}</span>
+                                <span>{add["branch name"] ? add["branch name"] + " -" : null}  {add.address}</span>
                               </span>
                               <i className="icon-tick-circle check"></i>
                             </label>

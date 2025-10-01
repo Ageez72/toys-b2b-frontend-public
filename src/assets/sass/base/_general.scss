@@ -801,3 +801,8 @@ img {
 .forced-bg {
     background-color: var(--body-bg) !important;
 }
+
+.hass-qty-error {
+  background-color: #8d1a141f !important;
+  border: 2px solid var(--primary-color);
+}

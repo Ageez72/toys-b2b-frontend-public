@@ -116,6 +116,7 @@ function Cart() {
     const data = {
       notes: notes,
       deliveryDate: "",
+      branchNo: selectedAddressId.id,
       address: selectedAddressId.address,
       'branch name': selectedAddressId["branch name"],
       PM: selectedPaymentMethod,

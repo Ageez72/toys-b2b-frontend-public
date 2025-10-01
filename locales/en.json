@@ -307,5 +307,7 @@
     "errorItem": "- SKU {sku}: Not available or invalid product number"
   },
   "deliveryFees": "Delivery Fees",
-  "achievedTarget": "Achieved {achieved} {jod} out of {target} {jod}"
+  "achievedTarget": "Achieved {achieved} {jod} out of {target} {jod}",
+  "addOrderErrorTitle":"Out of Stock Items",
+  "addOrderErrorMsg": "Some of the products in your order are currently out of stock. Please review your cart and update your order."
 }
