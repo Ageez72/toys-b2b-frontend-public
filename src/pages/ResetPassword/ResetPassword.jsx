@@ -67,15 +67,11 @@ function ResetPassword() {
           },
         }
       );
-      const res = await result.json();
-      console.log(res);
-      
+      const res = await result.json();      
       setIsLoading(false);
       if (res.error === true) {
         setCorpErrorMessage(res.response || translation.errorHappened);
         setIsErrorModalOpen(true);
-        console.log("1");
-
       } else {
         setCorpSuccessMessage(res.response || translation.passwordChangeSuccess);
         setIsSuccessModalOpen(true);
@@ -84,10 +80,8 @@ function ResetPassword() {
           password: "",
           confirmPassword: "",
         });
-        console.log("3");
       }
     } catch (err) {
-      console.log("2");
       console.log(err);
       setIsLoading(false);
       setCorpErrorMessage(err.response?.data?.response || translation.errorHappened);

@@ -131,6 +131,8 @@ function Cart() {
     try {
       setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`, data, {});
+      console.log(response);
+      
       if (response.data && !response.data?.ERROR && !response.data.errorType) {
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
         await axios.post(
@@ -146,12 +148,13 @@ function Cart() {
         setOpenSureOrder(false);
         setAddOrderErrorFlag(!addOrderErrorFlag);
         setAddOrderErrorList(response.data.items || []);
-      } else {
-        let exceededItems = getOverQtyItems(response?.data?.items);
-        setErrorOrderResContent(exceededItems);
-        setOpenSureOrder(false);
-        setOpenErrorOrderResModal(true);
-      }
+      } 
+      // else {
+      //   let exceededItems = getOverQtyItems(response?.data?.items);
+      //   setErrorOrderResContent(exceededItems);
+      //   setOpenSureOrder(false);
+      //   setOpenErrorOrderResModal(true);
+      // }
     } catch (error) {
       console.error('Order submission failed:', error);
     } finally {
