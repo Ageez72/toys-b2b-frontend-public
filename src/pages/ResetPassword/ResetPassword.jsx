@@ -69,15 +69,19 @@ function ResetPassword() {
       const res = await result.json();
       setIsLoading(false);
       if (res.data.error === true) {
-        setCorpErrorMessage(res.data?.message || translation.errorHappened);
+        setCorpErrorMessage(res.data?.response || translation.errorHappened);
         setIsErrorModalOpen(true);
+        console.log("1");
+        
       } else {
         setCorpSuccessMessage(res.data.response || translation.passwordChangeSuccess);
         setIsSuccessModalOpen(true);
+        console.log("3");
       }
     } catch (err) {
+      console.log("2");
       setIsLoading(false);
-      setCorpErrorMessage(err.response?.data?.message || translation.errorHappened);
+      setCorpErrorMessage(err.response?.data?.response || translation.errorHappened);
       setIsErrorModalOpen(true);
     }
   };
