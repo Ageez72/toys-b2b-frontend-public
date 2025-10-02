@@ -99,9 +99,11 @@ function ResetPassword() {
     <div className="container auth-wrapper">
       <SuccessModal
         open={isSuccessModalOpen}
-        onClose={() => setIsSuccessModalOpen(false)}
+        onClose={() => setIsSuccessModalOpen(true)}
         title={translation.success}
         message={corpSuccessMessage}
+        goHome={true}
+        goHomeTitle={translation.backLogin}
       />
 
       <ErrorModal
