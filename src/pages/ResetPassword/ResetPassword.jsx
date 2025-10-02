@@ -20,7 +20,7 @@ import axios from 'axios';
 
 function ResetPassword() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [corpSuccessMessage, setCorpSuccessMessage] = useState('');
