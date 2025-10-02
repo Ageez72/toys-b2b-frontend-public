@@ -68,14 +68,16 @@ function ResetPassword() {
         }
       );
       const res = await result.json();
+      console.log(res);
+      
       setIsLoading(false);
-      if (res.data.error === true) {
-        setCorpErrorMessage(res.data?.response || translation.errorHappened);
+      if (res.error === true) {
+        setCorpErrorMessage(res.response || translation.errorHappened);
         setIsErrorModalOpen(true);
         console.log("1");
 
       } else {
-        setCorpSuccessMessage(res.data.response || translation.passwordChangeSuccess);
+        setCorpSuccessMessage(res.response || translation.passwordChangeSuccess);
         setIsSuccessModalOpen(true);
         // Clear the form inputs after success
         reset({
@@ -86,6 +88,7 @@ function ResetPassword() {
       }
     } catch (err) {
       console.log("2");
+      console.log(err);
       setIsLoading(false);
       setCorpErrorMessage(err.response?.data?.response || translation.errorHappened);
       setIsErrorModalOpen(true);
