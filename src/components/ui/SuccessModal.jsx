@@ -38,7 +38,7 @@ export default function SuccessModal({ open, onClose, message, title, icon, summ
 
                                         {
                                             goHome && (
-                                                <a href='/' className='primary-btn gotohome block mt-3'>{goHomeTitle}</a>
+                                                <a href='/' className='primary-btn gotohome inline-block mt-3'>{goHomeTitle}</a>
                                             )
                                         }
                                     </div>
