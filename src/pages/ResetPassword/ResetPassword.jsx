@@ -42,6 +42,7 @@ function ResetPassword() {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -72,10 +73,15 @@ function ResetPassword() {
         setCorpErrorMessage(res.data?.response || translation.errorHappened);
         setIsErrorModalOpen(true);
         console.log("1");
-        
+
       } else {
         setCorpSuccessMessage(res.data.response || translation.passwordChangeSuccess);
         setIsSuccessModalOpen(true);
+        // Clear the form inputs after success
+        reset({
+          password: "",
+          confirmPassword: "",
+        });
         console.log("3");
       }
     } catch (err) {
