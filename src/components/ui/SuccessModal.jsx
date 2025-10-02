@@ -19,7 +19,7 @@ export default function SuccessModal({ open, onClose, message, title, icon, summ
                             <div className="">
                                 <div className="flex items-start gap-4">
                                     <div className='icon-container'>
-                                        <i className={`${icon ? icon : 'icon-user-remove'}`}></i>
+                                        <i className={`${icon ? icon : 'icon-user-tick1'}`}></i>
                                     </div>
                                     <div className="text-start w-auto">
                                         <DialogTitle as="h3" className="text-base font-semibold text-gray-900 dialog-title">
@@ -38,7 +38,7 @@ export default function SuccessModal({ open, onClose, message, title, icon, summ
 
                                         {
                                             goHome && (
-                                                <a href='/' className='primary-btn'>{goHomeTitle}</a>
+                                                <a href='/' className='primary-btn gotohome block mt-3'>{goHomeTitle}</a>
                                             )
                                         }
                                     </div>
