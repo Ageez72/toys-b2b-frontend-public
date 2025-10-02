@@ -44,9 +44,10 @@ function Cart() {
   const [addOrderError, setAddOrderError] = useState(false);
   const [addOrderErrorFlag, setAddOrderErrorFlag] = useState(false);
   const [addOrderErrorList, setAddOrderErrorList] = useState([]);
+  const [addOrderErrorAPI, setAddOrderErrorAPI] = useState(false);
   const router = useRouter();
 
-  const { state = {}, dispatch = () => {} } = useAppContext() || {};
+  const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
 
   useEffect(() => {
@@ -81,7 +82,7 @@ function Cart() {
   const handleGetOrder = async () => {
     const items = getCart();
     console.log(items);
-    
+
     try {
       const response = await axios.post(`${BASE_API}${endpoints.products.checkout}&lang=${state.LANG}&token=${Cookies.get('token')}`, items, {});
       setOrderSummary(response.data);
@@ -131,9 +132,18 @@ function Cart() {
     try {
       setLoading(true);
       const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`, data, {});
-      console.log(response);
-      
-      if (response.data && !response.data?.ERROR && !response.data.errorType) {
+      console.log(response?.data);
+
+      if (response.data?.error) {
+        if (response.data.errorType === "qty") {
+          setAddOrderError(true);
+          setOpenSureOrder(false);
+          setAddOrderErrorFlag(!addOrderErrorFlag);
+          setAddOrderErrorList(response.data.items || []);
+        } else {
+          setAddOrderErrorAPI(true);
+        }
+      } else if (response.data && !response.data?.error) {
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
         await axios.post(
           `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
@@ -143,12 +153,7 @@ function Cart() {
         setOpenSureOrder(false);
         setOpenConfirmOrder(true);
         handleRefresh();
-      } else if (response.data?.error && response.data.errorType === "qty") {
-        setAddOrderError(true);
-        setOpenSureOrder(false);
-        setAddOrderErrorFlag(!addOrderErrorFlag);
-        setAddOrderErrorList(response.data.items || []);
-      } 
+      }
       // else {
       //   let exceededItems = getOverQtyItems(response?.data?.items);
       //   setErrorOrderResContent(exceededItems);
@@ -369,6 +374,11 @@ function Cart() {
         title={translation.addOrderErrorTitle}
         message={translation.addOrderErrorMsg}
         onClose={() => setAddOrderError(false)}
+      />
+      <ErrorModal
+        open={addOrderErrorAPI}
+        message={translation.errorHappened}
+        onClose={() => setAddOrderErrorAPI(false)}
       />
       {loading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
