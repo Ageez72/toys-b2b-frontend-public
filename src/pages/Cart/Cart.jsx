@@ -118,12 +118,26 @@ function Cart() {
     setOpenSureOrder(true);
   };
 
+  const openPaymentWindow = (paymentUrl) => {
+    const width = 600;
+    const height = 700;
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+
+    window.open(
+      paymentUrl,
+      'PaymentWindow',
+      `width=${width},height=${height},top=${top},left=${left},resizable=no,scrollbars=yes,status=no`
+    );
+  };
+
+
   const handleSubmitOrder = async () => {
     const storedCart = state.STOREDITEMS;
     const data = {
       notes: notes,
       deliveryDate: "",
-      PM: selectedPaymentMethod,
+      payOnline: selectedPaymentMethod === "COD" ? false : true,
       branchNo: selectedAddressId.id,
       address: selectedAddressId.address,
       'branch name': selectedAddressId["branch name"],
@@ -132,6 +146,8 @@ function Cart() {
         qty: item.qty
       }))
     };
+
+    console.log(data);
 
     try {
       setLoading(true);
@@ -149,22 +165,26 @@ function Cart() {
           setAddOrderErrorAPIMsg(state.LANG === 'AR' ? response.data.messageAR : response.data.messageEN || translation.errorHappened)
         }
       } else if (response.data && !response.data?.error) {
-        Cookies.set('cart', "[]", { expires: 7, path: '/' });
-        await axios.post(
-          `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
-          { "items": [] }
-        );
-        dispatch({ type: 'STORED-ITEMS', payload: [] });
-        setOpenSureOrder(false);
-        setOpenConfirmOrder(true);
-        handleRefresh();
+        if (selectedPaymentMethod === "COD") {
+          Cookies.set('cart', "[]", { expires: 7, path: '/' });
+          await axios.post(
+            `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
+            { "items": [] }
+          );
+          dispatch({ type: 'STORED-ITEMS', payload: [] });
+          setOpenSureOrder(false);
+          setOpenConfirmOrder(true);
+          handleRefresh();
+        } else {
+          openPaymentWindow(response.data.paymentURL)
+        }
       }
-      // else {
-      //   let exceededItems = getOverQtyItems(response?.data?.items);
-      //   setErrorOrderResContent(exceededItems);
-      //   setOpenSureOrder(false);
-      //   setOpenErrorOrderResModal(true);
-      // }
+      // // else {
+      // //   let exceededItems = getOverQtyItems(response?.data?.items);
+      // //   setErrorOrderResContent(exceededItems);
+      // //   setOpenSureOrder(false);
+      // //   setOpenErrorOrderResModal(true);
+      // // }
     } catch (error) {
       console.error('Order submission failed:', error);
     } finally {
@@ -663,24 +683,24 @@ function Cart() {
                               </div>
                             </div>
                           </label>
-                          {/* <label htmlFor="creditCardPayment" className="block w-full md:w-1/2">
-                  <div className={`card ${selectedPaymentMethod === "creditCardPayment" ? 'selected' : ''}`}>
-                    <div className="payment-method">
-                      <i className="icon-cards"></i>
-                      <span className="icon-tick-circle"></span>
-                      <input
-                        className="hidden"
-                        type="radio"
-                        name="paymentMethod"
-                        id="creditCardPayment"
-                        value="creditCardPayment"
-                        checked={selectedPaymentMethod === "creditCardPayment"}
-                        onChange={() => setSelectedPaymentMethod("creditCardPayment")}
-                      />
-                      <span className="block mt-2">{translation.creditCardPayment}</span>
-                    </div>
-                  </div>
-                </label> */}
+                          <label htmlFor="creditCardPayment" className="block w-full md:w-1/2">
+                            <div className={`card ${selectedPaymentMethod === "creditCardPayment" ? 'selected' : ''}`}>
+                              <div className="payment-method">
+                                <i className="icon-cards"></i>
+                                <span className="icon-tick-circle"></span>
+                                <input
+                                  className="hidden"
+                                  type="radio"
+                                  name="paymentMethod"
+                                  id="creditCardPayment"
+                                  value="creditCardPayment"
+                                  checked={selectedPaymentMethod === "creditCardPayment"}
+                                  onChange={() => setSelectedPaymentMethod("creditCardPayment")}
+                                />
+                                <span className="block mt-2">{translation.creditCardPayment}</span>
+                              </div>
+                            </div>
+                          </label>
                         </div>
                       </>
                     )
