@@ -20,6 +20,7 @@ import { saveAs } from "file-saver";
 import { useRouter } from 'next/navigation';
 import SuccessModal from "@/components/ui/SuccessModal";
 import ErrorModal from "@/components/ui/ErrorModal";
+import ConfirmImportModal from "@/components/ui/ConfirmImportModal";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -46,6 +47,8 @@ function Cart() {
   const [addOrderErrorList, setAddOrderErrorList] = useState([]);
   const [addOrderErrorAPI, setAddOrderErrorAPI] = useState(false);
   const [addOrderErrorAPIMsg, setAddOrderErrorAPIMsg] = useState(false);
+  const [showReplaceCartPopup, setShowReplaceCartPopup] = useState(false);
+  const [pendingImportedItems, setPendingImportedItems] = useState(null);
   const router = useRouter();
 
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -143,7 +146,7 @@ function Cart() {
           setAddOrderErrorList(response.data.items || []);
         } else {
           setAddOrderErrorAPI(true);
-          setAddOrderErrorAPIMsg(state.LANG === 'AR'? response.data.messageAR : response.data.messageEN || translation.errorHappened)
+          setAddOrderErrorAPIMsg(state.LANG === 'AR' ? response.data.messageAR : response.data.messageEN || translation.errorHappened)
         }
       } else if (response.data && !response.data?.error) {
         Cookies.set('cart', "[]", { expires: 7, path: '/' });
@@ -236,7 +239,7 @@ function Cart() {
 
         const header = rows[0].map((h) => String(h).toLowerCase().trim());
         const skuIndex = header.findIndex((h) => h === "sku");
-        const qtyHeaders = ["quantity", "qty", "quantities", "quantitiy"]; // ✅ Option 23
+        const qtyHeaders = ["quantity", "qty", "quantities", "quantitiy"];
         const qtyIndex = header.findIndex((h) => qtyHeaders.includes(h));
 
         if (skuIndex === -1 || qtyIndex === -1) {
@@ -299,6 +302,15 @@ function Cart() {
           successCount++;
         }
 
+        // If cart has items, ask user to replace
+        if (cartItems.length > 0) {
+          setPendingImportedItems(importedItems);
+          setShowReplaceCartPopup(true);
+          setIsImporting(false);
+          return;
+        }
+
+        // Continue import if cart is empty
         if (importedItems.length) {
           Cookies.set('cart', JSON.stringify(importedItems), { expires: 7, path: '/' });
           await axios.post(
@@ -347,6 +359,63 @@ function Cart() {
     };
 
     reader.readAsArrayBuffer(file);
+  };
+
+  const completeImport = async (importedItems, successCount, errors, translation, lang) => {
+    if (importedItems.length) {
+      Cookies.set('cart', JSON.stringify(importedItems), { expires: 7, path: '/' });
+      await axios.post(
+        `${BASE_API}${endpoints.products.setCart}?lang=${lang}&token=${Cookies.get('token')}`,
+        { "items": importedItems }
+      );
+      dispatch({ type: "STORED-ITEMS", payload: importedItems });
+    }
+
+    const summaryArray = [
+      translation.importSummary.success
+        .replace("{success}", successCount)
+        .replace("{errors}", errors.length),
+      ...errors.map((err) =>
+        translation.importSummary.errorItem.replace("{sku}", err.sku)
+      ),
+    ];
+
+    setImportSummary(summaryArray);
+    setIsImporting(false);
+    if (successCount > 0) {
+      setImportPopup({
+        open: true,
+        success: true,
+        message: translation.importSuccess || "Products imported successfully!",
+      });
+    } else {
+      setImportPopup({
+        open: true,
+        success: false,
+        message: summaryArray[0] || "Import failed. Please try again.",
+      });
+    }
+  };
+  // Handler for user confirming to replace cart
+  const handleReplaceCartConfirm = async () => {
+    setShowReplaceCartPopup(false);
+    if (pendingImportedItems) {
+      // You may want to re-run the error/success summary logic here as well
+      await completeImport(
+        pendingImportedItems,
+        pendingImportedItems.length,
+        [],
+        translation,
+        Cookies.get("lang") || "AR"
+      );
+      setPendingImportedItems(null);
+    }
+  };
+
+  // Handler for user cancelling
+  const handleReplaceCartCancel = () => {
+    setShowReplaceCartPopup(false);
+    setPendingImportedItems(null);
   };
 
   return (
@@ -688,6 +757,18 @@ function Cart() {
       <ErrorOrderResModal errorsContent={errorOrderResContent} setOpen={() => setOpenErrorOrderResModal(false)} open={openErrorOrderResModal} />
       <SureOrderModal setOpen={() => setOpenSureOrder(false)} open={openSureOrder} onHandleSubmit={handleSubmitOrder} />
       <ConfirmOrderModal setOpen={() => setOpenConfirmOrder(true)} open={openConfirmOrder} />
+      <ConfirmImportModal
+        open={showReplaceCartPopup}
+        setOpen={setShowReplaceCartPopup}
+        title={translation.warning}
+        message={translation.areYouSure || "Your cart already has items. Do you want to replace it with the imported items?"}
+        actions={
+          <>
+            <button className="primary-btn" onClick={handleReplaceCartConfirm}>{translation.yes || "Yes"}</button>
+            <button className="outline-btn cursor-pointer" onClick={handleReplaceCartCancel}>{translation.no || "No"}</button>
+          </>
+        }
+      />
     </div>
   );
 }
