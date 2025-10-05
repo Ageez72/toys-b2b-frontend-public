@@ -68,8 +68,8 @@ function ResetPassword() {
         }
       );
       const res = await result.json();      
-      setIsLoading(false);      
-      if (res.error === true || res.error === "token not defined") {
+      setIsLoading(false);
+      if (res.error === true) {
         setCorpErrorMessage(res.response || translation.errorHappened);
         setIsErrorModalOpen(true);
       } else {
