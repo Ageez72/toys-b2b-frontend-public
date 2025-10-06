@@ -133,7 +133,7 @@ function Cart() {
 
 
   const handleSubmitOrder = async () => {
-    const storedCart = state.STOREDITEMS;
+    const storedCart = getCart();    
     const data = {
       notes: notes,
       deliveryDate: "",
@@ -142,48 +142,46 @@ function Cart() {
       address: selectedAddressId.address,
       'branch name': selectedAddressId["branch name"],
       items: storedCart.map(item => ({
-        item: item.id,
+        item: item.item,
         qty: item.qty
       }))
     };
 
-    console.log(data);
-
     try {
-      setLoading(true);
-      const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`,
-        data, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      console.log(response?.data);
+      // setLoading(true);
+      // const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`,
+      //   data, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   }
+      // });
+      // console.log(response?.data);
 
-      if (response.data?.error) {
-        if (response.data.errorType === "qty") {
-          setAddOrderError(true);
-          setOpenSureOrder(false);
-          setAddOrderErrorFlag(!addOrderErrorFlag);
-          setAddOrderErrorList(response.data.items || []);
-        } else {
-          setAddOrderErrorAPI(true);
-          setAddOrderErrorAPIMsg(state.LANG === 'AR' ? response.data.messageAR : response.data.messageEN || translation.errorHappened)
-        }
-      } else if (response.data && !response.data?.error) {
-        if (selectedPaymentMethod === "COD") {
-          Cookies.set('cart', "[]", { expires: 7, path: '/' });
-          await axios.post(
-            `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
-            { "items": [] }
-          );
-          dispatch({ type: 'STORED-ITEMS', payload: [] });
-          setOpenSureOrder(false);
-          setOpenConfirmOrder(true);
-          handleRefresh();
-        } else {
-          openPaymentWindow(response.data.paymentURL)
-        }
-      }
+      // if (response.data?.error) {
+      //   if (response.data.errorType === "qty") {
+      //     setAddOrderError(true);
+      //     setOpenSureOrder(false);
+      //     setAddOrderErrorFlag(!addOrderErrorFlag);
+      //     setAddOrderErrorList(response.data.items || []);
+      //   } else {
+      //     setAddOrderErrorAPI(true);
+      //     setAddOrderErrorAPIMsg(state.LANG === 'AR' ? response.data.messageAR : response.data.messageEN || translation.errorHappened)
+      //   }
+      // } else if (response.data && !response.data?.error) {
+      //   if (selectedPaymentMethod === "COD") {
+      //     Cookies.set('cart', "[]", { expires: 7, path: '/' });
+      //     await axios.post(
+      //       `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
+      //       { "items": [] }
+      //     );
+      //     dispatch({ type: 'STORED-ITEMS', payload: [] });
+      //     setOpenSureOrder(false);
+      //     setOpenConfirmOrder(true);
+      //     handleRefresh();
+      //   } else {
+      //     openPaymentWindow(response.data.paymentURL)
+      //   }
+      // }
       // // else {
       // //   let exceededItems = getOverQtyItems(response?.data?.items);
       // //   setErrorOrderResContent(exceededItems);
