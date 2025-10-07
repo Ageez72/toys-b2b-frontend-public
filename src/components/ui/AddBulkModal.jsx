@@ -68,7 +68,10 @@ export default function AddBulkModal({ open, onClose }) {
     const updated = [...bulkItems];
     const maxQty = updated[index].avlqty > 10 ? 10 : updated[index].avlqty;
 
-    if (parsedQty > maxQty) {
+    if (parsedQty >= 10) {
+      showWarningToast(translation.notAllowedAdd, lang, translation.warning);
+      parsedQty = 10
+    } else if (parsedQty > maxQty) {
       showErrorToast(`${translation.quantityExceeded} ${maxQty}`, lang, translation.error);
       parsedQty = maxQty;
     }
@@ -193,7 +196,7 @@ export default function AddBulkModal({ open, onClose }) {
           const qty = Number(rawQty) || 0;
           // ✅ Apply quantity rules
           if (qty < 0.5) return; // Ignore qty less than 0.5
-          let finalQty = qty;
+          let finalQty = Math.round(qty);
           if (qty >= 0.5 && qty < 1) {
             finalQty = 1; // Round up small fractions to 1
           }
