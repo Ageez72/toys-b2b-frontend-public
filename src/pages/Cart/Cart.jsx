@@ -505,12 +505,12 @@ function Cart() {
       {loading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
       <div className="mt-5 pt-5">
-        <div className="flex justify-between items-center gap-5 mb-5">
+        <div className="flex justify-between items-center flex-wrap gap-5 mb-5">
           <div className="flex items-center gap-5">
             <h3 className="sub-title">{translation.addedProducts}</h3>
             <div className="items-count flex justify-center items-center">{cartItems.length}</div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap import-export-cart-btns">
             <button className={`flex items-center gap-1 outline-btn no-bg ${cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={handleExport}>
               <i className="icon-export text-lg"></i>
               {translation.exportCart}
