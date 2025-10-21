@@ -33,7 +33,7 @@ function Cart() {
   const [openConfirmOrder, setOpenConfirmOrder] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("COD");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [orderSummary, setOrderSummary] = useState(null);
   const [isImporting, setIsImporting] = useState(false);
   const [importSummary, setImportSummary] = useState(null);
@@ -59,8 +59,9 @@ function Cart() {
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
+    setSelectedPaymentMethod(state.corporatePayment ? state.corporatePayment : "Cash")    
     document.title = state.LANG === 'AR' ? ar.cart : en.cart;
-  }, [state.LANG]);
+  }, [state.LANG, state.corporatePayment]);
 
   const showToastError = (message) => {
     const lang = Cookies.get("lang") || "AR";
@@ -469,7 +470,7 @@ function Cart() {
   const handleReplaceCartCancel = () => {
     setShowReplaceCartPopup(false);
     setPendingImportedItems(null);
-  };
+  };  
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page section-min">
@@ -724,42 +725,50 @@ function Cart() {
                       <>
                         <h3 className="sub-title mb-4 mt-8">{translation.paymentMethod}</h3>
                         <div className="payment-methods flex flex-wrap md:flex-nowrap gap-3">
-                          <label htmlFor="cashOnDelivery" className="block w-full md:w-1/2">
-                            <div className={`card ${selectedPaymentMethod === "COD" ? 'selected' : ''}`}>
-                              <div className="payment-method">
-                                <i className="icon-money-3"></i>
-                                <span className="icon-tick-circle"></span>
-                                <input
-                                  className="hidden"
-                                  type="radio"
-                                  name="paymentMethod"
-                                  id="cashOnDelivery"
-                                  value="COD"
-                                  checked={selectedPaymentMethod === "COD"}
-                                  onChange={() => setSelectedPaymentMethod("COD")}
-                                />
-                                <span className="block mt-2">{translation.cashOnDelivery}</span>
-                              </div>
-                            </div>
-                          </label>
-                          {/* {<label htmlFor="creditCardPayment" className="block w-full md:w-1/2">
-                            <div className={`card ${selectedPaymentMethod === "creditCardPayment" ? 'selected' : ''}`}>
-                              <div className="payment-method">
-                                <i className="icon-cards"></i>
-                                <span className="icon-tick-circle"></span>
-                                <input
-                                  className="hidden"
-                                  type="radio"
-                                  name="paymentMethod"
-                                  id="creditCardPayment"
-                                  value="creditCardPayment"
-                                  checked={selectedPaymentMethod === "creditCardPayment"}
-                                  onChange={() => setSelectedPaymentMethod("creditCardPayment")}
-                                />
-                                <span className="block mt-2">{translation.creditCardPayment}</span>
-                              </div>
-                            </div>
-                          </label>} */}
+                          {
+                            (state.corporatePayment === "Cash" || state.corporatePayment === "") && (
+                              <label htmlFor="cashOnDelivery" className="block w-full md:w-1/2">
+                                <div className={`card ${selectedPaymentMethod === "Cash" ? 'selected' : ''}`}>
+                                  <div className="payment-method">
+                                    <i className="icon-money-3"></i>
+                                    <span className="icon-tick-circle"></span>
+                                    <input
+                                      className="hidden"
+                                      type="radio"
+                                      name="paymentMethod"
+                                      id="cashOnDelivery"
+                                      value="COD"
+                                      checked={selectedPaymentMethod === "Cash"}
+                                      onChange={() => setSelectedPaymentMethod("Cash")}
+                                    />
+                                    <span className="block mt-2">{translation.cashOnDelivery}</span>
+                                  </div>
+                                </div>
+                              </label>
+                            )
+                          }
+                          {
+                            (state.corporatePayment === "Online" || state.corporatePayment === "") && (
+                              <label htmlFor="creditCardPayment" className="block w-full md:w-1/2">
+                                <div className={`card ${selectedPaymentMethod === "Online" ? 'selected' : ''}`}>
+                                  <div className="payment-method">
+                                    <i className="icon-cards"></i>
+                                    <span className="icon-tick-circle"></span>
+                                    <input
+                                      className="hidden"
+                                      type="radio"
+                                      name="paymentMethod"
+                                      id="creditCardPayment"
+                                      value="creditCardPayment"
+                                      checked={selectedPaymentMethod === "Online"}
+                                      onChange={() => setSelectedPaymentMethod("Online")}
+                                    />
+                                    <span className="block mt-2">{translation.creditCardPayment}</span>
+                                  </div>
+                                </div>
+                              </label>
+                            )
+                          }
                         </div>
                       </>
                     )
