@@ -154,19 +154,12 @@ function Cart() {
 
     try {
       setLoading(true);
-      // const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`,
-      //   data, {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   }
-      // });
-      const response = {
-        data: {
-          "error": true,
-          "errorType": 'qty',
-          "items": ["EN84876"]
+      const response = await axios.post(`${BASE_API}${endpoints.products.order}&token=${Cookies.get('token')}`,
+        data, {
+        headers: {
+          'Content-Type': 'application/json',
         }
-      }
+      });
       console.log(response?.data);
 
       if (response.data?.error) {
