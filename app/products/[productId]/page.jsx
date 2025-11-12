@@ -54,9 +54,17 @@ export default function Page() {
     retry: false,
   });
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  useEffect(() => {
+    scrollToTop()
+  }, []);
+
   // Effect to re-call the API whenever refresh is changed
   useEffect(() => {
     if (refresh) {
+      scrollToTop()
       refetch();
       setRefresh(false); // reset after fetching
     }
