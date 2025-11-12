@@ -32,7 +32,7 @@ export default function Page() {
     setProductIdWithHash(fullId);
   }, [params.productId]);
 
-  console.log(productIdWithHash);
+  // console.log(productIdWithHash);
 
 
   const lang = Cookies.get('lang') || 'AR';
