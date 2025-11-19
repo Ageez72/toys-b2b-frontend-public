@@ -89,7 +89,7 @@ export default function DetailsProductCard({ item }) {
                     )
                 } */}
                 {
-                    item.itemdisc > 0 && !item.hideDiscount && (
+                    !item.commingSoon && item.itemdisc > 0 && !item.hideDiscount && (
                         <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
                     )
                 }
@@ -107,8 +107,8 @@ export default function DetailsProductCard({ item }) {
                                 <Badge
                                     type="red"
                                     text={`${translation.only} ${item.avlqty} ${item.avlqty > 10
-                                            ? translation.pieceOnly
-                                            : translation.piecesOnly
+                                        ? translation.pieceOnly
+                                        : translation.piecesOnly
                                         }`}
                                 />
                             )}
