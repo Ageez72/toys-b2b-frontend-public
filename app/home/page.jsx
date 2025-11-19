@@ -112,46 +112,51 @@ export default function Home() {
   };
 
   return (
-    <main>
-      {
-        !isLoading && (
-          <Hero
-            desktopImage={currentImagePair.desktop}
-            mobileImage={currentImagePair.mobile}
-            exist={imagePairs.length > 0}
+    <>
+      <main className="isDesktop">
+        {
+          !isLoading && (
+            <Hero
+              desktopImage={currentImagePair.desktop}
+              mobileImage={currentImagePair.mobile}
+              exist={imagePairs.length > 0}
+            />
+          )
+        }
+        <div className="home-sections-container">
+          <div className="custom-py-60">
+            <BrandsSwiper />
+          </div>
+
+          <ColumnsGridSwiper
+            title={mostSelling.title}
+            badgeType={mostSelling.badgeType}
+            type={mostSelling.type}
+            id={mostSelling.id}
           />
-        )
-      }
-      <div className="home-sections-container">
-        <div className="custom-py-60">
-          <BrandsSwiper />
+
+          {searchTypes.map((grid, i) => (
+            <GridSwiper
+              key={i}
+              title={grid.title}
+              badgeType={grid.badgeType}
+              type={grid.type}
+              route={grid.route}
+              id={grid.id}
+            />
+          ))}
+
+          <ColumnsGridSwiper
+            title={featuredProducts.title}
+            badgeType={featuredProducts.badgeType}
+            type={featuredProducts.type}
+            id={featuredProducts.id}
+          />
         </div>
-
-        <ColumnsGridSwiper
-          title={mostSelling.title}
-          badgeType={mostSelling.badgeType}
-          type={mostSelling.type}
-          id={mostSelling.id}
-        />
-
-        {searchTypes.map((grid, i) => (
-          <GridSwiper
-            key={i}
-            title={grid.title}
-            badgeType={grid.badgeType}
-            type={grid.type}
-            route={grid.route}
-            id={grid.id}
-          />
-        ))}
-
-        <ColumnsGridSwiper
-          title={featuredProducts.title}
-          badgeType={featuredProducts.badgeType}
-          type={featuredProducts.type}
-          id={featuredProducts.id}
-        />
-      </div>
-    </main>
+      </main>
+      <main className="isMobile">
+        Mobile
+      </main>
+    </>
   );
 }
