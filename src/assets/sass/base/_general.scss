@@ -576,7 +576,8 @@
         }
 
         @media (min-width: 768px) {
-            overflow: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
 

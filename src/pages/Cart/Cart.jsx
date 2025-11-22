@@ -589,6 +589,9 @@ function Cart() {
                     {translation.price}
                   </th>
                   <th scope="col" className="px-3 py-3 text-center">
+                    {translation.discount}
+                  </th>
+                  <th scope="col" className="px-3 py-3 text-center">
                     {translation.costPrice}
                   </th>
                   <th scope="col" className="px-3 py-3 text-center">
@@ -628,6 +631,11 @@ function Cart() {
                       </td>
                       <td className="px-3 py-3 text-center">
                         {item.LPRICE}
+                      </td>
+                      <td className="px-3 py-3 text-center">
+                        <span dir="ltr">
+                          {(item.PRICEAFTERDISCOUNT - item.LPRICE).toFixed(2)}
+                        </span>
                       </td>
                       <td className="px-3 py-3 text-center">
                         {item.PRICEAFTERDISCOUNT}

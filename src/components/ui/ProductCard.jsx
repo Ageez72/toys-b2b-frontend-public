@@ -84,7 +84,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     )
                 } */}
                 {
-                    item.itemdisc > 0 && !item.hideDiscount && (
+                    !item.commingSoon && item.itemdisc > 0 && !item.hideDiscount && (
                         <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
                     )
                 }
@@ -169,14 +169,28 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 </div>
                 <div className="price flex items-center gap-3">
                     {
-                        !item.commingSoon && (
-                            <span className="product-card-price">
-                                {/* <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span> */}
-                                <span className="price-number">{Number(item?.price).toFixed(2)}</span>
-                                <span className="price-unit mx-1">{siteLocation === "primereach" ? translation.iqd : translation.jod}</span>
-                            </span>
-                        )
+                        !item.commingSoon ? (
+                            item.itemdisc > 0 && !item.hideDiscount ? (
+                                <>
+                                    <span className="product-card-price">
+                                        <span className="price-number">{Number(item?.priceAfterDisc).toFixed(2)}</span>
+                                        <span className="price-unit mx-1">
+                                            {siteLocation === "primereach" ? translation.iqd : translation.jod}
+                                        </span>
+                                    </span>
+                                    <span className="price-number discount">{Number(item?.price).toFixed(2)} {siteLocation === "primereach" ? translation.iqd : translation.jod}</span>
+                                </>
+                            ) : (
+                                <span className="product-card-price">
+                                    <span className="price-number">{Number(item?.price).toFixed(2)}</span>
+                                    <span className="price-unit mx-1">
+                                        {siteLocation === "primereach" ? translation.iqd : translation.jod}
+                                    </span>
+                                </span>
+                            )
+                        ) : null
                     }
+
                 </div>
                 {
                     item?.status === "AVAILABLE" && !item.commingSoon ? (
@@ -188,10 +202,11 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     item?.status !== "AVAILABLE" && (
                         !item.commingSoon ? (
                             <button className={`primary-btn w-full block ${isRequestBtnActive ? '' : 'disabled'}`} onClick={() => requestOutofStock(item?.id)}>{item?.productRequested ? translation.toldMe : translation.tellMe}</button>
-                        ) : (
-                            <p className={`out-stock-btn yellow`}>{translation.availableSoon}</p>
-                        )
+                        ) : null
                     )
+                }
+
+                {item.commingSoon && <p className={`out-stock-btn yellow`}>{translation.availableSoon}</p>
                 }
 
             </div>
