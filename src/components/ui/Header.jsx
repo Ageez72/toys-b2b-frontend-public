@@ -10,7 +10,7 @@ import { useAppContext } from '../../../context/AppContext';
 import Cookies from "js-cookie";
 import primereach from "../../assets/imgs/primereach.png";
 import LangSwitcher from "./LangSwitcher";
-import FixedMobileMenu from "./FixedMobileMenu";
+import FixedMobileMenu from "./Mobile/FixedMobileMenu";
 
 export default function Header({ scroll, handleOffCanvas }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};

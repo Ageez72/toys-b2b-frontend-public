@@ -325,6 +325,7 @@
     "marketplace": "Marketplace",
     "brands": "Brands",
     "bin": "Cart",
-    "myAccount": "My Account"
+    "myAccount": "My Account",
+    "brandsSearchPlaceholder": "Search in brands"
   }
 }

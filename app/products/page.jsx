@@ -228,7 +228,7 @@ export default function Page() {
                   <input className='w-full h-full ps-10 p-2.5' type='text' placeholder={translation.searchProduct} value={searchTerm} onChange={handleSearchChange} />
                 </div>
               </div>
-              <div className="filters-sort-display flex flex-wrap gap-3">
+              <div className="filters-sort-display flex gap-3">
                 <div className="flex-1">
                   <Dropdown
                     options={sortingOptions}
@@ -247,7 +247,7 @@ export default function Page() {
                 </div>
               </div>
             </div>
-            <div className={`${data?.data?.items?.length > 0 ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4" : ""} products-page-listing`}>
+            <div className={`${data?.data?.items?.length > 0 ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4" : ""} products-page-listing`}>
               {
                 isLoading && (
                   <VerticalLoader />

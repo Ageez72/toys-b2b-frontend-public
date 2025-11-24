@@ -1,10 +1,10 @@
 import React from 'react'
 import { useEffect, useState } from "react";
-import { useAppContext } from "../../../context/AppContext";
-import en from "../../../locales/en.json";
-import ar from "../../../locales/ar.json";
+import { useAppContext } from "../../../../context/AppContext";
+import en from "../../../../locales/en.json";
+import ar from "../../../../locales/ar.json";
 import Link from 'next/link';
-import { usePathname } from "next/navigation"
+import { usePathname } from "next/navigation";
 
 export default function FixedMobileMenu() {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};

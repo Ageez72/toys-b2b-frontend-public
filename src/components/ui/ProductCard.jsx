@@ -164,8 +164,10 @@ export default function ProductCard({ type, badgeType, related, item }) {
                         <span className="product-card-category">{item?.category?.description}</span>
                     </Link>
                 </p>
-                <div className="stars flex items-center gap-1">
-                    <StarsRate rate={rate} />
+                <div className="isDesktop">
+                    <div className="stars flex items-center gap-1">
+                        <StarsRate rate={rate} />
+                    </div>
                 </div>
                 <div className="price flex items-center gap-3">
                     {

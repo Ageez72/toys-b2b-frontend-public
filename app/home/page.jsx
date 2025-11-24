@@ -12,6 +12,8 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { BASE_API, endpoints } from "../../constant/endpoints";
 import { useQuery } from "@tanstack/react-query";
+import MobileCards from "@/components/ui/Mobile/MobileCards";
+import SearchInput from "@/components/ui/SearchInput";
 
 // fallback images
 import fallbackDesktopImage from "@/assets/imgs/hero-bg.png";
@@ -155,7 +157,17 @@ export default function Home() {
         </div>
       </main>
       <main className="isMobile">
-        Mobile
+        <div className="container">
+          <div className="relative h-full mt-8 mobile-search-input">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+              <i className="icon-search-normal"></i>
+            </div>
+            <SearchInput
+              bulk={false}
+            />
+          </div>
+          <MobileCards />
+        </div>
       </main>
     </>
   );

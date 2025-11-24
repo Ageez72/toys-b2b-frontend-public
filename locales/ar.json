@@ -328,6 +328,7 @@
         "marketplace": "المتجر",
         "brands": "العلامات التجارية",
         "bin": "السلة",
-        "myAccount": "حسابي"
+        "myAccount": "حسابي",
+        "brandsSearchPlaceholder": "ابحث في العلامات التجارية"
     }
 }
