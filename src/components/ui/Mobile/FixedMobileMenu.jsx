@@ -28,7 +28,7 @@ export default function FixedMobileMenu() {
                 <Link className={isActive("/products")} href="/products?itemStatus=AVAILABLE">
                     <span className='flex flex-col items-center justify-center h-full gap-2'>
                         <i className='icon-shop'></i>
-                        <i className='icon-shop active'></i>
+                        <i className='icon-shop-1 active'></i>
                         <span className="txt text-center">{translation.mobile.marketplace}</span>
                     </span>
                 </Link>
