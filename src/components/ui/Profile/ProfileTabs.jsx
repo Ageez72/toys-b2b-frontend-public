@@ -24,6 +24,7 @@ export default function ProfileTabs() {
     const [firstLetter, setFirstLetter] = useState('');
     const [lastLetter, setLastLetter] = useState('');
     const [openLogoutModal, setOpenLogoutModal] = useState(false);
+    const [openPanel, setOpenPanel] = useState(false);
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -66,7 +67,12 @@ export default function ProfileTabs() {
     const handleTabClick = (tabId) => {
         setActiveTab(tabId);
         router.replace(`/profile?${tabId}`);
+        setOpenPanel(true)
     };
+
+    const closePanel = () => {
+        setOpenPanel(false)
+    }
 
     return (
         <>
@@ -121,26 +127,26 @@ export default function ProfileTabs() {
                 </aside>
 
                 <div className="w-full lg:w-3/4">
-                    <TabPanel id="personal" activeTab={activeTab}>
-                        <MyProfile />
+                    <TabPanel id="personal" open={openPanel} activeTab={activeTab}>
+                        <MyProfile closePanel={closePanel} />
                     </TabPanel>
-                    <TabPanel id="security" activeTab={activeTab}>
-                        <Security />
+                    <TabPanel id="security" open={openPanel} activeTab={activeTab}>
+                        <Security closePanel={closePanel} />
                     </TabPanel>
-                    <TabPanel id="orders" activeTab={activeTab}>
-                        <MyOrders />
+                    <TabPanel id="orders" open={openPanel} activeTab={activeTab}>
+                        <MyOrders closePanel={closePanel} />
                     </TabPanel>
-                    <TabPanel id="addresses" activeTab={activeTab}>
-                        <Addresses />
+                    <TabPanel id="addresses" open={openPanel} activeTab={activeTab}>
+                        <Addresses closePanel={closePanel} />
                     </TabPanel>
                     {
                         !state.isCorporate && state.isActive && (
                             <>
                                 <TabPanel id="statementOfAccount" activeTab={activeTab}>
-                                    <StatementOfAccount />
+                                    <StatementOfAccount closePanel={closePanel} />
                                 </TabPanel>
                                 <TabPanel id="sellingGoals" activeTab={activeTab}>
-                                    <SellingGoals />
+                                    <SellingGoals closePanel={closePanel} />
                                 </TabPanel>
                             </>
                         )

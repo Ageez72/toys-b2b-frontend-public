@@ -531,3 +531,42 @@ $tablet-font-percent: 25%;
         }
     }
 }
+
+.profile-tab-panel {
+    @media (max-width: $tablet-breakpoint) {
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        position: fixed;
+        top: 90px;
+        left: 0;
+        transform: translateX(-150%);
+        width: 100%;
+        padding: 0 1rem;
+        background-color: var(--body-bg);
+        min-height: calc(100vh - 165px);
+        max-height: calc(100vh - 165px);
+        overflow-y: auto;
+        transition: all 0.4s ease-in-out;
+
+        &.open {
+            transform: translateX(0);
+        }
+
+        .mobile-back-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100px;
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+        }
+    }
+
+    @media (max-width: 425px) {
+        top: 72px;
+        min-height: calc(100vh - 147px);
+        max-height: calc(100vh - 147px);
+    }
+}
