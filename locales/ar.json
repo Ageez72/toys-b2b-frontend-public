@@ -329,6 +329,8 @@
         "brands": "العلامات التجارية",
         "bin": "السلة",
         "myAccount": "حسابي",
-        "brandsSearchPlaceholder": "ابحث في العلامات التجارية"
+        "brandsSearchPlaceholder": "ابحث في العلامات التجارية",
+        "productDesc": "وصف المنتج",
+        "addToCart": "الإضافة إلى السلة"
     }
 }

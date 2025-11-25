@@ -326,6 +326,8 @@
     "brands": "Brands",
     "bin": "Cart",
     "myAccount": "My Account",
-    "brandsSearchPlaceholder": "Search in brands"
+    "brandsSearchPlaceholder": "Search in brands",
+    "productDesc": "Product Description",
+    "addToCart": "Add to Cart"
   }
 }

@@ -10,7 +10,7 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-export default function AddToCart({ item }) {
+export default function AddToCart({ item, hasTitle = false }) {
   const [count, setCount] = useState(1);
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar); // default fallback
@@ -122,6 +122,7 @@ export default function AddToCart({ item }) {
           disabled={count + existingQty > 10}
         >
           <i className="icon-bag-happy"></i>
+          {hasTitle && <span>{translation.mobile.addToCart}</span>}
         </button>
       </div>
     </div>
