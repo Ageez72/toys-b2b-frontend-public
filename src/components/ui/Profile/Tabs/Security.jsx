@@ -64,7 +64,7 @@ export default function Security({ closePanel }) {
       }} />
       <div className='py-3'>
         <div className="flex items-center gap-2 mb-6">
-          <span className='mobile-back-box' onClick={() => closePanel()}>
+          <span className='mobile-back-box isMobile' onClick={() => closePanel()}>
             <i className="icon-arrow-right"></i>
           </span>
           <h2 className="sub-title">{translation.security}</h2>

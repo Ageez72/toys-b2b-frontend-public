@@ -106,7 +106,7 @@ export default function StatementOfAccount({ closePanel }) {
                 message={errorModalMessage}
             />
             <div className="flex items-center gap-2 mb-3">
-                <span className='mobile-back-box' onClick={() => closePanel()}>
+                <span className='mobile-back-box isMobile' onClick={() => closePanel()}>
                     <i className="icon-arrow-right"></i>
                 </span>
                 <h2 className='sub-title'>{translation.statementOfAccount}</h2>

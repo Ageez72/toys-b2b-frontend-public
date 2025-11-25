@@ -127,30 +127,30 @@ export default function ProfileTabs() {
                 </aside>
 
                 <div className="w-full lg:w-3/4">
-                    <TabPanel id="personal" open={openPanel} activeTab={activeTab}>
+                    <TabPanel id="personal" profileTabs={true} open={openPanel} activeTab={activeTab}>
                         <MyProfile closePanel={closePanel} />
                     </TabPanel>
-                    <TabPanel id="security" open={openPanel} activeTab={activeTab}>
+                    <TabPanel id="security" profileTabs={true} open={openPanel} activeTab={activeTab}>
                         <Security closePanel={closePanel} />
                     </TabPanel>
-                    <TabPanel id="orders" open={openPanel} activeTab={activeTab}>
+                    <TabPanel id="orders" profileTabs={true} open={openPanel} activeTab={activeTab}>
                         <MyOrders closePanel={closePanel} />
                     </TabPanel>
-                    <TabPanel id="addresses" open={openPanel} activeTab={activeTab}>
+                    <TabPanel id="addresses" profileTabs={true} open={openPanel} activeTab={activeTab}>
                         <Addresses closePanel={closePanel} />
                     </TabPanel>
-                    {
+                    {/* {
                         !state.isCorporate && state.isActive && (
-                            <>
-                                <TabPanel id="statementOfAccount" activeTab={activeTab}>
-                                    <StatementOfAccount closePanel={closePanel} />
-                                </TabPanel>
-                                <TabPanel id="sellingGoals" activeTab={activeTab}>
-                                    <SellingGoals closePanel={closePanel} />
-                                </TabPanel>
-                            </>
+                            <> */}
+                    <TabPanel id="statementOfAccount" profileTabs={true} activeTab={activeTab}>
+                        <StatementOfAccount closePanel={closePanel} />
+                    </TabPanel>
+                    <TabPanel id="sellingGoals" profileTabs={true} activeTab={activeTab}>
+                        <SellingGoals closePanel={closePanel} />
+                    </TabPanel>
+                    {/* </>
                         )
-                    }
+                    } */}
                 </div>
             </div>
         </>

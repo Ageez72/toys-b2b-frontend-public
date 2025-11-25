@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-export default function TabPanel({ id, activeTab, children, open }) {
+export default function TabPanel({ id, activeTab, profileTabs = false, children, open }) {
   const [animateIn, setAnimateIn] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function TabPanel({ id, activeTab, children, open }) {
 
   if (activeTab !== id) return null;
   return (
-    <div className={`profile-tab-panel p-4 bg-white rounded-lg shadow ${animateIn ? 'open' : ''}`} id={id}>
+    <div className={`${profileTabs ? 'profile-tab-panels' : ''} p-4 bg-white rounded-lg shadow ${animateIn ? 'open' : ''}`} id={id}>
       {children}
     </div>
   );

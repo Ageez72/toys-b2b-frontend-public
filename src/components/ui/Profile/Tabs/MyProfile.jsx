@@ -127,7 +127,7 @@ export default function MyProfile({ closePanel }) {
         <div className='py-3'>
           <div className='form-side md:flex-1 flex-12'>
             <div className="flex items-center gap-2 mb-6">
-              <span className='mobile-back-box' onClick={() => closePanel()}>
+              <span className='mobile-back-box isMobile' onClick={() => closePanel()}>
                 <i className="icon-arrow-right"></i>
               </span>
               <h2 className='sub-title'>{translation.profile}</h2>
