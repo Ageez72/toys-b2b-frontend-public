@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import SuccessModal from "@/components/ui/SuccessModal";
 import ErrorModal from "@/components/ui/ErrorModal";
 import ConfirmImportModal from "@/components/ui/ConfirmImportModal";
+import Accordion from "@/components/ui/Mobile/Accordion";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -472,6 +473,37 @@ function Cart() {
     setPendingImportedItems(null);
   };
 
+  const items = [
+    {
+      id: 'a',
+      title: 'تفاصيل المنتج',
+      content: (
+        <>
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <p className="mb-0">باركود</p>
+            <p className="mb-0">22</p>
+          </div>
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <p className="mb-0">سعر البيع (RSP)</p>
+            <p className="mb-0">22</p>
+          </div>
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <p className="mb-0">السعر</p>
+            <p className="mb-0">22</p>
+          </div>
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <p className="mb-0">التكلفة</p>
+            <p className="mb-0">22</p>
+          </div>
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <p className="mb-0">الضريبة</p>
+            <p className="mb-0">22</p>
+          </div>
+        </>
+      )
+    }
+  ];
+
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page section-min">
       {importPopup.success && importPopup.open && (
@@ -508,12 +540,12 @@ function Cart() {
       {loading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
       <div className="mt-5 pt-5">
-        <div className="flex justify-between items-center flex-wrap gap-5 mb-5">
+        <div className=" lg:flex justify-between items-center flex-wrap gap-5 mb-5">
           <div className="flex items-center gap-5">
             <h3 className="sub-title">{translation.addedProducts}</h3>
             <div className="items-count flex justify-center items-center">{cartItems.length}</div>
           </div>
-          <div className="flex gap-3 flex-wrap import-export-cart-btns">
+          <div className="mt-6 lg:mt-0 flex gap-3 flex-wrap import-export-cart-btns">
             <button className={`flex items-center gap-1 outline-btn no-bg ${cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={handleExport}>
               <i className="icon-export text-lg"></i>
               {translation.exportCart}
@@ -541,7 +573,7 @@ function Cart() {
           </div>
         </div>
 
-        <div className="relative overflow-x-auto mb-5">
+        <div className="relative overflow-x-auto mb-5 isDesktop">
           {
             cartItems.length === 0 ? (
               <>
@@ -666,6 +698,75 @@ function Cart() {
           ) : null
           }
         </div>
+        <div className="isMobile">
+          <div className="items-cards">
+            {
+              cartItems.length ? (
+                orderSummary?.ITEMS?.map((item) => (
+                  <div className="card mb-4" key={item.id}>
+                    <div className="product-card flex items-center gap-3">
+                      <div className="product-card-image">
+                        <Link href={`/products/${encodeURIComponent(item.id)}`} className="w-full h-full flex justify-center items-center">
+                          <img src={item.images["800"].main} width={80} alt={item.name || "Product"} />
+                        </Link>
+                      </div>
+                      <div className="product-card-content">
+                        <h2 className="product-card-title cursor-pointer short-title">{item.name}</h2>
+                        <h3 className="font-bold sku-number">{item.id}</h3>
+                        <div className="price flex items-center gap-3">
+                          <span className="product-card-price">
+                            <span className="price-number">{Number(item.NET).toFixed(2)}</span>
+                            <span className="price-unit mx-1">
+                              {siteLocation === "primereach" ? translation.iqd : translation.jod}
+                            </span>
+                          </span>
+                        </div>
+                        <InlineAddToCart
+                          itemId={item.id}
+                          avlqty={item.avlqty}
+                          onQtyChange={loadCart}
+                          onRefresh={handleRefresh}
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <Accordion items={[
+                      {
+                        id: 'a',
+                        title: 'تفاصيل المنتج',
+                        content: (
+                          <>
+                            <div className="flex items-center justify-between gap-3 mb-2">
+                              <p className="mb-0">{translation.barcode}</p>
+                              <p className="mb-0">{item.barcode}</p>
+                            </div>
+                            <div className="flex items-center justify-between gap-3 mb-2">
+                              <p className="mb-0">{translation.sellingPrice}</p>
+                              <p className="mb-0">{item.RSP}</p>
+                            </div>
+                            <div className="flex items-center justify-between gap-3 mb-2">
+                              <p className="mb-0">{translation.price}</p>
+                              <p className="mb-0">{item.LPRICE}</p>
+                            </div>
+                            <div className="flex items-center justify-between gap-3 mb-2">
+                              <p className="mb-0">{translation.costPrice}</p>
+                              <p className="mb-0">{item.PRICEAFTERDISCOUNT}</p>
+                            </div>
+                            <div className="flex items-center justify-between gap-3 mb-2">
+                              <p className="mb-0">{translation.tax}</p>
+                              <p className="mb-0">{item.TAX}</p>
+                            </div>
+                          </>
+                        )
+                      }
+                    ]} multiple={false} />
+                  </div>
+                ))
+              ) : null
+            }
+          </div>
+        </div>
+        {/* shipping Address & Summary */}
         <div className="flex gap-7 flex-col lg:flex-row">
           <div className="order-side">
             {

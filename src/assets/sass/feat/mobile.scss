@@ -279,6 +279,25 @@ $tablet-font-percent: 25%;
 }
 
 .product-card.list-card {
+    @media (max-width: $tablet-breakpoint) {
+        .product-card-title {
+            font-size: calc(12px + $tablet-font-percent);
+        }
+
+        .sku-number {
+            font-size: calc(10px + $tablet-font-percent);
+        }
+
+        .product-card-description {
+            font-size: calc(8px + $tablet-font-percent);
+        }
+
+        .discount,
+        .product-card-price {
+            font-size: calc(12px + $tablet-font-percent);
+        }
+    }
+
     @media (max-width: $sm-tablet-breakpoint) {
         padding: 10px;
 
@@ -619,6 +638,106 @@ $tablet-font-percent: 25%;
     @media (max-width: $sm-tablet-breakpoint) {
         button {
             font-size: 14px;
+        }
+    }
+}
+
+.cart-page {
+
+    .items-cards {
+
+        .product-card {
+            .product-card-image {
+                min-width: 100px;
+                max-width: 100px;
+            }
+        }
+    }
+
+    @media (max-width: $tablet-breakpoint) {
+
+        .items-count,
+        .sub-title {
+            font-size: calc(14px + $tablet-font-percent);
+        }
+
+        .import-export-cart-btns button {
+            font-size: calc(12px + $tablet-font-percent);
+        }
+
+        .product-card-title {
+            font-size: calc(12px + $tablet-font-percent);
+        }
+
+        .sku-number {
+            font-size: calc(10px + $tablet-font-percent);
+        }
+
+        .product-card-description {
+            font-size: calc(8px + $tablet-font-percent);
+        }
+
+        .discount,
+        .product-card-price {
+            font-size: calc(12px + $tablet-font-percent);
+        }
+    }
+
+    @media (max-width: $sm-tablet-breakpoint) {
+
+        .items-count,
+        .sub-title {
+            font-size: 14px;
+        }
+
+        .import-export-cart-btns button {
+            font-size: 12px;
+        }
+
+        .product-card-title {
+            font-size: 12px;
+        }
+
+        .sku-number {
+            font-size: 10px;
+        }
+
+        .product-card-description {
+            font-size: 8px;
+        }
+
+        .discount,
+        .product-card-price {
+            font-size: 12px;
+        }
+    }
+
+}
+
+.cart-accordion {
+    @media (max-width: $tablet-breakpoint) {
+        button {
+            font-size: calc(12px + $tablet-font-percent);
+            color: rgba(30, 30, 30, 1);
+        }
+
+        .content p {
+            font-size: calc(12px + $tablet-font-percent);
+            color: rgba(74, 74, 73, 1);
+        }
+    }
+
+    @media (max-width: $sm-tablet-breakpoint) {
+        button {
+            font-size: 12px;
+
+            svg {
+                width: 11px;
+            }
+        }
+
+        .content p {
+            font-size: 10px;
         }
     }
 }
