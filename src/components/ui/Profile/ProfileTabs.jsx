@@ -139,18 +139,18 @@ export default function ProfileTabs() {
                     <TabPanel id="addresses" profileTabs={true} open={openPanel} activeTab={activeTab}>
                         <Addresses closePanel={closePanel} />
                     </TabPanel>
-                    {/* {
+                    {
                         !state.isCorporate && state.isActive && (
-                            <> */}
-                    <TabPanel id="statementOfAccount" profileTabs={true} activeTab={activeTab}>
-                        <StatementOfAccount closePanel={closePanel} />
-                    </TabPanel>
-                    <TabPanel id="sellingGoals" profileTabs={true} activeTab={activeTab}>
-                        <SellingGoals closePanel={closePanel} />
-                    </TabPanel>
-                    {/* </>
+                            <>
+                                <TabPanel id="statementOfAccount" profileTabs={true} activeTab={activeTab}>
+                                    <StatementOfAccount closePanel={closePanel} />
+                                </TabPanel>
+                                <TabPanel id="sellingGoals" profileTabs={true} activeTab={activeTab}>
+                                    <SellingGoals closePanel={closePanel} />
+                                </TabPanel>
+                            </>
                         )
-                    } */}
+                    }
                 </div>
             </div>
         </>
