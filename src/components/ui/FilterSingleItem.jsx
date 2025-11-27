@@ -22,7 +22,7 @@ export default function FilterSingleItem({
   };
 
   return (
-    <Disclosure defaultOpen={open}>
+    <Disclosure defaultOpen={open || initiallyOpen}>
       {({ open: isOpen }) => (
         <div className="accordion-wrapper">
           <DisclosureButton

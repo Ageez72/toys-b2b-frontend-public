@@ -49,6 +49,8 @@ export default function Select2Form({ title, name, initiallyOpen = false, isProd
   }, [options, name]);
 
   const handleSelectChange = selected => {
+    console.log(selected);
+
     setSelectedOptions(selected);
     handleMultiItem(name, selected);
   };
