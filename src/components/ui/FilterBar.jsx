@@ -386,7 +386,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                             <>
                                 {
                                     filtersSections?.types?.length > 0 && (
-                                        <FilterSingleItem title={translation.sectors} selected={itemType} options={filtersSections?.types} initiallyOpen={true} name="itemType" handleSingleItem={changeSingleItem} />
+                                        <FilterSingleItem inputType="checkbox" title={translation.sectors} selected={itemType} options={filtersSections?.types} initiallyOpen={true} name="itemType" handleSingleItem={changeSingleItem} />
                                     )
                                 }
                                 {
@@ -427,7 +427,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                         </Suspense>
                                     )
                                 }
-                                <FilterSingleItem initiallyOpen={true} title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+                                <FilterSingleItem inputType="radio" initiallyOpen={true} title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
                                 {showClearButton && (
                                     <div className="action-btns flex gap-3 mt-4">
                                         {/* <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button> */}
