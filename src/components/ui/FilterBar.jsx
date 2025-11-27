@@ -106,8 +106,6 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     const handleApplyFilters = () => {
 
         if (isProductsPage) {
-            console.log(catalog);
-
             const query = new URLSearchParams();
             const params = new URLSearchParams(window.location.search);
 
