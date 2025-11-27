@@ -61,9 +61,8 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
 
     if (range.current) {
       range.current.style.left = `${minPercent}%`;
-      range.current.style.width = `${maxPercent - minPercent}%`;      
+      range.current.style.width = `${maxPercent - minPercent}%`;
     }
-    Cookies.set('filterstatus', "filter");
   }, [getPercent]);
 
   // Update range visually when min or max changes
@@ -79,7 +78,7 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
     }
   }, [open, updateRangeBar]);
 
-   const getYearText = (num) => {
+  const getYearText = (num) => {
     if (num === 1) return <span> {translation.year}</span>;
     if (num === 2) return <span> {translation.year}</span>;
     if (num >= 3 && num <= 10) return <span> {translation.yearss}</span>;
@@ -140,7 +139,7 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
                 <div ref={range} className="slider__range" />
                 <div className="slider__right-value">
                   <span>{maxVal}</span>
-                   <span> {getYearText(maxVal)}</span>
+                  <span> {getYearText(maxVal)}</span>
                 </div>
                 <div className="slider__left-value">
                   <span>{minVal}</span>
@@ -151,7 +150,10 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
             {
               isProductsPage && (
                 <div className="flex justify-start gap-2">
-                  <button className="primary-btn sm-primary-btn" onClick={() => onSubmitRange()}>{translation.apply}</button>
+                  <button className="primary-btn sm-primary-btn" onClick={() => {
+                    onSubmitRange();
+                    Cookies.set('filterstatus', "filter");
+                  }}>{translation.apply}</button>
                   {
                     isProductsPage && (
                       (fromAge || toAge) ? (

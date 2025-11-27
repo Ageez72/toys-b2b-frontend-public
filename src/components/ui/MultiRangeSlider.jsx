@@ -21,6 +21,8 @@ const MultiRangeSlider = ({ min, max, isProductsPage, onSubmitRange, onClearRang
   const STORAGE_KEY = "price_range";
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar); // default fallback
+  const [userChanged, setUserChanged] = useState(false);
+
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
   }, [state.LANG]);
@@ -59,16 +61,15 @@ const MultiRangeSlider = ({ min, max, isProductsPage, onSubmitRange, onClearRang
     [min, max]
   );
 
-const updateRangeBar = useCallback(() => {
-  const minPercent = getPercent(minValRef.current);
-  const maxPercent = getPercent(maxValRef.current);
+  const updateRangeBar = useCallback(() => {
+    const minPercent = getPercent(minValRef.current);
+    const maxPercent = getPercent(maxValRef.current);
 
-  if (range.current) {
-    range.current.style.left = `${minPercent}%`;
-    range.current.style.width = `${maxPercent - minPercent}%`;
-  }
-  Cookies.set('filterstatus', "filter");
-}, [getPercent]);
+    if (range.current) {
+      range.current.style.left = `${minPercent}%`;
+      range.current.style.width = `${maxPercent - minPercent}%`;
+    }
+  }, [getPercent]);
 
   // Update range visually when min or max changes
   useLayoutEffect(() => {
@@ -149,7 +150,10 @@ const updateRangeBar = useCallback(() => {
             {
               isProductsPage && (
                 <div className="flex justify-start gap-2">
-                  <button className="primary-btn sm-primary-btn" onClick={() => onSubmitRange()}>{translation.apply}</button>
+                  <button className="primary-btn sm-primary-btn" onClick={() => {
+                    onSubmitRange();
+                    Cookies.set('filterstatus', "filter");
+                  }}>{translation.apply}</button>
                   {
                     isProductsPage && (
                       (fromPrice || toPrice) ? (

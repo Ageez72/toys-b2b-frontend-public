@@ -40,7 +40,7 @@ export default function FilterSingleItem({
                   <input
                     className="cursor-pointer"
                     id={option.value}
-                    type="checkbox"
+                    type="radio"
                     name={name}
                     value={option.value}
                     checked={selectedValue === option.value}
