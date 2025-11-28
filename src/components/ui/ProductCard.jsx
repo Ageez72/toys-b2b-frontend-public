@@ -96,14 +96,14 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 {
                     profileData?.allQty ? (
                         <>
-                            {item.avlqty === 1 && (
+                            {item.avlqty === 1 && !item.commingSoon && (
                                 <Badge
                                     type="red"
                                     text={`${translation.only} ${item.avlqty} ${translation.pieceOne}`}
                                 />
                             )}
 
-                            {item.avlqty > 1 && item.avlqty <= 10 && (
+                            {item.avlqty > 1 && item.avlqty <= 10 && !item.commingSoon && (
                                 <Badge
                                     type="red"
                                     text={`${translation.only} ${item.avlqty} ${item.avlqty > 10
@@ -113,7 +113,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                                 />
                             )}
 
-                            {item.avlqty > 10 && (
+                            {item.avlqty > 10 && !item.commingSoon && (
                                 <Badge
                                     type="red"
                                     text={`${translation.only} ${item.avlqty} ${translation.pieceOnly}`}
@@ -123,7 +123,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                         </>
                     ) : (
                         <>
-                            {item.discountType === 'CLEARANCE' && item.avlqty > 0 && (
+                            {item.discountType === 'CLEARANCE' && item.avlqty > 0 && !item.commingSoon && (
                                 <Badge
                                     type={item.discountType === 'CLEARANCE' ? 'red' : undefined}
                                     text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
@@ -135,7 +135,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
                                 />
                             )}
 
-                            {item.discountType !== 'CLEARANCE' &&
+                            {item.discountType !== 'CLEARANCE' && !item.commingSoon &&
                                 item.avlqty > 1 &&
                                 item.avlqty < 10 && (
                                     <Badge
