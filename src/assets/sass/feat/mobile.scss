@@ -741,3 +741,55 @@ $tablet-font-percent: 25%;
         }
     }
 }
+
+.payment-methods {
+    @media (max-width: $tablet-breakpoint) {
+        .card {
+            padding-inline-end: 40px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            i {
+                font-size: calc(21px + $tablet-font-percent);
+            }
+
+            .icon-tick-circle {
+                top: 50%;
+                transform: translateY(-50%);
+                display: none;
+            }
+
+            input {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%) scale(1.5);
+                display: block;
+                accent-color: var(--primary-color);
+            }
+
+            .method-title {
+                margin-top: 0;
+                font-size: calc(12px + $tablet-font-percent);
+            }
+        }
+    }
+
+    @media (max-width: $sm-tablet-breakpoint) {
+        .payment-method {
+            .card {
+                i {
+                    font-size: 21px;
+                }
+
+                .method-title {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

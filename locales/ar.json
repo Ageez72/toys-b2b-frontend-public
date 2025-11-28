@@ -331,6 +331,7 @@
         "myAccount": "حسابي",
         "brandsSearchPlaceholder": "ابحث في العلامات التجارية",
         "productDesc": "وصف المنتج",
-        "addToCart": "الإضافة إلى السلة"
+        "addToCart": "الإضافة إلى السلة",
+        "productDetails": "تفاصيل المنتج"
     }
 }

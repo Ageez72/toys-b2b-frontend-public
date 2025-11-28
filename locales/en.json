@@ -328,6 +328,7 @@
     "myAccount": "My Account",
     "brandsSearchPlaceholder": "Search in brands",
     "productDesc": "Product Description",
-    "addToCart": "Add to Cart"
+    "addToCart": "Add to Cart",
+    "productDetails": "Product Details"
   }
 }

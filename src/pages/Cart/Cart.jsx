@@ -733,7 +733,7 @@ function Cart() {
                     <Accordion items={[
                       {
                         id: 'a',
-                        title: 'تفاصيل المنتج',
+                        title: translation.mobile.productDetails,
                         content: (
                           <>
                             <div className="flex items-center justify-between gap-3 mb-2">
@@ -775,7 +775,7 @@ function Cart() {
                   <h3 className="sub-title mb-4">{translation.shippingAddress} <span className="required">*</span></h3>
                   <div className="addresses">
                     {
-                      profileData?.accountAddress ? (
+                      !profileData?.accountAddress ? (
                         <div className="card mb-3">
                           <div className="address-item">
                             <input
@@ -797,7 +797,7 @@ function Cart() {
                         </div>
                       ) : null
                     }
-                    {addressesItems.length ? (
+                    {!addressesItems.length ? (
                       addressesItems?.map((add, index) => (
                         <div className="card mb-3" key={add.id}>
                           <div className="address-item">
@@ -833,10 +833,10 @@ function Cart() {
                     state.isCorporate && (
                       <>
                         <h3 className="sub-title mb-4 mt-8">{translation.paymentMethod}</h3>
-                        <div className="payment-methods flex flex-wrap md:flex-nowrap gap-3">
+                        <div className="payment-methods flex flex-wrap lg:flex-nowrap gap-3">
                           {
                             (state.corporatePayment === "Cash" || state.corporatePayment === "") && (
-                              <label htmlFor="cashOnDelivery" className="block w-full md:w-1/2">
+                              <label htmlFor="cashOnDelivery" className="block w-full lg:w-1/2">
                                 <div className={`card ${selectedPaymentMethod === "Cash" ? 'selected' : ''}`}>
                                   <div className="payment-method">
                                     <i className="icon-money-3"></i>
@@ -850,7 +850,7 @@ function Cart() {
                                       checked={selectedPaymentMethod === "Cash"}
                                       onChange={() => setSelectedPaymentMethod("Cash")}
                                     />
-                                    <span className="block mt-2">{translation.cashOnDelivery}</span>
+                                    <span className="block mt-2 method-title">{translation.cashOnDelivery}</span>
                                   </div>
                                 </div>
                               </label>
@@ -858,7 +858,7 @@ function Cart() {
                           }
                           {
                             (state.corporatePayment === "Online" || state.corporatePayment === "") && (
-                              <label htmlFor="creditCardPayment" className="block w-full md:w-1/2">
+                              <label htmlFor="creditCardPayment" className="block w-full lg:w-1/2">
                                 <div className={`card ${selectedPaymentMethod === "Online" ? 'selected' : ''}`}>
                                   <div className="payment-method">
                                     <i className="icon-cards"></i>
@@ -872,7 +872,7 @@ function Cart() {
                                       checked={selectedPaymentMethod === "Online"}
                                       onChange={() => setSelectedPaymentMethod("Online")}
                                     />
-                                    <span className="block mt-2">{translation.creditCardPayment}</span>
+                                    <span className="block mt-2 method-title">{translation.creditCardPayment}</span>
                                   </div>
                                 </div>
                               </label>
