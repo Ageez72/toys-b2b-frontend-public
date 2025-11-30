@@ -1,18 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Listbox, ListboxOptions, ListboxOption } from "@headlessui/react";
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/react";
 import en from "../../../../locales/en.json";
 import ar from "../../../../locales/ar.json";
 import { useAppContext } from "../../../../context/AppContext";
 
-const people = [
-    { id: 1, name: "Wade Cooper" },
-    { id: 2, name: "Arlene Mccoy" },
-    { id: 3, name: "Devon Webb" },
-    { id: 4, name: "Tom Cook" },
-];
-
-export default function AddressesMenu({ list, setAddress }) {
+export default function AddressesMenu({ list, selectedAdd, setAddress }) {
     const [selected, setSelected] = useState(null);
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
@@ -21,13 +14,18 @@ export default function AddressesMenu({ list, setAddress }) {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
 
+    useEffect(() => {
+        setSelected(selectedAdd);
+    }, [selectedAdd]);
+
     return (
         <div className="card relative addresses-menu">
             <Listbox value={selected} onChange={(value) => {
                 setSelected(value);
                 setAddress(value);
             }}>
-                <Listbox.Button className="w-full bg-white/5 border border-white/10 text-white px-3 py-2 rounded-md flex items-center justify-between">
+                <ListboxButton
+                    className="w-full bg-white/5 border border-white/10 text-white px-3 py-2 rounded-md flex items-center justify-between">
 
                     {/* ⭐ Placeholder or selected value */}
                     {selected ? (
@@ -51,7 +49,7 @@ export default function AddressesMenu({ list, setAddress }) {
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                     </svg>
-                </Listbox.Button>
+                </ListboxButton>
 
                 <ListboxOptions className="address-options rounded-md absolute left-0 bg-white mt-2 max-h-60 w-full overflow-auto focus:outline-none z-50">
                     {list.map((add) => (
