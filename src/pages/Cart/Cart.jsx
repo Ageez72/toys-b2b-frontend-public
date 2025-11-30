@@ -22,10 +22,13 @@ import SuccessModal from "@/components/ui/SuccessModal";
 import ErrorModal from "@/components/ui/ErrorModal";
 import ConfirmImportModal from "@/components/ui/ConfirmImportModal";
 import Accordion from "@/components/ui/Mobile/Accordion";
+import AdressesMenu from "@/components/ui/Mobile/AdressesMenu";
+
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [addressesItems, setAddressesItems] = useState([]);
+  const [addressesList, setAddressesList] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [notes, setNotes] = useState('');
   const [openSureOrder, setOpenSureOrder] = useState(false);
@@ -85,7 +88,16 @@ function Cart() {
 
   const fetchProfile = async () => {
     const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}&token=${Cookies.get('token')}`, {});
+    const list = []
+    if (profileData?.accountAddress) {
+      list.push({ id: profileData?.accountAddress, address: `${translation.mainAddress} - ${profileData?.accountAddress}` })
+    }
+    for (let i = 0; i < res.data.locations.length; i++) {
+      const el = res.data.locations[i];
+      list.push(el)
+    }
     setAddressesItems(res.data.locations);
+    setAddressesList(list);
   };
 
   const handleGetOrder = async () => {
@@ -820,6 +832,13 @@ function Cart() {
                         </div>
                       ))
                     ) : null
+                    }
+                    {
+                      profileData?.accountAddress || addressesItems.length ? (
+                        <div className="addresses-menu-wrapper isMobile">
+                          <AdressesMenu list={addressesList} setAddress={(add) => setSelectedAddressId(add)} />
+                        </div>
+                      ) : null
                     }
                     {
                       !addressesItems.length && !profileData?.accountAddress ? (

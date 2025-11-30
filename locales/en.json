@@ -329,6 +329,7 @@
     "brandsSearchPlaceholder": "Search in brands",
     "productDesc": "Product Description",
     "addToCart": "Add to Cart",
-    "productDetails": "Product Details"
+    "productDetails": "Product Details",
+    "selectAdress": "Choose the address"
   }
 }

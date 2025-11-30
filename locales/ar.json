@@ -332,6 +332,7 @@
         "brandsSearchPlaceholder": "ابحث في العلامات التجارية",
         "productDesc": "وصف المنتج",
         "addToCart": "الإضافة إلى السلة",
-        "productDetails": "تفاصيل المنتج"
+        "productDetails": "تفاصيل المنتج",
+        "selectAdress": "اختر العنوان"
     }
 }
