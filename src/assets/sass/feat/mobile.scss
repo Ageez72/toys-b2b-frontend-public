@@ -12,6 +12,17 @@
     @media (min-width: 993px) {
         display: none;
     }
+
+    .lang-switcher {
+        &+div {
+            left: 5px;
+
+            [dir="ltr"] & {
+                left: auto;
+                right: 5px;
+            }
+        }
+    }
 }
 
 $tablet-breakpoint: 992px;
