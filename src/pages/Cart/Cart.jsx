@@ -107,17 +107,24 @@ function Cart() {
   }
 
   const fetchProfile = async () => {
-    const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}&token=${Cookies.get('token')}`, {});
-    const list = []
-    if (profileData?.accountAddress) {
-      list.push({ id: profileData?.accountAddress, address: `${translation.mainAddress} - ${profileData?.accountAddress}` })
+    setLoading(true)
+    try {
+      const res = await axios.get(`${BASE_API}${endpoints.user.profile}&lang=${state.LANG}&token=${Cookies.get('token')}`, {});
+      const list = []
+      if (profileData?.accountAddress) {
+        list.push({ id: profileData?.accountAddress, address: `${translation.mainAddress} - ${profileData?.accountAddress}` })
+      }
+      for (let i = 0; i < res.data?.locations?.length; i++) {
+        const el = res.data.locations[i];
+        list.push(el)
+      }
+      setAddressesItems(res.data.locations);
+      setAddressesList(list);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false)
     }
-    for (let i = 0; i < res.data?.locations?.length; i++) {
-      const el = res.data.locations[i];
-      list.push(el)
-    }
-    setAddressesItems(res.data.locations);
-    setAddressesList(list);
   };
 
   const handleGetOrder = async () => {
