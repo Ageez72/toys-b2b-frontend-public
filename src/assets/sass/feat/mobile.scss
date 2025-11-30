@@ -846,3 +846,49 @@ $tablet-font-percent: 25%;
         }
     }
 }
+
+.mobile-range {
+    @media (max-width: $tablet-breakpoint) {
+        .price {
+            position: relative;
+
+            input {
+                color: #1e1e1e;
+                background-color: #fff;
+                border: 1px solid #c2c5d2;
+                border-radius: 8px;
+                width: 100%;
+                font-size: 16px;
+                transition: border-color .3s;
+            }
+
+            label {
+                color: #1e1e1e;
+                font-size: calc(12px + $tablet-font-percent);
+            }
+
+            .unit {
+                color: rgba(102, 104, 118, 1);
+                position: absolute;
+                bottom: 12px;
+                left: 10px;
+                font-size: calc(12px + $tablet-font-percent);
+
+                [dir="ltr"] & {
+                    left: auto;
+                    right: 10px;
+                }
+            }
+        }
+    }
+
+    @media (max-width: $sm-tablet-breakpoint) {
+        label {
+            font-size: 12px;
+        }
+
+        .unit {
+            font-size: 12px;
+        }
+    }
+}
