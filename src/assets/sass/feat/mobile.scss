@@ -797,15 +797,14 @@ $tablet-font-percent: 25%;
 
     @media (max-width: $sm-tablet-breakpoint) {
         .payment-method {
-            .card {
-                i {
-                    font-size: 21px;
-                }
-
-                .method-title {
-                    font-size: 12px;
-                }
+            i {
+                font-size: 21px;
             }
+
+            .method-title {
+                font-size: 12px;
+            }
+
         }
     }
 }
@@ -829,6 +828,7 @@ $tablet-font-percent: 25%;
             }
 
             .address-title {
+                font-size: calc(12px + $tablet-font-percent);
                 color: rgba(126, 129, 142, 1);
             }
 
@@ -855,6 +855,10 @@ $tablet-font-percent: 25%;
 
         @media (max-width: $sm-tablet-breakpoint) {
             .addresses-menu {
+                .address-title {
+                    font-size: 12px;
+                }
+
                 button {
                     svg {
                         width: 11px;
@@ -865,7 +869,7 @@ $tablet-font-percent: 25%;
             .address-options {
 
                 .address-option {
-                    font-size: 12px;
+                    font-size: 12px !important;
 
                     .icon-tick-circle {
                         font-size: 18px;
@@ -1061,7 +1065,7 @@ $tablet-font-percent: 25%;
 
 .cart-page {
     .cart-empty-state {
-        @media (max-width: $sm-tablet-breakpoint) {
+        @media (max-width: $tablet-breakpoint) {
             padding: 25px 20px;
 
             svg {
@@ -1081,5 +1085,17 @@ $tablet-font-percent: 25%;
                 font-size: 14px;
             }
         }
+    }
+}
+
+.gray-btn,
+.primary-btn,
+.sub-title {
+    @media (max-width: $tablet-breakpoint) {
+        font-size: calc(14px + $tablet-font-percent);
+    }
+
+    @media (max-width: $sm-tablet-breakpoint) {
+        font-size: 14px;
     }
 }

@@ -607,7 +607,7 @@ function Cart() {
             ) : null
           }
           {cartItems.length ? (
-            <table className="checkout-table text-center w-full text-sm text-left rtl:text-right text-gray-500 mb-5">
+            <table className="isDesktop checkout-table text-center w-full text-sm text-left rtl:text-right text-gray-500 mb-5">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-3 py-3 text-center">
