@@ -126,6 +126,20 @@ export default function ProductSwiperGallery({ images }) {
                 watchSlidesProgress={true}
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper"
+                breakpoints={{
+                    0: {
+                        slidesPerView: 3,
+                        spaceBetween: 10,
+                    },
+                    320: {
+                        slidesPerView: 4,
+                        spaceBetween: 10,
+                    },
+                    600: {
+                        slidesPerView: 6,
+                        spaceBetween: 10,
+                    },
+                }}
             >
                 {images.map((item, index) => {
                     const youtube = isYoutube(item);

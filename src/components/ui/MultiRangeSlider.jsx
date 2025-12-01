@@ -153,6 +153,9 @@ const MultiRangeSlider = ({ min, max, isProductsPage, onSubmitRange, onClearRang
                 <div className="price from">
                   <label className="font-bold block mb-2" htmlFor="priceFrom">{translation.from}</label>
                   <input className="w-full p-2.5" type="number" name="priceFrom" id="priceFrom" value={minVal}
+                    min={min}
+                    max={max - 1}
+                    placeholder={min}
                     onChange={(event) => {
                       const value = Math.min(
                         Number(event.target.value),
@@ -168,6 +171,9 @@ const MultiRangeSlider = ({ min, max, isProductsPage, onSubmitRange, onClearRang
                 <div className="price to">
                   <label className="font-bold block mb-2" htmlFor="priceTo">{translation.to}</label>
                   <input className="w-full p-2.5" type="number" name="priceTo" id="priceTo" value={maxVal}
+                    min={min + 1}
+                    placeholder={max}
+                    max={max}
                     onChange={(event) => {
                       const value = Math.max(
                         Number(event.target.value),

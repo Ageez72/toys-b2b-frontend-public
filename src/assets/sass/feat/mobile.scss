@@ -499,6 +499,13 @@ $tablet-font-percent: 25%;
             border: 2px solid transparent;
         }
 
+        .swiper-slide {
+            img {
+                height: 100%;
+                margin: auto;
+            }
+        }
+
         .swiper-slide-thumb-active {
             border: 2px solid var(--primary-color);
         }
@@ -1047,6 +1054,31 @@ $tablet-font-percent: 25%;
 
             .price {
                 font-size: 16px !important;
+            }
+        }
+    }
+}
+
+.cart-page {
+    .cart-empty-state {
+        @media (max-width: $sm-tablet-breakpoint) {
+            padding: 25px 20px;
+
+            svg {
+                width: 200px;
+                height: 200px;
+                margin: 0 auto;
+            }
+
+            .primary-btn {
+                font-size: calc(14px + $tablet-font-percent);
+            }
+        }
+
+        @media (max-width: $sm-tablet-breakpoint) {
+
+            .primary-btn {
+                font-size: 14px;
             }
         }
     }

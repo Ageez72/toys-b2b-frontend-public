@@ -512,37 +512,6 @@ function Cart() {
     setPendingImportedItems(null);
   };
 
-  const items = [
-    {
-      id: 'a',
-      title: 'تفاصيل المنتج',
-      content: (
-        <>
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <p className="mb-0">باركود</p>
-            <p className="mb-0">22</p>
-          </div>
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <p className="mb-0">سعر البيع (RSP)</p>
-            <p className="mb-0">22</p>
-          </div>
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <p className="mb-0">السعر</p>
-            <p className="mb-0">22</p>
-          </div>
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <p className="mb-0">التكلفة</p>
-            <p className="mb-0">22</p>
-          </div>
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <p className="mb-0">الضريبة</p>
-            <p className="mb-0">22</p>
-          </div>
-        </>
-      )
-    }
-  ];
-
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-15 cart-page section-min">
       {importPopup.success && importPopup.open && (
@@ -612,11 +581,11 @@ function Cart() {
           </div>
         </div>
 
-        <div className="relative overflow-x-auto mb-5 isDesktop">
+        <div className="relative overflow-x-auto mb-5">
           {
             cartItems.length === 0 ? (
               <>
-                <div className='card empty-state flex justify-center items-center'>
+                <div className='card empty-state cart-empty-state flex justify-center items-center'>
                   <div className="text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="261" height="260" viewBox="0 0 261 260" fill="none">
                       <rect x="0.5" width="260" height="260" rx="130" fill="url(#paint0_linear_239_8280)" />
