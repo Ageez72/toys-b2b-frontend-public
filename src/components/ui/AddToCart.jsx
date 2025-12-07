@@ -87,7 +87,7 @@ export default function AddToCart({ item, hasTitle = false }) {
 
 
   return (
-    <div className="add-to-cart flex items-center gap-3 w-full">
+    <div className="add-to-cart flex items-center gap-3 w-full mt-3 lg-mt-0">
       <div className="product-card-quantity flex items-center gap-1 w-50">
         <button onClick={decrease} className="btn btn-secondary w-fit" aria-label='Decrease quantity'>
           <i className="icon-minus"></i>

@@ -163,9 +163,6 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
                       setMinVal(value);
                       handleAgeFrom(Number(event.target.value))
                     }} />
-                  <div className="unit">
-                    {siteLocation === "primereach" ? translation.iqd : translation.jod}
-                  </div>
                 </div>
                 <div className="price to">
                   <label className="font-bold block mb-2" htmlFor="priceTo">{translation.to}</label>
@@ -180,9 +177,6 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
                       setMaxVal(value);
                       handleAgeTo(Number(event.target.value))
                     }} />
-                  <div className="unit">
-                    {siteLocation === "primereach" ? translation.iqd : translation.jod}
-                  </div>
                 </div>
               </div>
             </div>

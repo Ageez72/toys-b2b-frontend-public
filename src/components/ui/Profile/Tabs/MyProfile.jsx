@@ -243,7 +243,7 @@ export default function MyProfile({ closePanel }) {
                 {errors.storeName && <span className="error-msg text-red-500">{errors.storeName.message}</span>}
               </div>
 
-              <div className="text-end">
+              <div className="text-end submit-edit-profile-btn">
                 <button type='submit' className='primary-btn w-auto' style={{ minWidth: "140px" }}>
                   {
                     !inputsStatus ? (
