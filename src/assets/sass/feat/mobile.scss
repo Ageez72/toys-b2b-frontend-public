@@ -948,6 +948,11 @@ $tablet-font-percent: 25%;
     }
 }
 
+.range-error {
+    font-size: 12px;
+    margin-top: -15px;
+}
+
 .order-summary-cart-mobile {
     @media (max-width: $tablet-breakpoint) {
 
