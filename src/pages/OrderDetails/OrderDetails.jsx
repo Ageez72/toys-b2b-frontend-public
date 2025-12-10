@@ -108,7 +108,7 @@ export default function OrderDetails() {
 
             <div className='cart-page p-4 pt-2 lg:pt-15'>
                 <Breadcrumb items={breadcrumbItems} />
-                <div className="flex gap-7 mt-5 pt-5 flex-col lg:flex-row">
+                <div className="flex gap-7 mt-4 lg:mt-5 lg:pt-5 flex-col lg:flex-row">
                     <div className="order-side">
                         <div className="card mb-10">
                             <div className="flex items-center justify-between mb-1">
