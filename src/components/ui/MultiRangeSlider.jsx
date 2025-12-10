@@ -213,7 +213,12 @@ const MultiRangeSlider = ({ min, max, isProductsPage, onSubmitRange, onClearRang
             {
               isProductsPage && (
                 <div className="flex justify-start gap-2">
-                  <button className={`primary-btn sm-primary-btn ${isError ? 'disabled' : ''}`} onClick={() => {
+                  <button className={`primary-btn sm-primary-btn isDesktop`} onClick={() => {
+                    if (isError) return; // safety
+                    onSubmitRange();
+                    Cookies.set('filterstatus', "filter");
+                  }}>{translation.apply}</button>
+                  <button className={`primary-btn sm-primary-btn isMobile ${error ? 'disabled' : ''}`} disabled={isError} onClick={() => {
                     if (isError) return; // safety
                     onSubmitRange();
                     Cookies.set('filterstatus', "filter");

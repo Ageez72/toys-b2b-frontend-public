@@ -156,6 +156,7 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
                 <div className="price from">
                   <label className="font-bold block mb-2" htmlFor="priceFrom">{translation.from}</label>
                   <input className="w-full p-2.5" type="number" name="priceFrom" id="priceFrom" defaultValue={minVal}
+                    placeholder={min}
                     onChange={(event) => {
                       const value = Number(event.target.value);
 
@@ -178,6 +179,7 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
                 <div className="price to">
                   <label className="font-bold block mb-2" htmlFor="priceTo">{translation.to}</label>
                   <input className="w-full p-2.5" type="number" name="priceTo" id="priceTo" defaultValue={maxVal}
+                    placeholder={max}
                     onChange={(event) => {
                       const value = Number(event.target.value);
 
