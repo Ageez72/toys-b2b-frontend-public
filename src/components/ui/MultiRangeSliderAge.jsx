@@ -45,7 +45,7 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
     return max;
   });
 
-  const isError = minVal >= maxVal;
+  const isError = minVal >= maxVal || minVal < 0 || maxVal < 0;
 
   useEffect(() => {
     Cookies?.set(STORAGE_KEY, JSON.stringify({ minVal, maxVal }));
@@ -155,10 +155,15 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
               <div className="mobile-range grid grid-cols-2 gap-3 mb-6 mt-6">
                 <div className="price from">
                   <label className="font-bold block mb-2" htmlFor="priceFrom">{translation.from}</label>
-                  <input className="w-full p-2.5" type="number" name="priceFrom" id="priceFrom" value={minVal}
-                    min="1"
+                  <input className="w-full p-2.5" type="number" name="priceFrom" id="priceFrom" defaultValue={minVal}
                     onChange={(event) => {
                       const value = Number(event.target.value);
+
+                      if (value < 0) {
+                        setError(translation.mobile.minValueCannotBeNegative);
+                        return;
+                      }
+
                       setMinVal(value);
                       handleAgeFrom(value);
 
@@ -167,14 +172,20 @@ const MultiRangeSliderAge = ({ min, max, isProductsPage, onSubmitRange, onClearR
                       } else {
                         setError("");
                       }
-                    }} />
+                    }}
+                  />
                 </div>
                 <div className="price to">
                   <label className="font-bold block mb-2" htmlFor="priceTo">{translation.to}</label>
-                  <input className="w-full p-2.5" type="number" name="priceTo" id="priceTo" value={maxVal}
-                    min="1"
+                  <input className="w-full p-2.5" type="number" name="priceTo" id="priceTo" defaultValue={maxVal}
                     onChange={(event) => {
                       const value = Number(event.target.value);
+
+                      if (value < 0) {
+                        setError(translation.mobile.maxAgeCannotBeNegative);
+                        return;
+                      }
+
                       setMaxVal(value);
                       handleAgeTo(value);
 
