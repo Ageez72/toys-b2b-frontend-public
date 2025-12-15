@@ -93,7 +93,7 @@ export default function GridSwiper({ title, route, badgeType, type, id }) {
                                 spaceBetween={10}
                                 slidesPerView={1}
                                 slidesPerGroup={1}
-                                className={`${items.length === 4 && "just-four-items"}`}
+                                className={`${items.length <= 4 && "just-four-items"}`}
                                 breakpoints={{
                                     320: { slidesPerView: 1, grid: { rows: 1 }, spaceBetween: 10 },
                                     760: { slidesPerView: 1.2, grid: { rows: 1 }, spaceBetween: 10 },
