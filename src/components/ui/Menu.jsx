@@ -65,7 +65,7 @@ export default function Menu({ scroll }) {
             <Link href="/brands" className="block py-2 px-3">{translation.brands}</Link>
           </li>
           {
-            cookiesState.clearance &&
+            cookiesState.clearance === "true" &&
             <li className="clearanceTab">
               <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE" className="block py-2 px-3">
                 {translation.clearance}
