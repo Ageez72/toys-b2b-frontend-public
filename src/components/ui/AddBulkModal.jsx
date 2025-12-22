@@ -69,12 +69,12 @@ export default function AddBulkModal({ open, onClose }) {
     const updated = [...bulkItems];
     const maxQty = updated[index].avlqty > 10 ? 10 : updated[index].avlqty;
 
-    if (parsedQty >= 10) {
-      showWarningToast(translation.notAllowedAdd, lang, translation.warning);
-      parsedQty = 10
-    } else if (parsedQty > maxQty) {
+    if (parsedQty > maxQty) {
       showErrorToast(`${translation.quantityExceeded} ${maxQty}`, lang, translation.error);
       parsedQty = maxQty;
+    } else if (parsedQty >= 10) {
+      showWarningToast(translation.notAllowedAdd, lang, translation.warning);
+      parsedQty = 10
     }
 
     updated[index].qty = parsedQty;
@@ -458,6 +458,7 @@ export default function AddBulkModal({ open, onClose }) {
                                 <input
                                   type="number"
                                   min="1"
+                                  // max={item.avlqty}
                                   placeholder={translation.qty}
                                   value={item.qty || ''}
                                   onChange={(e) =>
