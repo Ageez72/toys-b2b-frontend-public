@@ -368,7 +368,16 @@ export default function AddBulkModal({ open, onClose }) {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
 
-    XLSX.writeFile(workbook, "bulk-items.xlsx");
+    const now = new Date();
+    const timestamp = now
+      .toISOString()
+      .replace(/[:]/g, "-")
+      .replace("T", "_")
+      .split(".")[0];
+
+    const fileName = `bulk-items_${timestamp}.xlsx`;
+
+    XLSX.writeFile(workbook, fileName);
   };
 
   const hasExportItems = bulkItems.some(item => item.isConfirmed);
