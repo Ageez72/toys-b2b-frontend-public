@@ -56,9 +56,11 @@ export default function Page() {
     .replace("T", "_")
     .split(".")[0];
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [`product-details-${productIdWithHash}-${timestamp}`],
+    queryKey: [`product-details-${productIdWithHash}`],
     queryFn: fetchProductDetails,
     retry: false,
+    staleTime: 0,
+    cacheTime: 0,
   });
 
   const scrollToTop = () => {
@@ -123,7 +125,7 @@ export default function Page() {
         <Breadcrumb items={breadcrumbItems} />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-5 pt-2 lg:pt-5 pb-5 details-card">
           <div className="isDesktop">
-            <ProductGallery images={details?.images["800"].list} main={details?.images["800"].main} />
+            <ProductGallery key={details?.id} images={details?.images["800"].list} main={details?.images["800"].main} />
           </div>
           <DetailsProductCard item={details} />
           <div className="isMobile">
