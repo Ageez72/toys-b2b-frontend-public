@@ -153,6 +153,7 @@ export default function Menu({ scroll }) {
         <div className={`general-search-overlay ${isOpenCategoriesDropdown ? 'open' : ''}`} onClick={() => setIsOpenCategoriesDropdown(false)}></div>
         {isOpenCategoriesDropdown && (
           <div className={`general-search categories-dropdown-popup open`}>
+            <h2 className="sub-title mt-3 mb-6">{translation.categoryDropdown.exploreOurCategories}</h2>
             <div className="flex">
               <div className="relative categories-dropdown-links">
                 <ul>
