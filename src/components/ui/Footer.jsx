@@ -18,7 +18,7 @@ export default function Footer() {
   return (
     <>
       <footer className='isDesktop'>
-        <section className="footer-section flex items-center justify-between max-w-screen-xl mx-auto p-4 text-center">
+        <section className={`footer-section flex items-center ${profileData.isCorporate || profileData.hideTargetSOA ? "justify-between" : "justify-center"} max-w-screen-xl mx-auto p-4 text-center`}>
           <p className="mb-0">{translation.copyrights} {d.getFullYear()}</p>
           {
             profileData.isCorporate || profileData.hideTargetSOA ? (
