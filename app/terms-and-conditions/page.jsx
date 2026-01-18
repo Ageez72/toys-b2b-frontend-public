@@ -27,8 +27,7 @@ export default function Page() {
   useEffect(() => {
     const profile = getProfile();
     setProfileData(profile);
-
-    if (profile && !profile.isCorporate) {
+    if (!profile.isCorporate && !profile.hideTargetSOA) {
       router.replace("/");
     }
   }, [router]);
@@ -37,7 +36,7 @@ export default function Page() {
     return null;
   }
 
-  if (!profileData.isCorporate) {
+  if (!profileData.isCorporate && !profileData.hideTargetSOA) {
     return null;
   }
 
@@ -51,7 +50,7 @@ export default function Page() {
           state.LANG === "AR" ? (
             <>
               {/* Intro */}
-              <h3 className='text-center mb-8'>للموقع الإلكتروني لشركة الإخاء العربية</h3>
+              {/* <h3 className='text-center mb-8'>للموقع الإلكتروني لشركة الإخاء العربية</h3> */}
               <p className="pb-8">يرجى قراءة هذه الشروط والأحكام بعناية قبل استخدام الموقع الإلكتروني أو إتمام أي عملية شراء. إن دخولك إلى الموقع أو استخدامك له أو إتمامك لعملية الشراء يُعد موافقة صريحة منك على الالتزام بهذه الشروط والأحكام كاملة، وفي حال عدم الموافقة، يرجى عدم استخدام الموقع.</p>
 
               {/* Sections */}
@@ -67,7 +66,7 @@ export default function Page() {
                 <h4 className='mb-2'><strong>ثالثاً: الأسعار ونسب الخصم</strong></h4>
                 <p>1.	يتم احتساب الخصم على سعر البيع للمستهلك وفقًا للعلامة التجارية لكل صنف، وذلك على النحو التالي:</p>
                 <div className="product-details p0">
-                  <div className="specifications-table lg:w-1/2 mb-6">
+                  <div className="specifications-table text-center lg:w-1/2 mb-6">
                     <div className="item flex w-full">
                       <div className="title w-1/2"><strong>العلامة التجارية</strong></div>
                       <div className="info w-1/2">نسبة الخصم</div>
@@ -98,10 +97,10 @@ export default function Page() {
                     </div>
                     <div className="item flex w-full">
                       <div className="title w-1/2"><strong>باقي العلامات التجارية</strong></div>
-                      <div className="info w-1/2">20%</div>
+                      <div className="info w-1/2">25%</div>
                     </div>
                     <div className="item flex w-full">
-                      <div className="title w-1/2"><strong>عروض</strong></div>
+                      <div className="title w-1/2"><strong>عروض التصفية</strong></div>
                       <div className="info w-1/2">50%</div>
                     </div>
                   </div>
@@ -138,7 +137,7 @@ export default function Page() {
               </section>
               <section className="mb-8">
                 <h4 className='mb-2'><strong>ثامناً: إيقاف الشراء المؤقت </strong></h4>
-                <p>: يتم إيقاف عمليات الشراء سنويًا خلال الفترة من 25/12 ولغاية 15/1 وذلك لأغراض الجرد السنوي، ولا يمكن إتمام أي طلبات خلال هذه الفترة.</p>
+                <p> يتم إيقاف عمليات الشراء سنويًا خلال الفترة من 25/12 ولغاية 15/1 وذلك لأغراض الجرد السنوي، ولا يمكن إتمام أي طلبات خلال هذه الفترة.</p>
               </section>
               <section className="mb-8">
                 <h4 className='mb-2'><strong>تاسعاً: حساب المستخدم</strong></h4>
@@ -163,16 +162,16 @@ export default function Page() {
                 <p>تخضع هذه الشروط والأحكام وتُفسر وفقًا للقوانين المعمول بها في المملكة الأردنية الهاشمية، وتكون محاكمها المختصة هي المرجع الحصري لأي نزاع.</p>
               </section>
               <section className="mb-8">
-                <p className='mb-2'><strong>إقرار وموافقة </strong> بقيامك بالضغط على زر (موافق) أو باستخدامك للموقع، فإنك تقر بأنك قرأت هذه الشروط والأحكام وفهمتها وتوافق على الالتزام </p>
+                <p className='mb-2'><strong>إقرار وموافقة </strong> باستخدامك للموقع فإنك تقر بأنك قرأت هذه الشروط والأحكام وفهمتها وتوافق على الالتزام</p>
               </section>
             </>
           ) :
             (
               <>
                 {/* Intro */}
-                <h3 className="text-center mb-8">
+                {/* <h3 className="text-center mb-8">
                   For Al-Ikhaa Al-Arabiya Company Website
-                </h3>
+                </h3> */}
 
                 <p className="pb-8">
                   Please read these Terms and Conditions carefully before using the website or completing any purchase. Your access to, use of, or completion of any purchase through the website constitutes your explicit agreement to comply with these Terms and Conditions in full. If you do not agree, please refrain from using the website.
@@ -204,7 +203,7 @@ export default function Page() {
                     <div className="specifications-table lg:w-1/2 mb-6">
                       <div className="item flex w-full">
                         <div className="title w-1/2"><strong>Brand</strong></div>
-                        <div className="info w-1/2">Discount Rate</div>
+                        <div className="info w-1/2"><strong>Discount Rate</strong></div>
                       </div>
 
                       <div className="item flex w-full">
@@ -239,11 +238,11 @@ export default function Page() {
 
                       <div className="item flex w-full">
                         <div className="title w-1/2"><strong>Other Brands</strong></div>
-                        <div className="info w-1/2">20%</div>
+                        <div className="info w-1/2">25%</div>
                       </div>
 
                       <div className="item flex w-full">
-                        <div className="title w-1/2"><strong>Promotions</strong></div>
+                        <div className="title w-1/2"><strong>Clearance</strong></div>
                         <div className="info w-1/2">50%</div>
                       </div>
                     </div>
@@ -330,7 +329,7 @@ export default function Page() {
 
                 <section className="mb-8">
                   <p>
-                    <strong>Acknowledgment and Acceptance:</strong> By clicking the “Agree” button or using the website, you acknowledge that you have read, understood, and agreed to comply with these Terms and Conditions.
+                    <strong>Acknowledgment and Acceptance:</strong> By using this website, you acknowledge that you have read and understood these terms and conditions and agree to be bound by them.
                   </p>
                 </section>
               </>

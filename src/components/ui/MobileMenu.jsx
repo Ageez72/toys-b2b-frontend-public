@@ -8,12 +8,14 @@ import Cookies from 'js-cookie';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import logo from "../../assets/imgs/logo.png";
+import { getProfile } from "@/actions/utils";
 import { staticCategoriesDropdown } from "../../../constant/endpoints";
 
 export default function MobileMenu({ scroll, onGoTo }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [lang, setLang] = useState("AR"); // fallback
   const siteLocation = Cookies.get("siteLocation")
+  const profileData = getProfile()
   const [cookiesState, setCookiesState] = useState({
     newArrivals: false,
     clearance: false,
@@ -104,7 +106,7 @@ export default function MobileMenu({ scroll, onGoTo }) {
               </li>
             }
             {
-              state.isCorporate ? (
+              profileData.isCorporate || profileData.hideTargetSOA ? (
                 <li className={isActive("/terms-and-conditions")} onClick={() => onGoTo()}>
                   <Link href="/terms-and-conditions">
                     {translation.termsAndConditions}

@@ -13,11 +13,13 @@ import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
 import Loader from './Loaders/Loader';
+import { getProfile } from '@/actions/utils';
 
 
 export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose, count, filtersSections }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
+    const profileData = getProfile()
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
@@ -399,7 +401,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                 {
                                     catalogsAllOptions?.length > 0 ? (
                                         // catalogOpen && (
-                                        <Select2Form title={translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={catalogsAllOptions.filter(item => catalog.includes(item.code)).map(item => ({
+                                        <Select2Form title={profileData.isCorporate || profileData.hideTargetSOA ? translation.categories : translation.catalogs} options={catalogsAllOptions} name="catalog" handleMultiItem={changeMultiItem} initSelected={catalogsAllOptions.filter(item => catalog.includes(item.code)).map(item => ({
                                             label: item.name,
                                             value: item.code,
                                         }))} initiallyOpen={selectedCatalogsOptions.length > 0 || true} isProductsPage={isProductsPage} />
@@ -414,7 +416,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                 {
                                     categoriesAllOptions?.length > 0 ? (
                                         // categoryOpen && (
-                                        <Select2Form title={translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0 || true} />
+                                        <Select2Form title={profileData.isCorporate || profileData.hideTargetSOA ? translation.brandsCategories : translation.categories} options={categoriesAllOptions} name="categories" handleMultiItem={changeMultiItem} initSelected={selectedCategoriesOptions} initiallyOpen={selectedCategoriesOptions.length > 0 || true} />
                                         // )
                                     ) : null
                                 }

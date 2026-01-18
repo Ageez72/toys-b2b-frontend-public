@@ -8,12 +8,14 @@ import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import SearchInput from "./SearchInput";
 import logo from "../../assets/imgs/logo.png";
+import { getProfile } from "@/actions/utils";
 import { staticCategoriesDropdown } from "../../../constant/endpoints";
 
 export default function Menu({ scroll }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const pathname = usePathname();
   const siteLocation = Cookies.get("siteLocation")
+  const profileData = getProfile()
 
   const [cookiesState, setCookiesState] = useState({
     newArrivals: false,
@@ -82,7 +84,7 @@ export default function Menu({ scroll }) {
               {translation.allProducts}
             </Link>
           </li>
-          {/* {
+          {
             state.isCorporate ? (
               <li>
                 <a href="javascript:void(0)" className="cursor-pointer flex items-center gap-1" onClick={() => setIsOpenCategoriesDropdown(!isOpenCategoriesDropdown)}>
@@ -91,7 +93,7 @@ export default function Menu({ scroll }) {
                 </a>
               </li>
             ) : null
-          } */}
+          }
           <li className={isActive("/brands")}>
             <Link href="/brands" className="block py-2 px-3">{translation.brands}</Link>
           </li>
@@ -104,7 +106,7 @@ export default function Menu({ scroll }) {
             </li>
           }
           {
-            state.isCorporate ? (
+            profileData.isCorporate || profileData.hideTargetSOA ? (
               <li className={isActive("/terms-and-conditions")}>
                 <Link href="/terms-and-conditions" className="block py-2 px-3">
                   {translation.termsAndConditions}
