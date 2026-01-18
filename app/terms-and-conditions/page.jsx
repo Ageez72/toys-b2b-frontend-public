@@ -22,6 +22,7 @@ export default function Page() {
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
+    document.title = state.LANG === 'AR' ? ar.termsAndConditions : en.termsAndConditions;
   }, [state.LANG]);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function Page() {
 
   return (
     <div className="container section-min-2 terms-page">
-      <h2 className="text-center main-title mt-40 mb-4">{translation.termsAndConditionsPageTitle}</h2>
+      <h2 className="main-title mt-40 mb-4">{translation.termsAndConditions}</h2>
       <div
         className="page-content"
       >
@@ -169,10 +170,6 @@ export default function Page() {
             (
               <>
                 {/* Intro */}
-                {/* <h3 className="text-center mb-8">
-                  For Al-Ikhaa Al-Arabiya Company Website
-                </h3> */}
-
                 <p className="pb-8">
                   Please read these Terms and Conditions carefully before using the website or completing any purchase. Your access to, use of, or completion of any purchase through the website constitutes your explicit agreement to comply with these Terms and Conditions in full. If you do not agree, please refrain from using the website.
                 </p>
@@ -181,14 +178,14 @@ export default function Page() {
                 <section className="mb-8">
                   <h4 className="mb-2"><strong>First: Scope of Application</strong></h4>
                   <p>
-                    These Terms and Conditions apply to all purchases made through Al-Ikhaa Al-Arabiya Company’s website, which is designated exclusively for employees of approved business partners.
+                    These Terms and Conditions apply to all purchases made through Arabian Al-EKHA Company’s website, which is designated exclusively for employees of approved business partners.
                   </p>
                 </section>
 
                 <section className="mb-8">
                   <h4 className="mb-2"><strong>Second: Sales Channel</strong></h4>
                   <p>
-                    All purchase orders are processed exclusively through Al-Ikhaa Al-Arabiya Company’s official online platform. Any orders placed outside this platform shall not be recognized.
+                    All purchase orders are processed exclusively through Arabian Al-EKHA Company’s official online platform. Any orders placed outside this platform shall not be recognized.
                   </p>
                 </section>
 
@@ -302,7 +299,7 @@ export default function Page() {
                 <section className="mb-8">
                   <h4 className="mb-2"><strong>Tenth: Intellectual Property</strong></h4>
                   <p>
-                    All content displayed on the website, including text, images, and trademarks, is the property of Al-Ikhaa Al-Arabiya Company and may not be used, copied, or republished without prior written consent.
+                    All content displayed on the website, including text, images, and trademarks, is the property of Arabian Al-EKHA Company and may not be used, copied, or republished without prior written consent.
                   </p>
                 </section>
 
@@ -316,7 +313,7 @@ export default function Page() {
                 <section className="mb-8">
                   <h4 className="mb-2"><strong>Twelfth: Amendments to Terms and Conditions</strong></h4>
                   <p>
-                    Al-Ikhaa Al-Arabiya Company reserves the right to amend or update these Terms and Conditions at any time. Continued use of the website constitutes implicit acceptance of the amended terms.
+                    Arabian Al-EKHA Company reserves the right to amend or update these Terms and Conditions at any time. Continued use of the website constitutes implicit acceptance of the amended terms.
                   </p>
                 </section>
 
