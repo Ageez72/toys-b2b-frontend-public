@@ -103,6 +103,15 @@ export default function MobileMenu({ scroll, onGoTo }) {
                 <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE">{translation.clearance}</Link>
               </li>
             }
+            {
+              state.isCorporate ? (
+                <li className={isActive("/terms-and-conditions")} onClick={() => onGoTo()}>
+                  <Link href="/terms-and-conditions">
+                    {translation.termsAndConditions}
+                  </Link>
+                </li>
+              ) : null
+            }
           </ul>
           {/* <hr /> */}
           {/* <MenuControl onGoTo={onGoTo} /> */}

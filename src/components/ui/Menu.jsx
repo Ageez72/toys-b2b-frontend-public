@@ -103,6 +103,15 @@ export default function Menu({ scroll }) {
               </Link>
             </li>
           }
+          {
+            state.isCorporate ? (
+              <li className={isActive("/terms-and-conditions")}>
+                <Link href="/terms-and-conditions" className="block py-2 px-3">
+                  {translation.termsAndConditions}
+                </Link>
+              </li>
+            ) : null
+          }
           {/* <li>
             <i className="icon-search-normal py-2 px-3 cursor-pointer" onClick={() => setIsOpenSearch(!isOpenSearch)}></i>
           </li> */}

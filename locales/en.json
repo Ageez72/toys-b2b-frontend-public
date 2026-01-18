@@ -27,7 +27,7 @@
     "phone_no": "Phone Number",
     "enter_phone_no": "Enter your phone number",
     "email": "Email",
-    "store_name": "Store Name",
+    "store_name": "Business Name",
     "enter_store_name": "Enter store name",
     "password": "Password",
     "register_btn": "Register",
@@ -372,5 +372,7 @@
     "": "",
     "": "",
     "": ""
-  }
+  },
+  "termsAndConditions": "Terms and Conditions",
+  "termsAndConditionsPageTitle": "General Terms and Conditions"
 }

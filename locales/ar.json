@@ -27,8 +27,8 @@
         "phone_no": "رقم الهاتف",
         "enter_phone_no": "ادخل رقم هاتفك",
         "email": "البريد الإلكتروني",
-        "store_name": "اسم المتجر",
-        "enter_store_name": "ادخل اسم المتجر",
+        "store_name": "اسم المتجر / الشركة",
+        "enter_store_name": "ادخل اسم المتجر / الشركة",
         "password": "كلمة المرور",
         "register_btn": "إنشاء حساب",
         "have_account": "لديك حساب ؟ ",
@@ -375,5 +375,7 @@
         "": "",
         "": "",
         "": ""
-    }
+    },
+    "termsAndConditions": "الشروط والأحكام",
+    "termsAndConditionsPageTitle": "الشروط والأحكام العامة"
 }
