@@ -10,12 +10,17 @@ import SearchInput from "./SearchInput";
 import logo from "../../assets/imgs/logo.png";
 import { getProfile } from "@/actions/utils";
 import { staticCategoriesDropdown } from "../../../constant/endpoints";
+import { babyWorld, actionWorld, buildCreate, puzzleGames, learningScience, artCreativity, guns, goPlay, makeupNails, outdoor, plush, collectibleFigures, dollWorld, robots } from "../../../constant/images";
 
 export default function Menu({ scroll }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const [siteLocation, setSiteLocation] = useState(null);
   const pathname = usePathname();
-  const siteLocation = Cookies.get("siteLocation")
   const profileData = getProfile()
+
+  useEffect(() => {
+    setSiteLocation(Cookies.get("siteLocation"));
+  }, []);
 
   const [cookiesState, setCookiesState] = useState({
     newArrivals: false,
@@ -70,6 +75,8 @@ export default function Menu({ scroll }) {
   }, [state.LANG]);
 
   const isActive = (path) => pathname === path ? "active" : "";
+
+  const catalogImages = [babyWorld, actionWorld, buildCreate, puzzleGames, learningScience, artCreativity, guns, goPlay, makeupNails, outdoor, plush, collectibleFigures, dollWorld, robots]
 
   return (
     <>
@@ -159,7 +166,7 @@ export default function Menu({ scroll }) {
                         }
                       >
                         <div className="flex items-center gap-2">
-                          <img src={logo.src} alt="image" />
+                          <img src={catalogImages[index]?.src || babyWorld.src} alt="image" />
                           <span>{category.name}</span>
                         </div>
                         <i className="icon-arrow-left-01-round px-3"></i>
