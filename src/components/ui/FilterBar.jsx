@@ -74,9 +74,9 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     const useParams = useSearchParams();
     const lang = Cookies.get('lang') || 'AR';
 
-    const [fromPrice, setFromPrice] = useState(useParams.get('fromPrice') || 0); // نطاق السعر
+    const [fromPrice, setFromPrice] = useState(useParams.get('fromPrice') || -1); // نطاق السعر
     const [toPrice, setToPrice] = useState(useParams.get('toPrice') || 0); // نطاق السعر
-    const [fromAge, setFromAge] = useState(useParams.get('fromAge') || 0); // نطاق العمر
+    const [fromAge, setFromAge] = useState(useParams.get('fromAge') || -1); // نطاق العمر
     const [toAge, setToAge] = useState(useParams.get('toAge') || 0); // نطاق العمر
     const [itemType, setItemType] = useState(useParams.get('itemType') || ""); // الاقسام
     const [brand, setBrand] = useState(() => {
@@ -117,9 +117,9 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             const query = new URLSearchParams();
             const params = new URLSearchParams(window.location.search);
 
-            if (fromPrice) query.set('fromPrice', fromPrice);
+            if (fromPrice >= 0) query.set('fromPrice', fromPrice);
             if (toPrice) query.set('toPrice', toPrice);
-            if (fromAge) query.set('fromAge', fromAge);
+            if (fromAge >= 0) query.set('fromAge', fromAge);
             if (toAge) query.set('toAge', toAge);
             if (itemType) query.set('itemType', itemType);
             if (itemStatus) query.set('itemStatus', itemStatus);
