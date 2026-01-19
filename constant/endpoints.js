@@ -249,8 +249,8 @@ export const collections = [
     link: "/products?itemStatus=AVAILABLE&catalog=SPORT_&_LEISURE,WATER_TOYS,PLAY_HOUSE,OUTDOOR"
   },
   {
-    name_en: "دمى محشوة",
-    name_ar: "Plush",
+    name_en: "Plush",
+    name_ar: "دمى محشوة",
     icon: plush,
     link: "/products?itemStatus=AVAILABLE&catalog=ANIMALS_PLUSH,PURSE_&_BAGS,SOFT_PLUSH,TV_&_MOVIES_PLUSH"
   },
