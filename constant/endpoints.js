@@ -195,8 +195,8 @@ export const collections = [
     link: "/products?itemStatus=AVAILABLE&catalog=BABY_GEAR,BABY_PLAYSET,BABY_TOYS,BABY_LEARNING_TOYS,BABY_RC,MUSIC"
   },
   {
-    name_en: "عالم المغامرات",
-    name_ar: "Action World",
+    name_en: "Action World",
+    name_ar: "عالم المغامرات",
     icon: actionWorld,
     link: "/products?itemStatus=AVAILABLE&catalog=BOYS_SURPRISE,BOYS_PLAYSETS,RC,TV_&_MOVIES_ACTION_FIGURES"
   },
