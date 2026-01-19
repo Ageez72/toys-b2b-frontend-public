@@ -171,12 +171,12 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             if (range === "price") {
                 query.delete('fromPrice');
                 query.delete('toPrice');
-                setFromPrice(0);
+                setFromPrice(-1);
                 setToPrice(0);
             } else if (range === "age") {
                 query.delete('fromAge');
                 query.delete('toAge');
-                setFromAge(0);
+                setFromAge(-1);
                 setToAge(0);
             }
             router.push(`/products?${query.toString()}`);
@@ -188,9 +188,9 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             Cookies.remove('pagesToken');
             query.set('page', '1');
             // Reset all filters
-            setFromPrice(0);
+            setFromPrice(-1);
             setToPrice(0);
-            setFromAge(0);
+            setFromAge(-1);
             setToAge(0);
             setItemType("");
             setItemStatus("");
