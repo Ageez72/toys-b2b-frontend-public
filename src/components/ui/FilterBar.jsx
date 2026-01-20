@@ -129,7 +129,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             if (brand && brand.length > 0) query.set('brand', brand.join(','));
             if (category && category.length > 0) query.set('category', category.join(','));
             if (catalog && catalog.length > 0) query.set('catalog', catalog.join(','));
-            if (Cookies.remove('filterstatus') === "pagination") {
+            if (Cookies.get('filterstatus') === "pagination") {
                 if (params.has('page')) {
                     const pageValue = params.get('page');
                     query.set('page', pageValue);
@@ -139,7 +139,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             }
             // Clear pagination token when filters change
             Cookies.remove('pagesToken');
-            Cookies.remove('filterstatus');
+            // Cookies.remove('filterstatus');
             document.body.classList.remove("html-overflow");
             // Push new query to URL
             router.push(`/products?${query.toString()}`);
