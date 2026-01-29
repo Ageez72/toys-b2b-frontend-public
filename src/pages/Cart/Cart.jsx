@@ -794,7 +794,7 @@ function Cart() {
                   <div className="addresses">
                     <div className="isDesktop">
                       {
-                        profileData?.accountAddress ? (
+                        profileData?.accountAddress && addressesItems.length <= 5 ? (
                           <div className="card mb-3">
                             <div className="address-item">
                               <input
@@ -817,27 +817,33 @@ function Cart() {
                         ) : null
                       }
                       {addressesItems?.length ? (
-                        addressesItems?.map((add, index) => (
-                          <div className="card mb-3" key={add.id}>
-                            <div className="address-item">
-                              <input
-                                type="radio"
-                                name="address"
-                                id={`address-${index}`}
-                                value={add.id}
-                                checked={selectedAddressId.id === add.id}
-                                onChange={() => setSelectedAddressId(add)}
-                              />
-                              <label htmlFor={`address-${index}`} className="flex justify-between items-center">
-                                <span className="flex items-center gap-2">
-                                  <i className="icon-location location"></i>
-                                  <span>{add["branch name"] ? add["branch name"] + " -" : null}  {add.address}</span>
-                                </span>
-                                <i className="icon-tick-circle check"></i>
-                              </label>
-                            </div>
+                        addressesItems.length > 5 ? (
+                          <div className="addresses-menu-wrapper">
+                            <AdressesMenu selectedAdd={addressesList.find(a => a.id === selectedAddressId.id) || null} list={addressesList} setAddress={(add) => setSelectedAddressId(add)} />
                           </div>
-                        ))
+                        ) : (
+                          addressesItems?.map((add, index) => (
+                            <div className="card mb-3" key={add.id}>
+                              <div className="address-item">
+                                <input
+                                  type="radio"
+                                  name="address"
+                                  id={`address-${index}`}
+                                  value={add.id}
+                                  checked={selectedAddressId.id === add.id}
+                                  onChange={() => setSelectedAddressId(add)}
+                                />
+                                <label htmlFor={`address-${index}`} className="flex justify-between items-center">
+                                  <span className="flex items-center gap-2">
+                                    <i className="icon-location location"></i>
+                                    <span>{add["branch name"] ? add["branch name"] + " -" : null}  {add.address}</span>
+                                  </span>
+                                  <i className="icon-tick-circle check"></i>
+                                </label>
+                              </div>
+                            </div>
+                          ))
+                        )
                       ) : null
                       }
                     </div>

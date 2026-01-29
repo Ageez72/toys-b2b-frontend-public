@@ -258,7 +258,7 @@ export default function OrderDetails() {
                             <div className="order-item flex justify-between items-center mb-4">
                                 <h3 className="sub-title">{translation.total}</h3>
                                 <p className="mb-0 flex items-center gap-1 price">
-                                    <span>{Number(orderDetails?.value || 0).toFixed(2)}</span>
+                                    <span>{Number(orderDetails?.TOTAL || 0).toFixed(2)}</span>
                                     <span>{siteLocation === "primereach" ? translation.iqd : translation.jod}</span>
                                 </p>
                             </div>
