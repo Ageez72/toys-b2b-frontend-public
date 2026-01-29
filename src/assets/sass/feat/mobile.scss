@@ -1436,3 +1436,13 @@ $tablet-font-percent: 25%;
     }
 
 }
+
+.cart-page .addresses .card input.search-input {
+    @media (max-width: $tablet-breakpoint) {
+        font-size: calc(12px + $tablet-font-percent);
+    }
+
+    @media (max-width: $max-mobile-breakpoint) {
+        font-size: 12px;
+    }
+}
