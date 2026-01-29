@@ -68,7 +68,7 @@ export default function OrderCard({ order }) {
                             </div>
                         </div>
                         <div className="prod-price text-red-600 font-semibold text-sm">
-                            {el.net}
+                            {Number(el.net).toFixed(2)}
                             <span className='ms-1'>{siteLocation === "primereach" ? translation.iqd : translation.jod}</span>
                         </div>
                     </div>
