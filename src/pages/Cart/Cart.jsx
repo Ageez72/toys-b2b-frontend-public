@@ -36,6 +36,7 @@ function Cart() {
   const [openErrorOrderResModal, setOpenErrorOrderResModal] = useState(false);
   const [openConfirmOrder, setOpenConfirmOrder] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [cartItemsLoading, setCartItemsLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const [showOrderSummary, setShowOrderSummary] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("Cash");
@@ -95,6 +96,10 @@ function Cart() {
   const loadCart = () => {
     const items = getCart();
     setCartItems(items);
+    // fake loader
+    setTimeout(() => {
+      setCartItemsLoading(false)
+    }, 1500);
   };
 
   function getOverQtyItems(data) {
@@ -553,7 +558,7 @@ function Cart() {
         message={addOrderErrorAPIMsg}
         onClose={() => setAddOrderErrorAPI(false)}
       />
-      {loading && <Loader />}
+      {loading || cartItemsLoading && <Loader />}
       <Breadcrumb items={breadcrumbItems} />
       <div className="mt-2 pt-0 lg:mt-5 lg:pt-5">
         <div className=" lg:flex justify-between items-center flex-wrap gap-5 mb-5">
