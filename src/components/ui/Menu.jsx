@@ -103,19 +103,19 @@ export default function Menu({ scroll }) {
             </li>
           }
           {
-            state.isCorporate || profileData.hideTargetSOA ? (
-              <li className="flex items-center gap-4">
-                <div className="divider"></div>
-                <a href="javascript:void(0)" className="cursor-pointer flex items-center gap-1" onClick={() => setIsOpenCategoriesDropdown(!isOpenCategoriesDropdown)}>
-                  {translation.sections}
-                  <i className="icon-arrow-down-01-round"></i>
-                </a>
-              </li>
-            ) : null
+            // state.isCorporate || profileData.hideTargetSOA ? (
+            <li className="flex items-center gap-4">
+              <div className="divider"></div>
+              <a href="javascript:void(0)" className="cursor-pointer flex items-center gap-1" onClick={() => setIsOpenCategoriesDropdown(!isOpenCategoriesDropdown)}>
+                {translation.sections}
+                <i className="icon-arrow-down-01-round"></i>
+              </a>
+            </li>
+            // ) : null
           }
-          {/* <li>
+          <li>
             <i className="icon-search-normal py-2 px-3 cursor-pointer" onClick={() => setIsOpenSearch(!isOpenSearch)}></i>
-          </li> */}
+          </li>
         </>
       </ul>
       <div className="isDesktop">
