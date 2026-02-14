@@ -61,6 +61,7 @@ export const endpoints = {
     requestOutOfStock: "?action=request.outofstock",
     getStatement: "?action=get.statement",
     getTarget: "?action=get.target&type=html&month=1",
+    getAges: "?action=get.ages",
   },
 
 };
@@ -241,7 +242,7 @@ export const collections = [
     name_en: "Go & Play",
     name_ar: "ألعاب ركوب",
     icon: goPlay,
-    link: "/products?itemStatus=AVAILABLE&catalog=RIDE_ON,SCOOTERS,BIKES,SKATE_SHOES,BATTERY_OPERATED_CARS,SKATE_BOARDS"
+    link: "/products?itemStatus=AVAILABLE&catalog=RIDE_ON,SCOOTERS,BIKES,SKATE_SHOES,BATTERY_OPERATED_PRODUCTS,SKATE_BOARDS"
   },
   {
     name_en: "Makeup & Nails",
