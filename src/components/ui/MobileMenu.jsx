@@ -96,7 +96,11 @@ export default function MobileMenu({ scroll, onGoTo }) {
             </li>
             {
               siteLocation !== "primereach" &&
-              <li className="clearanceTab" onClick={() => onGoTo()}>
+              <li className="clearanceTab" onClick={() => {
+                sessionStorage.removeItem('scrollToProduct')
+                Cookies.remove('filterstatus')
+                onGoTo()
+              }}>
                 <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE">{translation.clearance}</Link>
               </li>
             }
