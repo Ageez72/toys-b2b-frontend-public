@@ -88,20 +88,11 @@ export default function MobileMenu({ scroll, onGoTo }) {
             </li>
             <li className="allProductsTab" onClick={() => {
               sessionStorage.removeItem('scrollToProduct')
+              Cookies.remove('filterstatus')
               onGoTo()
             }}>
               <Link href="/products?itemStatus=AVAILABLE">{translation.allProducts}</Link>
             </li>
-            {
-              // state.isCorporate || profileData.hideTargetSOA ? (
-              <li onClick={() => setIsOpenCategoriesDropdown(!isOpenCategoriesDropdown)}>
-                <a href="javascript:void(0)" className="cursor-pointer flex items-center gap-1">
-                  {translation.ourSections}
-                  <i className="icon-arrow-down-01-round"></i>
-                </a>
-              </li>
-              // ) : null
-            }
             <li className={isActive("/brands")} onClick={() => onGoTo()}>
               <Link href="/brands">{translation.brands}</Link>
             </li>
@@ -110,6 +101,16 @@ export default function MobileMenu({ scroll, onGoTo }) {
               <li className="clearanceTab" onClick={() => onGoTo()}>
                 <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE">{translation.clearance}</Link>
               </li>
+            }
+            {
+              // state.isCorporate || profileData.hideTargetSOA ? (
+              <li onClick={() => setIsOpenCategoriesDropdown(!isOpenCategoriesDropdown)}>
+                <a href="javascript:void(0)" className="cursor-pointer flex items-center gap-1">
+                  {translation.sections}
+                  <i className="icon-arrow-down-01-round"></i>
+                </a>
+              </li>
+              // ) : null
             }
           </ul>
           {/* <hr /> */}

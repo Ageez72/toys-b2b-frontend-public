@@ -1482,6 +1482,12 @@ $tablet-font-percent: 25%;
             padding: 20px 1rem;
         }
 
+        .categories-dropdown-details-item {
+            ul {
+                margin-top: 25px;
+            }
+        }
+
         // .close-categories-dropdown {
         //     position: relative;
         //     justify-content: end;
