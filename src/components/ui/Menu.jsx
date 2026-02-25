@@ -138,6 +138,7 @@ export default function Menu({ scroll, resetSignal }) {
 
           <li className="allProductsTab">
             <Link href="/products?itemStatus=AVAILABLE" className="block py-2 px-3" onClick={() => {
+              Cookies.remove('filterstatus')
               sessionStorage.removeItem('scrollToProduct');
               closeAllPopups();
             }}>
@@ -150,7 +151,11 @@ export default function Menu({ scroll, resetSignal }) {
           {
             siteLocation !== "primereach" &&
             <li className="clearanceTab">
-              <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE" className="block py-2 px-3" onClick={closeAllPopups}>
+              <Link href="/products?age=ALL&itemType=CLEARANCE&itemStatus=AVAILABLE&pageSize=12" className="block py-2 px-3" onClick={() => {
+                Cookies.remove('filterstatus')
+                closeAllPopups()
+                sessionStorage.removeItem('scrollToProduct');
+              }}>
                 {translation.clearance}
               </Link>
             </li>
