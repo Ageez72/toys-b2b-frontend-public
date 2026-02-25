@@ -325,6 +325,11 @@ header {
             cursor: pointer;
             transition: all 0.4s ease-in-out;
 
+            &.active {
+                color: #8d1a14;
+                background-color: rgba(141, 26, 20, .12);
+            }
+
             &:hover {
                 background-color: #f5f5f5;
             }

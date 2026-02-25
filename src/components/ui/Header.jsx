@@ -15,6 +15,7 @@ import FixedMobileMenu from "./Mobile/FixedMobileMenu";
 import SearchInput from "./SearchInput";
 
 export default function Header({ scroll, handleOffCanvas }) {
+  const [resetPopupsSignal, setResetPopupsSignal] = useState(0);
   const [isOpenSearch, setIsOpenSearch] = useState(false);
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const pathname = usePathname();
@@ -23,6 +24,11 @@ export default function Header({ scroll, handleOffCanvas }) {
   };
 
   const siteLocation = Cookies.get("siteLocation")
+
+  const closeAllPopups = () => {
+    setIsOpenSearch(false); // mobile search
+    setResetPopupsSignal(prev => prev + 1); // notify Menu
+  };
 
   return (
     <>
@@ -37,6 +43,7 @@ export default function Header({ scroll, handleOffCanvas }) {
                 <Link
                   href="/home"
                   className={`flex items-center space-x-3 rtl:space-x-reverse`}
+                  onClick={closeAllPopups}
                 >
                   {
                     <Image
@@ -51,7 +58,7 @@ export default function Header({ scroll, handleOffCanvas }) {
 
                 <div className="hidden w-full lg:block lg:w-auto" id="navbar-default">
                   <Suspense fallback={<div>Loading menu...</div>}>
-                    <Menu scroll={scroll} />
+                    <Menu scroll={scroll} resetSignal={resetPopupsSignal} />
                   </Suspense>
                 </div>
                 {

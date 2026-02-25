@@ -218,6 +218,10 @@ $tablet-font-percent: 25%;
             justify-content: space-evenly;
         }
 
+        @media (max-width: $max-mobile-breakpoint) {
+            padding: 0;
+        }
+
         .title {
             width: 100%;
 
@@ -228,6 +232,24 @@ $tablet-font-percent: 25%;
             @media (max-width: $max-mobile-breakpoint) {
                 font-size: 12px;
             }
+        }
+    }
+}
+
+.sm-search-popup {
+    input {
+        @media (max-width: $tablet-breakpoint) {
+            font-size: calc(12px + $tablet-font-percent);
+        }
+
+        @media (max-width: $max-mobile-breakpoint) {
+            font-size: 12px;
+        }
+    }
+
+    .search-item {
+        @media (max-width: $max-mobile-breakpoint) {
+            padding: 0;
         }
     }
 }

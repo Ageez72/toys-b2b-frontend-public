@@ -9,10 +9,11 @@ import ar from "../../../locales/ar.json";
 import SearchInput from "./SearchInput";
 import logo from "../../assets/imgs/logo.png";
 import { getProfile } from "@/actions/utils";
-import { staticCategoriesDropdown } from "../../../constant/endpoints";
+import { BASE_API, endpoints, staticCategoriesDropdown } from "../../../constant/endpoints";
+import axios from "axios";
 import { babyWorld, actionWorld, buildCreate, puzzleGames, learningScience, artCreativity, guns, goPlay, makeupNails, outdoor, plush, collectibleFigures, dollWorld, robots } from "../../../constant/images";
 
-export default function Menu({ scroll }) {
+export default function Menu({ scroll, resetSignal }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [siteLocation, setSiteLocation] = useState(null);
   const pathname = usePathname();
@@ -33,6 +34,7 @@ export default function Menu({ scroll }) {
   const [isOpenSearch, setIsOpenSearch] = useState(false);
   const [isOpenCategoriesDropdown, setIsOpenCategoriesDropdown] = useState(false);
   const [activeCategory, setActiveCategory] = useState("categories-dropdown-details-item-0");
+  const [catalogsList, setCatalogsList] = useState([]);
 
   const staticCategoriesCatalogs = [
     { id: 1, name: translation.categoryDropdown.babyWorld },
@@ -50,6 +52,28 @@ export default function Menu({ scroll }) {
     { id: 13, name: translation.categoryDropdown.dollWorld },
     { id: 14, name: translation.categoryDropdown.robots },
   ];
+
+  // fetch catalogs to get the names of categories in case we want to add more in the future without needing to change the code, currently we are using staticCategoriesCatalogs for the names and images, but links are coming from API
+  useEffect(() => {
+    const fetchCatalogs = async () => {
+      try {
+        const response = await axios.get(`${BASE_API}${endpoints.products.getCatalogs}&lang=${state.LANG}&token=${Cookies.get('token')}`);
+        if (response.data && response.data.catalogs) {
+          console.log(response.data);
+
+          // const updatedCatalogs = response.data.catalogs.map((catalog, index) => ({
+          //   ...catalog,
+          //   name: translation.categoryDropdown[catalog.name] || catalog.name
+          // }));
+          // setCatalogsList(updatedCatalogs);
+        }
+      } catch (error) {
+        console.error("Error fetching catalogs:", error);
+      }
+    };
+
+    fetchCatalogs();
+  }, [state.LANG]);
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
@@ -84,6 +108,25 @@ export default function Menu({ scroll }) {
   };
   useEffect(() => {
     closeAllPopups();
+  }, [pathname]);
+
+  useEffect(() => {
+    setIsOpenSearch(false);
+    setIsOpenCategoriesDropdown(false);
+  }, [resetSignal]);
+
+  useEffect(() => {
+    if (!pathname) return;
+
+    staticCategoriesDropdown.forEach((category, index) => {
+      const match = category.links?.some(linkItem =>
+        pathname.startsWith(linkItem.link)
+      );
+
+      if (match) {
+        setActiveCategory(`categories-dropdown-details-item-${index}`);
+      }
+    });
   }, [pathname]);
   return (
     <>
@@ -171,7 +214,8 @@ export default function Menu({ scroll }) {
                     staticCategoriesCatalogs.map((category, index) => (
                       <li
                         key={category.id}
-                        className="dropdown-item"
+                        className={`dropdown-item ${activeCategory === `categories-dropdown-details-item-${index}` ? "active" : ""
+                          }`}
                         onMouseEnter={() =>
                           setActiveCategory(`categories-dropdown-details-item-${index}`)
                         }
