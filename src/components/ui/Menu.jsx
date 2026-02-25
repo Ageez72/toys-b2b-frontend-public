@@ -126,12 +126,14 @@ export default function Menu({ scroll }) {
             </li>
             // ) : null
           }
-          <li className="flex items-center gap-1">
+          <li className="flex items-center gap-4">
             <div className="divider"></div>
-            <i className="icon-search-normal py-2 px-3 cursor-pointer" onClick={() => {
-              setIsOpenSearch(!isOpenSearch)
-              setIsOpenCategoriesDropdown(false)
-            }}></i>
+            <div className="circle-icon-container">
+              <i className="icon-search-normal py-2 px-3 cursor-pointer" onClick={() => {
+                setIsOpenSearch(!isOpenSearch)
+                setIsOpenCategoriesDropdown(false)
+              }}></i>
+            </div>
           </li>
         </>
       </ul>
