@@ -1471,7 +1471,7 @@ $tablet-font-percent: 25%;
 
         .categories-dropdown-details-item,
         .categories-dropdown-links {
-            width: 100%;
+            min-width: 100%;
             min-height: 100vh;
             max-height: 100vh;
             border-left: none;

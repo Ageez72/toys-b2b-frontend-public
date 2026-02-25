@@ -9,9 +9,8 @@ import ar from "../../../locales/ar.json";
 import SearchInput from "./SearchInput";
 import logo from "../../assets/imgs/logo.png";
 import { getProfile } from "@/actions/utils";
-import { BASE_API, endpoints, staticCategoriesDropdown } from "../../../constant/endpoints";
+import { BASE_API, endpoints } from "../../../constant/endpoints";
 import axios from "axios";
-import { babyWorld, actionWorld, buildCreate, puzzleGames, learningScience, artCreativity, guns, goPlay, makeupNails, outdoor, plush, collectibleFigures, dollWorld, robots } from "../../../constant/images";
 
 export default function Menu({ scroll, resetSignal }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -36,36 +35,13 @@ export default function Menu({ scroll, resetSignal }) {
   const [activeCategory, setActiveCategory] = useState("categories-dropdown-details-item-0");
   const [catalogsList, setCatalogsList] = useState([]);
 
-  const staticCategoriesCatalogs = [
-    { id: 1, name: translation.categoryDropdown.babyWorld },
-    { id: 2, name: translation.categoryDropdown.actionWorld },
-    { id: 3, name: translation.categoryDropdown.buildAndCreate },
-    { id: 4, name: translation.categoryDropdown.puzzleAndGames },
-    { id: 5, name: translation.categoryDropdown.learningAndScience },
-    { id: 6, name: translation.categoryDropdown.artAndCreativity },
-    { id: 7, name: translation.categoryDropdown.guns },
-    { id: 8, name: translation.categoryDropdown.goAndPlay },
-    { id: 9, name: translation.categoryDropdown.makeupAndNails },
-    { id: 10, name: translation.categoryDropdown.outdoor },
-    { id: 11, name: translation.categoryDropdown.plush },
-    { id: 12, name: translation.categoryDropdown.collectibleAndFigures },
-    { id: 13, name: translation.categoryDropdown.dollWorld },
-    { id: 14, name: translation.categoryDropdown.robots },
-  ];
-
-  // fetch catalogs to get the names of categories in case we want to add more in the future without needing to change the code, currently we are using staticCategoriesCatalogs for the names and images, but links are coming from API
+  // fetch catalogs to get the names of categories and the links
   useEffect(() => {
     const fetchCatalogs = async () => {
       try {
         const response = await axios.get(`${BASE_API}${endpoints.products.getCatalogs}&lang=${state.LANG}&token=${Cookies.get('token')}`);
-        if (response.data && response.data.catalogs) {
-          console.log(response.data);
-
-          // const updatedCatalogs = response.data.catalogs.map((catalog, index) => ({
-          //   ...catalog,
-          //   name: translation.categoryDropdown[catalog.name] || catalog.name
-          // }));
-          // setCatalogsList(updatedCatalogs);
+        if (response.data) {
+          setCatalogsList(response.data);
         }
       } catch (error) {
         console.error("Error fetching catalogs:", error);
@@ -100,7 +76,6 @@ export default function Menu({ scroll, resetSignal }) {
 
   const isActive = (path) => pathname === path ? "active" : "";
 
-  const catalogImages = [babyWorld, actionWorld, buildCreate, puzzleGames, learningScience, artCreativity, guns, goPlay, makeupNails, outdoor, plush, collectibleFigures, dollWorld, robots]
 
   const closeAllPopups = () => {
     setIsOpenSearch(false);
@@ -118,9 +93,9 @@ export default function Menu({ scroll, resetSignal }) {
   useEffect(() => {
     if (!pathname) return;
 
-    staticCategoriesDropdown.forEach((category, index) => {
-      const match = category.links?.some(linkItem =>
-        pathname.startsWith(linkItem.link)
+    catalogsList.forEach((category, index) => {
+      const match = category.catalog_links?.some(linkItem =>
+        pathname.startsWith(linkItem.id)
       );
 
       if (match) {
@@ -216,9 +191,9 @@ export default function Menu({ scroll, resetSignal }) {
               <div className="relative categories-dropdown-links">
                 <ul>
                   {
-                    staticCategoriesCatalogs.map((category, index) => (
+                    catalogsList.map((category, index) => (
                       <li
-                        key={category.id}
+                        key={index}
                         className={`dropdown-item ${activeCategory === `categories-dropdown-details-item-${index}` ? "active" : ""
                           }`}
                         onMouseEnter={() =>
@@ -226,8 +201,8 @@ export default function Menu({ scroll, resetSignal }) {
                         }
                       >
                         <div className="flex items-center gap-2">
-                          <img src={catalogImages[index]?.src || babyWorld.src} alt="image" />
-                          <span>{category.name}</span>
+                          <img src={category.catalog_image} alt="image" />
+                          <span>{category.catalog_title}</span>
                         </div>
                         <i className="icon-arrow-left-01-round px-3"></i>
                       </li>
@@ -238,7 +213,7 @@ export default function Menu({ scroll, resetSignal }) {
 
               <div className="categories-dropdown-details">
                 {
-                  staticCategoriesDropdown.map((category, index) => (
+                  catalogsList.map((category, index) => (
                     <div
                       key={index}
                       className={`relative categories-dropdown-details-item ${activeCategory === `categories-dropdown-details-item-${index}` ? "active" : ""
@@ -247,12 +222,11 @@ export default function Menu({ scroll, resetSignal }) {
                     >
                       <ul>
                         {
-                          category.links && category.links.length > 0 ? (
-                            category.links.map((linkItem, linkIndex) => (
+                          category.catalog_links && category.catalog_links.length > 0 ? (
+                            category.catalog_links.map((linkItem, linkIndex) => (
                               <li className="dropdown-item" key={linkIndex}>
-                                <Link href={linkItem.link} onClick={() => setIsOpenCategoriesDropdown(false)}>
-                                  {state.LANG === "EN" ? linkItem.name_en : linkItem.name_ar}
-                                  {/* <i className="icon-arrow-left-01-round"></i> */}
+                                <Link href={`/products?itemStatus=AVAILABLE&catalog=${linkItem.id}`} onClick={() => setIsOpenCategoriesDropdown(false)}>
+                                  {linkItem.name}
                                 </Link>
                               </li>
                             ))
