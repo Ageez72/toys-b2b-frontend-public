@@ -225,7 +225,7 @@ export default function Menu({ scroll, resetSignal }) {
                           category.catalog_links && category.catalog_links.length > 0 ? (
                             category.catalog_links.map((linkItem, linkIndex) => (
                               <li className="dropdown-item" key={linkIndex}>
-                                <Link href={`/products?itemStatus=AVAILABLE&catalog=${linkItem.id}`} onClick={() => setIsOpenCategoriesDropdown(false)}>
+                                <Link href={`/products?age=ALL&itemStatus=AVAILABLE&pageSize=12&catalog=${linkItem.id}`} onClick={() => setIsOpenCategoriesDropdown(false)}>
                                   {linkItem.name}
                                 </Link>
                               </li>

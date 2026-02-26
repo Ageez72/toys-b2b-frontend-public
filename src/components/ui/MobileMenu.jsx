@@ -106,7 +106,7 @@ export default function MobileMenu({ scroll, onGoTo }) {
             }
             {
               // state.isCorporate || profileData.hideTargetSOA ? (
-              <li onClick={() => setIsOpenCategoriesDropdown(!isOpenCategoriesDropdown)}>
+              <li className="sections-link" onClick={() => setIsOpenCategoriesDropdown(!isOpenCategoriesDropdown)}>
                 <a href="javascript:void(0)" className="cursor-pointer flex items-center gap-1">
                   {translation.sections}
                   <i className="icon-arrow-down-01-round"></i>
@@ -171,7 +171,7 @@ export default function MobileMenu({ scroll, onGoTo }) {
                       category.catalog_links && category.catalog_links.length > 0 ? (
                         category.catalog_links.map((linkItem, linkIndex) => (
                           <li className="dropdown-item" key={linkIndex}>
-                            <Link href={`/products?itemStatus=AVAILABLE&catalog=${linkItem.id}`} onClick={() => {
+                            <Link href={`/products?age=ALL&itemStatus=AVAILABLE&pageSize=12&catalog=${linkItem.id}`} onClick={() => {
                               setIsOpenCategoriesDropdown(false)
                               setIsOpenActiveCategory(false)
                               onGoTo()

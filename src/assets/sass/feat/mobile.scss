@@ -1568,3 +1568,17 @@ $tablet-font-percent: 25%;
         font-size: 12px;
     }
 }
+
+.sections-link {
+    @media (max-width: $tablet-breakpoint) {
+        i {
+            [dir="rtl"] & {
+                transform: rotate(90deg);
+            }
+
+            [dir="ltr"] & {
+                transform: rotate(-90deg);
+            }
+        }
+    }
+}
