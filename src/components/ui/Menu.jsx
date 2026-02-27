@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useAppContext } from "../../../context/AppContext";
 import Cookies from 'js-cookie';
 import en from "../../../locales/en.json";
@@ -11,6 +10,7 @@ import logo from "../../assets/imgs/logo.png";
 import { getProfile } from "@/actions/utils";
 import { BASE_API, endpoints } from "../../../constant/endpoints";
 import axios from "axios";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Menu({ scroll, resetSignal }) {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -34,6 +34,8 @@ export default function Menu({ scroll, resetSignal }) {
   const [isOpenCategoriesDropdown, setIsOpenCategoriesDropdown] = useState(false);
   const [activeCategory, setActiveCategory] = useState("categories-dropdown-details-item-0");
   const [catalogsList, setCatalogsList] = useState([]);
+  const searchParams = useSearchParams();
+  const activeCatalog = searchParams.get("catalog");
 
   // fetch catalogs to get the names of categories and the links
   useEffect(() => {
@@ -224,7 +226,8 @@ export default function Menu({ scroll, resetSignal }) {
                         {
                           category.catalog_links && category.catalog_links.length > 0 ? (
                             category.catalog_links.map((linkItem, linkIndex) => (
-                              <li className="dropdown-item" key={linkIndex}>
+                              <li className={`dropdown-item ${activeCatalog === linkItem.id ? "active" : ""
+                                }`} key={linkIndex}>
                                 <Link href={`/products?age=ALL&itemStatus=AVAILABLE&pageSize=12&catalog=${linkItem.id}`} onClick={() => setIsOpenCategoriesDropdown(false)}>
                                   {linkItem.name}
                                 </Link>

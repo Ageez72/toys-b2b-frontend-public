@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation";
 import { useAppContext } from "../../../context/AppContext";
 import MenuControl from "./MenuControl";
 import Cookies from 'js-cookie';
@@ -28,6 +28,8 @@ export default function MobileMenu({ scroll, onGoTo }) {
   const [isOpenActiveCategory, setIsOpenActiveCategory] = useState(false);
   const [activeCategory, setActiveCategory] = useState("categories-dropdown-details-item-0");
   const [catalogsList, setCatalogsList] = useState([]);
+  const searchParams = useSearchParams();
+  const activeCatalog = searchParams.get("catalog");
 
   const pathname = usePathname();
   const isActive = (path) => pathname === path ? "active" : "";
@@ -128,7 +130,8 @@ export default function MobileMenu({ scroll, onGoTo }) {
                 catalogsList.map((category, index) => (
                   <li
                     key={index}
-                    className="dropdown-item"
+                    className={`dropdown-item ${activeCategory === `categories-dropdown-details-item-${index}` ? "active" : ""
+                      }`}
                     onClick={() => {
                       setIsOpenActiveCategory(true)
                       setActiveCategory(`categories-dropdown-details-item-${index}`)
@@ -170,7 +173,8 @@ export default function MobileMenu({ scroll, onGoTo }) {
                     {
                       category.catalog_links && category.catalog_links.length > 0 ? (
                         category.catalog_links.map((linkItem, linkIndex) => (
-                          <li className="dropdown-item" key={linkIndex}>
+                          <li className={`dropdown-item ${activeCatalog === linkItem.id ? "active" : ""
+                            }`} key={linkIndex}>
                             <Link href={`/products?age=ALL&itemStatus=AVAILABLE&pageSize=12&catalog=${linkItem.id}`} onClick={() => {
                               setIsOpenCategoriesDropdown(false)
                               setIsOpenActiveCategory(false)
