@@ -20,8 +20,6 @@ export default function Page() {
   const [profileData, setProfileData] = useState(null);
   const router = useRouter();
   const profileDataList = getProfile();
-  console.log(profileDataList);
-
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
