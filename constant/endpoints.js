@@ -20,7 +20,7 @@ const BASE_API = domainMap[hostname] || 'https://pick.alekha.com:8443/pick/faces
 
 // Determine siteLocation value
 let siteLocation = 'default';
-if (hostname === 'toyshop.theprimereach.com' || hostname === 'toyshop.iq.theprimereach.com' || hostname === 'toyshopiq.theprimereach.com' || hostname === 'iq.toyshop.theprimereach.com') {
+if (hostname === 'toyshop.theprimereach.com' || hostname === 'iqtoyshop.theprimereach.com' || hostname === 'iq.toyshop.theprimereach.com') {
   siteLocation = 'primereach';
 }
 

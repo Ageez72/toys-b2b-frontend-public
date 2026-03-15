@@ -553,6 +553,9 @@ function Cart() {
     setPendingImportedItems(null);
   };
 
+  console.log(state.corporatePayment);
+
+
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-2 lg:pt-15 cart-page section-min">
       {importPopup.success && importPopup.open && (
@@ -896,11 +899,11 @@ function Cart() {
                     }
                   </div>
                   {
-                    state.isCorporate && (
+                    state.isCorporate || profileData.hideTargetSOA ? (
                       <>
                         {(
                           !state.corporatePayment ||
-                          (Array.isArray(state.corporatePayment) && state.corporatePayment.length > 0)
+                          (Array.isArray(state.corporatePayment) && state.corporatePayment.length > 0) || profileData.hideTargetSOA
                         ) && (
                             <h3 className="sub-title no-edit mb-4 mt-8">{translation.paymentMethod} <span className="required">*</span></h3>
                           )}
@@ -976,9 +979,9 @@ function Cart() {
                           }
                         </div>
                       </>
-                    )
+                    ) : null
                   }
-                  {
+                  {/* {
                     !state.isCorporate && (
                       <>
                         {(
@@ -1060,7 +1063,7 @@ function Cart() {
                         </div>
                       </>
                     )
-                  }
+                  } */}
                   <h3 className="sub-title no-edit mb-4 mt-8">{translation.orderNotes}</h3>
                   <div className="card mb-5">
                     <textarea
