@@ -553,9 +553,6 @@ function Cart() {
     setPendingImportedItems(null);
   };
 
-  console.log(state.corporatePayment);
-
-
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-2 lg:pt-15 cart-page section-min">
       {importPopup.success && importPopup.open && (
