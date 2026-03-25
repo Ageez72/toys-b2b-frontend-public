@@ -143,7 +143,7 @@ export default function OrderDetails() {
                                                         className="w-full h-full flex justify-center items-center"
                                                     >
                                                         <img
-                                                            src={item.images["800"].main || brokenImage()}
+                                                            src={item.images["125"].main || brokenImage()}
                                                             width={52}
                                                             height={52}
                                                             alt={item.name || "Product"}
@@ -170,22 +170,6 @@ export default function OrderDetails() {
                                         </div>
                                     </div>
                                 ))}
-                                {
-                                    orderDetails.notes ? (
-                                        <>
-                                            <h3 className="sub-title mb-4 mt-8">{translation.orderNotes}</h3>
-                                            <div className="card">
-                                                <textarea
-                                                    disabled
-                                                    className="w-full h-full notes-text"
-                                                    name="notes"
-                                                    defaultValue={orderDetails.notes}
-                                                />
-                                            </div>
-                                        </>
-                                    ) : null
-                                }
-
                                 {orderDetails.address && (
                                     <>
                                         <h3 className="sub-title mb-4 mt-8">{translation.shippingAddress}</h3>
@@ -208,6 +192,21 @@ export default function OrderDetails() {
                                         </div>
                                     </>
                                 )}
+                                {
+                                    orderDetails.notes ? (
+                                        <>
+                                            <h3 className="sub-title mb-4 mt-8">{translation.orderNotes}</h3>
+                                            <div className="card">
+                                                <textarea
+                                                    disabled
+                                                    className="w-full h-full notes-text"
+                                                    name="notes"
+                                                    defaultValue={orderDetails.notes}
+                                                />
+                                            </div>
+                                        </>
+                                    ) : null
+                                }
                             </>
                         ) : null}
                     </div>

@@ -123,6 +123,7 @@ export default function ProfileDropdown({ onGoTo }) {
             brandDiscounts: data?.data?.brandDiscounts,
             discount: data?.data?.discount,
             clearanceItemsMaxDiscount: data?.data?.clearanceItemsMaxDiscount,
+            viewOnly: data?.data?.viewOnly,
         }
         Cookies.set('profile', JSON.stringify(profile));
         if (data?.data?.active !== "Y" && data?.data?.viewOnly !== true) {

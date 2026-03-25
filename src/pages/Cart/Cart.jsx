@@ -552,6 +552,13 @@ function Cart() {
     setShowReplaceCartPopup(false);
     setPendingImportedItems(null);
   };
+  const shouldSkipConfirm = profileData.isCorporate || profileData.hideTargetSOA;
+
+  const buttonText = shouldSkipConfirm
+    ? (selectedPaymentMethod === "Online"
+      ? translation.gotoPayment
+      : translation.confirmOrder)
+    : translation.confirmOrder;
 
   return (
     <div className="max-w-screen-xl mx-auto p-4 pt-2 lg:pt-15 cart-page section-min">
@@ -758,7 +765,7 @@ function Cart() {
                     <div className="product-card flex items-center gap-3">
                       <div className="product-card-image">
                         <Link href={`/products/${encodeURIComponent(item.id)}`} className="w-full h-full flex justify-center items-center">
-                          <img src={item.images["800"].main} width={80} alt={item.name || "Product"} />
+                          <img src={item.images["125"].main} width={80} alt={item.name || "Product"} />
                         </Link>
                       </div>
                       <div className="product-card-content">
@@ -1124,7 +1131,8 @@ function Cart() {
                 className={`primary-btn w-full ${cartItems.length ? '' : 'disabled'}`}
                 onClick={handleSubmitChecker}
               >
-                {selectedPaymentMethod === "Online" ? translation.gotoPayment : translation.confirmOrder}
+                {/* {selectedPaymentMethod === "Online" ? translation.gotoPayment : translation.confirmOrder} */}
+                {buttonText}
               </button>
             </div>
           </div>

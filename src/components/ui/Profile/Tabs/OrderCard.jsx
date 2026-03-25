@@ -50,7 +50,7 @@ export default function OrderCard({ order }) {
                     <div key={i} className="flex justify-between gap-2" title={el.name}>
                         <div className="flex items-center gap-2">
                             <Image
-                                src={el.images["800"].main || brokenImage()}
+                                src={el.images["125"].main || brokenImage()}
                                 alt="Product"
                                 width={50}
                                 height={50}

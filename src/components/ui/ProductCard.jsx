@@ -69,7 +69,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
             />
             <div className="product-card-image">
                 <Link href={`/products/${encodeURIComponent(item.id)}`} scroll={false} onClick={() => sessionStorage.setItem('scrollToProduct', item.id)}>
-                    <img src={item?.images["800"]?.main} alt={item?.name} layout="responsive" title={item.name} />
+                    <img src={item?.images["400"]?.main} alt={item?.name} layout="responsive" title={item.name} />
                 </Link>
                 <div className='isMobile'>
                     {
