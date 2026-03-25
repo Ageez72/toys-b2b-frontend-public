@@ -12,6 +12,10 @@ const ContactTools = () => {
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const pathname = usePathname();
 
+  useEffect(() => {
+    setProfile(getProfile())
+  }, [])
+
   // Wait for .profile-tab-panels to exist
   const waitForProfilePanel = (timeout = 10000, interval = 200) => {
     return new Promise((resolve) => {
@@ -99,7 +103,7 @@ const ContactTools = () => {
     <>
       <div className="isDesktop">
         <div className="contact-tools">
-          {hasContact && (
+          {hasContact ? (
             <>
               <div className="contact-link circle-icon-container contact-btn" onClick={toggleOpen}>
                 <i className="icon-multiplication-sign close"></i>
@@ -146,7 +150,7 @@ const ContactTools = () => {
                 )}
               </div>
             </>
-          )}
+          ) : null}
         </div>
         <button
           onClick={scrollToTop}
