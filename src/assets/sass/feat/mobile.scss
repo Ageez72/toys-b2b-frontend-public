@@ -1269,6 +1269,38 @@ $tablet-font-percent: 25%;
             }
         }
     }
+
+    .order-summary .order-item p,
+    .cart-item .name,
+    .addresses .card label {
+        @media (max-width: $tablet-breakpoint) {
+            font-size: calc(14px + $tablet-font-percent);
+        }
+
+        @media (max-width: $max-mobile-breakpoint) {
+            font-size: 14px;
+        }
+    }
+
+    .cart-item .price {
+        @media (max-width: $tablet-breakpoint) {
+            font-size: calc(12px + $tablet-font-percent);
+        }
+
+        @media (max-width: $max-mobile-breakpoint) {
+            font-size: 12px;
+        }
+    }
+
+    .order-summary .order-item .price {
+        @media (max-width: $tablet-breakpoint) {
+            font-size: calc(16px + $tablet-font-percent);
+        }
+
+        @media (max-width: $max-mobile-breakpoint) {
+            font-size: 16px;
+        }
+    }
 }
 
 .gray-btn,

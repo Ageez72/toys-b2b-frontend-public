@@ -193,6 +193,54 @@ export default function OrderDetails() {
                                     </>
                                 )}
                                 {
+                                    orderDetails.paymentMethod ? (
+                                        <>
+                                            <h3 className="sub-title mb-4 mt-8">{translation.paymentMethod}</h3>
+                                            <div className="payment-methods flex flex-wrap lg:flex-nowrap gap-3">
+                                                {
+                                                    orderDetails.paymentMethod === "cash" ? (
+                                                        <label className="block w-full lg:w-1/2">
+                                                            <div className={`card`}>
+                                                                <div className="payment-method">
+                                                                    <i className="icon-money-3"></i>
+                                                                    <span className="icon-tick-circle"></span>
+                                                                    <span className="block mt-2 method-title">{translation.cashOnDelivery}</span>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                    ) : null
+                                                }
+                                                {
+                                                    orderDetails.paymentMethod === "eb" ? (
+                                                        <label className="block w-full lg:w-1/2">
+                                                            <div className={`card`}>
+                                                                <div className="payment-method">
+                                                                    <i className="icon-wallet-money"></i>
+                                                                    <span className="icon-tick-circle"></span>
+                                                                    <span className="block mt-2 method-title">{translation.employeeBalance}</span>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                    ) : null
+                                                }
+                                                {
+                                                    orderDetails.paymentMethod === "online" ? (
+                                                        <label className="block w-full lg:w-1/2">
+                                                            <div className={`card`}>
+                                                                <div className="payment-method">
+                                                                    <i className="icon-cards"></i>
+                                                                    <span className="icon-tick-circle"></span>
+                                                                    <span className="block mt-2 method-title">{translation.creditCardPayment}</span>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                    ) : null
+                                                }
+                                            </div>
+                                        </>
+                                    ) : null
+                                }
+                                {
                                     orderDetails.notes ? (
                                         <>
                                             <h3 className="sub-title mb-4 mt-8">{translation.orderNotes}</h3>

@@ -233,7 +233,7 @@ function Cart() {
           'Content-Type': 'application/json',
         }
       });
-      // console.log(response?.data);
+      console.log(response);
 
       if (response.data?.error) {
         if (response.data.errorType === "qty") {
@@ -246,7 +246,7 @@ function Cart() {
           setAddOrderErrorAPIMsg(state.LANG === 'AR' ? response.data.messageAR : response.data.messageEN || translation.errorHappened)
         }
       } else if (response.data && !response.data?.error) {
-        if (selectedPaymentMethod === "Cash") {
+        if (selectedPaymentMethod === "Cash" || selectedPaymentMethod === "EB") {
           Cookies.set('cart', "[]", { expires: 7, path: '/' });
           await axios.post(
             `${BASE_API}${endpoints.products.setCart}?lang=${state.LANG}&token=${Cookies.get('token')}`,
