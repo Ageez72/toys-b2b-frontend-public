@@ -9,6 +9,7 @@ import QuickAdd from './QuickAdd';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from "../../../context/AppContext";
+import { getProfile } from '@/actions/utils';
 
 // fallback images
 import fallbackDesktopImage from "../../assets/imgs/hero-bg.png";
@@ -24,6 +25,7 @@ export default function Hero({
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
     const [isMobile, setIsMobile] = useState(false);
+    const profileData = getProfile();
 
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
@@ -66,16 +68,20 @@ export default function Hero({
                 <div className="hero-content">
                     <h1 className="hero-title text-center">{translation.heroTitle}</h1>
                     <QuickAdd openSidebar={() => setIsSidebarModalOpen(true)} />
-                    <button
-                        className="add-bulk-open-btn"
-                        onClick={() => {
-                            document.body.classList.add("clear-html");
-                            setIsModalOpen(true);
-                        }}
-                    >
-                        <i className="icon-element-plus"></i>
-                        {translation.bulkTitle}
-                    </button>
+                    {
+                        !profileData.viewOnly && (
+                            <button
+                                className="add-bulk-open-btn"
+                                onClick={() => {
+                                    document.body.classList.add("clear-html");
+                                    setIsModalOpen(true);
+                                }}
+                            >
+                                <i className="icon-element-plus"></i>
+                                {translation.bulkTitle}
+                            </button>
+                        )
+                    }
                 </div>
                 {
                     !exist && (

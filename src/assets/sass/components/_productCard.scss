@@ -55,6 +55,13 @@
         }
     }
 
+    &.viewOnly-card {
+        .product-card-image {
+            min-width: 150px;
+            max-width: 150px;
+        }
+    }
+
     .product-card-content {
         width: 100%;
 

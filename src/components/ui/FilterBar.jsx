@@ -19,7 +19,7 @@ import { getProfile } from '@/actions/utils';
 export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEndpoint, categoriesEndpoint, sortItem, pageSizeItem, searchTerm, onClose, count, filtersSections }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar); // default fallback
-    const profileData = getProfile()
+    const profileData = getProfile();
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);
     }, [state.LANG]);
@@ -208,7 +208,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             resetUpperFilters && resetUpperFilters()
             document.body.classList.remove("html-overflow");
             // Push clean URL
-            router.push('/products?itemStatus=AVAILABLE');
+            router.push(`/products?${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`);
         } else {
             Cookies.remove('store_filters');
             onClose && onClose()
@@ -374,7 +374,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
     //     const params = new URLSearchParams(window.location.search);
     //     const entries = Array.from(params.entries());
 
-    //     // Exclude default filter like itemStatus=AVAILABLE
+    //     // Exclude default filter like itemStatus=AVAILABL
     //     const meaningfulParams = entries.filter(([key, value]) => {
     //         return !(key === 'itemStatus' && value === 'AVAILABLE');
     //     });
@@ -477,7 +477,11 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                         <FilterSingleItem inputType="radio" title={translation.ageRange} selected={selectedAge} options={agesAllOptions} initiallyOpen={true} name="age" handleSingleItem={changeSingleItem} />
                                     ) : null
                                 }
-                                <FilterSingleItem inputType="radio" initiallyOpen={true} title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+                                {
+                                    !profileData.viewOnly && (
+                                        <FilterSingleItem inputType="radio" initiallyOpen={true} title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+                                    )
+                                }
                                 {showClearButton ? (
                                     <div className="action-btns flex gap-3 mt-4">
                                         {/* <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button> */}
@@ -509,7 +513,11 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
                                     {/* <MultiRangeSliderAge initiallyOpen={true} title={translation.ageRange} min={0} max={18} selectedFrom={fromAge} selectedTo={toAge} handleAgeFrom={changeAgeFrom} handleAgeTo={changeAgeTo} isProductsPage={false} /> */}
                                     <FilterSingleItem inputType="radio" title={translation.ageRange} selected={selectedAge} options={agesAllOptions} initiallyOpen={true} name="age" handleSingleItem={changeSingleItem} />
                                 </Suspense>
-                                <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+                                {
+                                    !profileData.viewOnly && (
+                                        <FilterSingleItem title={translation.availablity} selected={itemStatus} options={StatusOptions} name="itemStatus" handleSingleItem={changeSingleItem} />
+                                    )
+                                }
 
                                 <div className="action-btns flex gap-3 mt-4">
                                     <button className="primary-btn flex-1" onClick={handleApplyFilters}>{translation.apply}</button>

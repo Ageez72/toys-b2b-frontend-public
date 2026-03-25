@@ -13,7 +13,7 @@ import img6 from "../../../assets/imgs/mobile/6.png";
 import Cookies from 'js-cookie';
 import Loader from '../Loaders/Loader';
 import MobileHomeLoader from '../Loaders/MobileHomeLoader';
-import { set } from 'react-hook-form';
+import { getProfile } from '@/actions/utils';
 
 export default function MobileCards() {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -29,6 +29,7 @@ export default function MobileCards() {
     const [newArivals, setNewArivals] = useState(false);
     const [topItems, setTopItems] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const profileData = getProfile();
 
     // Update ALL values when context state changes
     useEffect(() => {
@@ -63,7 +64,7 @@ export default function MobileCards() {
                 newArivals ? (
 
                     <div className="card-box">
-                        <Link href="/products?itemType=NEW ARRIVAL&itemStatus=AVAILABLE">
+                        <Link href={`/products?itemType=NEW ARRIVAL&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                             <span>{translation.newArrivals}</span>
                             <img src={img2.src} alt="Card 2" />
                         </Link>
@@ -73,7 +74,7 @@ export default function MobileCards() {
             {
                 giveaway ? (
                     <div className="card-box">
-                        <Link href="/products?itemType=GIVEAWAY&itemStatus=AVAILABLE">
+                        <Link href={`/products?itemType=GIVEAWAY&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                             <span>{translation.offers}</span>
                             <img src={img3.src} alt="Card 3" />
                         </Link>
@@ -83,7 +84,7 @@ export default function MobileCards() {
             {
                 featured ? (
                     <div className="card-box">
-                        <Link href="/products?itemType=FEATURED&itemStatus=AVAILABLE">
+                        <Link href={`/products?itemType=FEATURED&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                             <span>{translation.featuredProducts}</span>
                             <img src={img4.src} alt="Card 4" />
                         </Link>
@@ -93,7 +94,7 @@ export default function MobileCards() {
             {
                 clearance ? (
                     <div className="card-box">
-                        <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE">
+                        <Link href={`/products?itemType=CLEARANCE&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                             <span>{translation.clearance}</span>
                             <img src={img5.src} alt="Card 5" />
                         </Link>
@@ -103,7 +104,7 @@ export default function MobileCards() {
             {
                 commingSoon ? (
                     <div className="card-box">
-                        <Link href="/products?itemType=COMMING SOON&itemStatus=AVAILABLE">
+                        <Link href={`/products?itemType=COMMING SOON&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                             <span>{translation.commingSoon}</span>
                             <img src={img6.src} alt="Card 6" />
                         </Link>

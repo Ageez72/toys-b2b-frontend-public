@@ -2,15 +2,22 @@
 import Cookies from "js-cookie";
 import en from "../../../../locales/en.json";
 import ar from "../../../../locales/ar.json";
+import { getProfile } from '@/actions/utils';
+const profileData = getProfile();
 
 const lang = Cookies.get("lang");
-let translation = lang === "AR" ? ar : en; 
+let translation = lang === "AR" ? ar : en;
 
-export const profileTabs = [
-  { id: 'personal', label: translation.profile , icon: "icon-user" },
+export const profileTabs = profileData?.viewOnly ? [
+  { id: 'personal', label: translation.profile, icon: "icon-user" },
+  { id: 'security', label: translation.security, icon: "icon-shield-security" },
+  { id: 'statementOfAccount', label: translation.statementOfAccount, icon: "icon-user-tick1" },
+  { id: 'sellingGoals', label: translation.sellingTargetsProgress, icon: "icon-graph" },
+] : [
+  { id: 'personal', label: translation.profile, icon: "icon-user" },
   { id: 'security', label: translation.security, icon: "icon-shield-security" },
   { id: 'orders', label: translation.orders, icon: "icon-bag-happy" },
   { id: 'addresses', label: translation.addresses, icon: "icon-location" },
   { id: 'statementOfAccount', label: translation.statementOfAccount, icon: "icon-user-tick1" },
   { id: 'sellingGoals', label: translation.sellingTargetsProgress, icon: "icon-graph" },
-];
+]

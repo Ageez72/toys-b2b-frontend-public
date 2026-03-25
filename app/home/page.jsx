@@ -29,7 +29,7 @@ export default function Home() {
   const [translation, setTranslation] = useState(ar);
   const [imagePairs, setImagePairs] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [profileData, setProfileData] = useState("");
+  const profileData = getProfile();
 
   useEffect(() => {
     setTranslation(state.LANG === "EN" ? en : ar);
@@ -40,28 +40,28 @@ export default function Home() {
       title: translation.newArrivals,
       badgeType: "blue",
       type: "NEW ARRIVAL",
-      route: "/products?itemType=NEW ARRIVAL&itemStatus=AVAILABLE",
+      route: `/products?itemType=NEW ARRIVAL&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`,
       id: "new-arrival",
     },
     {
       title: translation.offers,
       badgeType: "green",
       type: "GIVEAWAY",
-      route: "/products?itemType=GIVEAWAY&itemStatus=AVAILABLE",
+      route: `/products?itemType=GIVEAWAY&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`,
       id: "giveaway",
     },
     {
       title: translation.commingSoon,
       badgeType: "yellow",
       type: "COMMING SOON",
-      route: "/products?itemType=COMMING SOON&itemStatus=AVAILABLE",
+      route: `/products?itemType=COMMING SOON&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`,
       id: "coming-soon",
     },
     {
       title: translation.clearance,
       badgeType: "red",
       type: "CLEARANCE",
-      route: "/products?itemType=CLEARANCE&itemStatus=AVAILABLE",
+      route: `/products?itemType=CLEARANCE&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`,
       id: "clearance",
     },
   ];
@@ -118,11 +118,6 @@ export default function Home() {
     mobile: fallbackMobileImage.src,
   };
 
-  useEffect(() => {
-    const profData = getProfile();
-    setProfileData(profData)
-  }, [state])
-
   if (isLoading) return <Loader />;
 
   return (
@@ -149,7 +144,7 @@ export default function Home() {
                   <div className="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-4 catalogs-list">
                     {
                       catalogsList.map((cat, index) => (
-                        <Link className="catalog-box text-center" key={index} href={`/products?age=ALL&itemStatus=AVAILABLE&pageSize=12&catalog=${cat.allCatalogLink}`}>
+                        <Link className="catalog-box text-center" key={index} href={`/products?age=ALL&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&pageSize=12&catalog=${cat.allCatalogLink}`}>
                           <div className="catalog-icon">
                             <img width={80} src={cat.catalog_image} alt="image" className="m-auto" />
                           </div>

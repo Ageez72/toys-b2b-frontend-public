@@ -13,11 +13,14 @@ import { useQuery } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import CardLoader from './Loaders/CardLoader';
+import { getProfile } from '@/actions/utils';
+
 
 export default function BrandsSwiper() {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const router = useRouter();
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
+  const profileData = getProfile();
 
   // API call to fetch brands
   async function fetchHomeBrands() {
@@ -112,7 +115,7 @@ export default function BrandsSwiper() {
       {data?.data.map((slide) => (
         <SwiperSlide key={slide.description + slide.brandID}>
           <Link
-            href={`/products?brand=${slide.brandID}&itemStatus=AVAILABLE`}
+            href={`/products?brand=${slide.brandID}&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}
             className="block w-full h-full relative z-10"
           >
             <div

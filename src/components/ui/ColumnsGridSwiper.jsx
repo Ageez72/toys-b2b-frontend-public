@@ -14,6 +14,7 @@ import HorizontalLoader from './Loaders/HorizontalLoader';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import logoPattern from "../../assets/imgs/logo-pattern.svg"
+import { getProfile } from '@/actions/utils';
 
 export default ({ title, route, badgeType, type, id }) => {
     const { push } = useRouter();
@@ -21,9 +22,9 @@ export default ({ title, route, badgeType, type, id }) => {
     async function fetchHomeProducts() {
         let url;
         if (type === "FEATURED") {
-            url = `${BASE_API}${endpoints.products.list}&itemType=FEATURED&pageSize=12&itemStatus=AVAILABLE&lang=${lang}&token=${Cookies.get('token')}`;
+            url = `${BASE_API}${endpoints.products.list}&itemType=FEATURED&pageSize=12&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${Cookies.get('token')}`;
         } else {
-            url = `${BASE_API}${endpoints.products.list}&topitems=${type}&pageSize=12&itemStatus=AVAILABLE&lang=${lang}&token=${Cookies.get('token')}`;
+            url = `${BASE_API}${endpoints.products.list}&topitems=${type}&pageSize=12&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${Cookies.get('token')}`;
         }
         const res = await axios.get(url, {});
         return res;
@@ -34,6 +35,7 @@ export default ({ title, route, badgeType, type, id }) => {
     const [clearanceDisplay, setClearanceDisplay] = useState(false)
     const [newArivalsDisplay, setNewArivals] = useState(false)
     const [giveawayDisplay, setGiveawayDisplay] = useState(false)
+    const profileData = getProfile();
 
     useEffect(() => {
         setTranslation(state.LANG === "EN" ? en : ar);

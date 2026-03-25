@@ -17,6 +17,7 @@ import { showSuccessToast, showWarningToast, showErrorToast } from '@/actions/to
 import axios from "axios";
 import Cookies from "js-cookie";
 import { BASE_API, endpoints } from "../../../constant/endpoints";
+import { getProfile } from "@/actions/utils";
 
 export default function AddBulkModal({ open, onClose }) {
   const [isImporting, setIsImporting] = useState(false);
@@ -32,6 +33,7 @@ export default function AddBulkModal({ open, onClose }) {
   const translation = state.LANG === "EN" ? en : ar;
   const lang = state.LANG || 'EN';
   const siteLocation = Cookies.get("siteLocation")
+  const profileData = getProfile()
 
   const showToastError = (message) => {
     showWarningToast(message, lang, translation.warning);
@@ -149,7 +151,7 @@ export default function AddBulkModal({ open, onClose }) {
 
       const url = `${BASE_API}${endpoints.products.list}&id=${encodeURIComponent(
         sku
-      )}&pageSize=1&itemStatus=AVAILABLE&lang=${lang}&token=${token}`;
+      )}&pageSize=1&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${token}`;
 
       const res = await axios.get(url);
 

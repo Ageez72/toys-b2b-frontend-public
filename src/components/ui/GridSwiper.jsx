@@ -13,11 +13,12 @@ import { BASE_API, endpoints } from '../../../constant/endpoints';
 import HorizontalLoader from './Loaders/HorizontalLoader';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
+import { getProfile } from '@/actions/utils';
 
 export default function GridSwiper({ title, route, badgeType, type, id }) {
-
     const { push } = useRouter();
     const lang = Cookies.get('lang') || 'AR';
+    const profileData = getProfile();
 
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
@@ -30,7 +31,7 @@ export default function GridSwiper({ title, route, badgeType, type, id }) {
         queryKey: [type],
         queryFn: async () => {
             return axios.get(
-                `${BASE_API}${endpoints.products.list}&itemType=${type}&pageSize=12&itemStatus=AVAILABLE&lang=${lang}&token=${Cookies.get('token')}`
+                `${BASE_API}${endpoints.products.list}&itemType=${type}&pageSize=12&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${Cookies.get('token')}`
             );
         },
         staleTime: 1000 * 60 * 5,

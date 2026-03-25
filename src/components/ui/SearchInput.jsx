@@ -10,6 +10,7 @@ import Link from 'next/link';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
 import { useAppContext } from '../../../context/AppContext';
+import { getProfile } from '@/actions/utils';
 
 export default function SearchInput({ closeSearchPopup, bulk, onCollectBulkItems, pageSize, onCollectQuickAdd, resetTrigger, onResetDone }) {
     const { push } = useRouter();
@@ -20,6 +21,7 @@ export default function SearchInput({ closeSearchPopup, bulk, onCollectBulkItems
     const lang = Cookies.get('lang') || 'AR';
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const siteLocation = Cookies.get("siteLocation")
+    const profileData = getProfile();
 
     // ✅ Setup translation state
     const [translation, setTranslation] = useState(ar); // fallback default
@@ -44,7 +46,7 @@ export default function SearchInput({ closeSearchPopup, bulk, onCollectBulkItems
         const [_key, searchText] = queryKey;
         const filterItems = Cookies.get('store_filters') || '';
         const token = Cookies.get('token');
-        const url = `${BASE_API}${endpoints.products.list}&search=${encodeURIComponent(searchText)}&pageSize=${pageSize || 3}&${filterItems}&itemStatus=AVAILABLE&lang=${lang}&token=${token}`;
+        const url = `${BASE_API}${endpoints.products.list}&search=${encodeURIComponent(searchText)}&pageSize=${pageSize || 3}&${filterItems}&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${token}`;
         const res = await axios.get(url, {});
 
         return res.data;
@@ -147,7 +149,7 @@ export default function SearchInput({ closeSearchPopup, bulk, onCollectBulkItems
                                     closeSearchPopup();
                                     window.reload();
                                 } : undefined}
-                                href={`/products?${filterItems ? filterItems + '&search=' + searchText : `age=ALL&itemStatus=AVAILABLE&pageSize=12` + '&search=' + searchText}`}
+                                href={`/products?${filterItems ? filterItems + '&search=' + searchText : `age=ALL&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&pageSize=12` + '&search=' + searchText}`}
                                 className='flex items-center gap-2 all-products'
                             >
                                 <span>{translation.viewAllProducts}</span>

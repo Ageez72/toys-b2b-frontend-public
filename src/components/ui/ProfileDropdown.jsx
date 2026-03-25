@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { BASE_API, endpoints } from '../../../constant/endpoints';
 import Loader from './Loaders/Loader';
-import { logout, getCartItems } from '@/actions/utils';
+import { logout, getCartItems, getProfile } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
 import en from "../../../locales/en.json";
 import ar from "../../../locales/ar.json";
@@ -20,7 +20,7 @@ export default function ProfileDropdown({ onGoTo }) {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const [translation, setTranslation] = useState(ar);
     const [openLogoutModal, setOpenLogoutModal] = useState(false);
-
+    const profileData = getProfile();
 
     const getCartItems = async () => {
         const langCookie = Cookies.get("lang") || "AR";
@@ -212,22 +212,28 @@ export default function ProfileDropdown({ onGoTo }) {
                                             </span>
                                         </Link>
                                     </MenuItem>
-                                    <MenuItem>
-                                        <Link onClick={() => onGoTo && onGoTo()} href="/profile?orders" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                            <i className="icon-task"></i>
-                                            <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                                {translation.orders}
-                                            </span>
-                                        </Link>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Link onClick={() => onGoTo && onGoTo()} href="/profile?addresses" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
-                                            <i className="icon-location"></i>
-                                            <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
-                                                {translation.addresses}
-                                            </span>
-                                        </Link>
-                                    </MenuItem>
+                                    {
+                                        !profileData.viewOnly && (
+                                            <>
+                                                <MenuItem>
+                                                    <Link onClick={() => onGoTo && onGoTo()} href="/profile?orders" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                                        <i className="icon-task"></i>
+                                                        <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
+                                                            {translation.orders}
+                                                        </span>
+                                                    </Link>
+                                                </MenuItem>
+                                                <MenuItem>
+                                                    <Link onClick={() => onGoTo && onGoTo()} href="/profile?addresses" className='profile-item flex items-center py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                                                        <i className="icon-location"></i>
+                                                        <span className="flex items-center justify-between block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
+                                                            {translation.addresses}
+                                                        </span>
+                                                    </Link>
+                                                </MenuItem>
+                                            </>
+                                        )
+                                    }
                                     {
                                         (
                                             (data?.data?.isCorporate !== true && data?.data?.active === "Y") &&

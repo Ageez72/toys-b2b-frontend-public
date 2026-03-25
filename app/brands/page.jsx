@@ -12,10 +12,12 @@ import Placeholder from "../../src/assets/imgs/200x100.svg"
 import en from "../../locales/en.json";
 import ar from "../../locales/ar.json";
 import { useAppContext } from '../../context/AppContext';
+import { getProfile } from "@/actions/utils";
 
 export default function Page() {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [search, setSearch] = useState("");
+  const profileData = getProfile()
 
   const { push } = useRouter();
   const { state = {} } = useAppContext() || {};
@@ -76,7 +78,7 @@ export default function Page() {
             data?.data.map((brand, i) => (
 
               <Link key={brand.brandID}
-                href={`/products?itemStatus=AVAILABLE&pageSize=12&brand=${brand.brandID}`}
+                href={`/products?${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&pageSize=12&brand=${brand.brandID}`}
                 className="block w-full h-full relative z-10"
               >
                 <div className="relative group brands card" style={{ height: "132px" }} onClick={() => toggleTooltip(brand.description)}>
@@ -131,7 +133,7 @@ export default function Page() {
           {filteredBrands.map((brand) => (
             <Link
               key={brand.brandID}
-              href={`/products?brand=${brand.brandID}&itemStatus=AVAILABLE`}
+              href={`/products?brand=${brand.brandID}&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}
               className="block w-full h-full relative z-10"
             >
               <div

@@ -17,7 +17,7 @@ export default function MobileMenu({ scroll, onGoTo }) {
   const catalogsList = state.catalogsList || [];
   const [lang, setLang] = useState("AR"); // fallback
   const siteLocation = Cookies.get("siteLocation")
-  const profileData = getProfile()
+  const profileData = getProfile();
   const [cookiesState, setCookiesState] = useState({
     newArrivals: false,
     clearance: false,
@@ -76,7 +76,7 @@ export default function MobileMenu({ scroll, onGoTo }) {
               Cookies.remove('filterstatus')
               onGoTo()
             }}>
-              <Link href="/products?itemStatus=AVAILABLE">{translation.allProducts}</Link>
+              <Link href={`/products?${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>{translation.allProducts}</Link>
             </li>
             <li className={isActive("/brands")} onClick={() => onGoTo()}>
               <Link href="/brands">{translation.brands}</Link>
@@ -88,7 +88,7 @@ export default function MobileMenu({ scroll, onGoTo }) {
                 Cookies.remove('filterstatus')
                 onGoTo()
               }}>
-                <Link href="/products?itemType=CLEARANCE&itemStatus=AVAILABLE">{translation.clearance}</Link>
+                <Link href={`/products?itemType=CLEARANCE&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>{translation.clearance}</Link>
               </li>
             }
             {
@@ -160,7 +160,7 @@ export default function MobileMenu({ scroll, onGoTo }) {
                         category.catalog_links.map((linkItem, linkIndex) => (
                           <li className={`dropdown-item ${activeCatalog === linkItem.id ? "active" : ""
                             }`} key={linkIndex}>
-                            <Link href={`/products?age=ALL&itemStatus=AVAILABLE&pageSize=12&catalog=${linkItem.id}`} onClick={() => {
+                            <Link href={`/products?age=ALL&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&pageSize=12&catalog=${linkItem.id}`} onClick={() => {
                               setIsOpenCategoriesDropdown(false)
                               setIsOpenActiveCategory(false)
                               onGoTo()

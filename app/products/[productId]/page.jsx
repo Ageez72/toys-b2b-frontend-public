@@ -113,7 +113,7 @@ export default function Page() {
 
   breadcrumbItems = [
     { label: translation.home, href: '/home' },
-    { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}&itemStatus=AVAILABLE` },
+    { label: `${details?.brand?.description}`, href: `/products?brand=${details?.brand?.id}&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}` },
     { label: `${details?.name}` }
   ]
   const getAge = (str) => {
@@ -382,7 +382,7 @@ export default function Page() {
                 <div className="badges flex flex-wrap gap-2">
                   {
                     details?.catalogs?.map(b => (
-                      <Link href={`/products?catalog=${encodeURIComponent(b?.id)}&itemStatus=AVAILABLE`} key={b.id}>
+                      <Link href={`/products?catalog=${encodeURIComponent(b?.id)}&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`} key={b.id}>
                         <Badge type={"catalog-details"} text={b?.description} />
                       </Link>
                     ))

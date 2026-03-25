@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { addToCart, getCart } from '@/actions/utils';
+import { addToCart, getCart, getProfile } from '@/actions/utils';
 import { useAppContext } from '../../../context/AppContext';
 import SearchInput from './SearchInput';
 import en from "../../../locales/en.json";
@@ -18,6 +18,7 @@ export default function QuickAdd({ openSidebar }) {
     const [resetSearch, setResetSearch] = useState(false);
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
     const lang = state.LANG;
+    const profileData = getProfile();
 
     const [translation, setTranslation] = useState(ar);
     useEffect(() => {
@@ -128,26 +129,30 @@ export default function QuickAdd({ openSidebar }) {
                     </div>
                 </div>
 
-                <div className="quantatity-container flex items-center gap-2 card">
-                    <div className="form-group mb-0">
-                        <div className="relative">
-                            <input
-                                className="p-2.5"
-                                placeholder={translation.qty}
-                                value={count}
-                                type="number"
-                                min="0"
-                                max="10"
-                                maxLength={10}
-                                onChange={handleQuantityChange}
-                            />
+                {
+                    !profileData.viewOnly && (
+                        <div className="quantatity-container flex items-center gap-2 card">
+                            <div className="form-group mb-0">
+                                <div className="relative">
+                                    <input
+                                        className="p-2.5"
+                                        placeholder={translation.qty}
+                                        value={count}
+                                        type="number"
+                                        min="0"
+                                        max="10"
+                                        maxLength={10}
+                                        onChange={handleQuantityChange}
+                                    />
+                                </div>
+                            </div>
+                            <button className="primary-btn" onClick={handleAddToCart}>
+                                <i className="icon-plus"></i>
+                                <span>{translation.add}</span>
+                            </button>
                         </div>
-                    </div>
-                    <button className="primary-btn" onClick={handleAddToCart}>
-                        <i className="icon-plus"></i>
-                        <span>{translation.add}</span>
-                    </button>
-                </div>
+                    )
+                }
             </div>
         </>
     );

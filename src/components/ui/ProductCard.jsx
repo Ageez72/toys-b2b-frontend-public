@@ -59,7 +59,7 @@ export default function ProductCard({ type, badgeType, related, item }) {
 
     const rate = item?.reviews.rating || 0;
     return (
-        <div className={`card product-card ${type === 'grid' ? 'grid-card flex items-center gap-3' : 'list-card'}`} id={`product-${item.id}`}>
+        <div className={`card product-card ${type === 'grid' ? 'grid-card flex items-center gap-3' : 'list-card'} ${profileData.viewOnly ? 'viewOnly-card' : null}`} id={`product-${item.id}`}>
             <SuccessModal
                 icon="icon-box1"
                 open={isModalOpen}
@@ -71,182 +71,190 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 <Link href={`/products/${encodeURIComponent(item.id)}`} scroll={false} onClick={() => sessionStorage.setItem('scrollToProduct', item.id)}>
                     <img src={item?.images["400"]?.main} alt={item?.name} layout="responsive" title={item.name} />
                 </Link>
-                <div className='isMobile'>
-                    {
-                        item.isNew && (
-                            <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
-                        )
-                    }
-                    {/* {
+                {
+                    !profileData.viewOnly && (
+                        <div className='isMobile'>
+                            {
+                                item.isNew && (
+                                    <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
+                                )
+                            }
+                            {/* {
                     item.commingSoon && (
                         <Badge type={item.commingSoon && 'yellow'} text={`${translation.soon}`} />
                     )
                 } */}
-                    {
-                        profileData.isCorporate || profileData.hideTargetSOA ? (
-                            item.itemdisc > 0 && (
-                                <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
-                            )
-                        ) : null
-                    }
-                    {
-                        !profileData.isCorporate && !profileData.hideTargetSOA ? (
-                            !item.commingSoon && item.itemdisc > 0 && !item.hideDiscount ? (
-                                <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
-                            ) : null
-                        ) : null
-                    }
-                    {
-                        item?.status !== "AVAILABLE" && !item.commingSoon ? (
-                            <Badge type={'red'} text={`${translation.notAvailable}`} />
-                        ) : null
-                    }
-                    {
-                        profileData?.allQty ? (
-                            <>
-                                {item.avlqty === 1 && !item.commingSoon && (
-                                    <Badge
-                                        type="red"
-                                        text={`${translation.only} ${item.avlqty} ${translation.pieceOne}`}
-                                    />
-                                )}
+                            {
+                                profileData.isCorporate || profileData.hideTargetSOA ? (
+                                    item.itemdisc > 0 && (
+                                        <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
+                                    )
+                                ) : null
+                            }
+                            {
+                                !profileData.isCorporate && !profileData.hideTargetSOA ? (
+                                    !item.commingSoon && item.itemdisc > 0 && !item.hideDiscount ? (
+                                        <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
+                                    ) : null
+                                ) : null
+                            }
+                            {
+                                item?.status !== "AVAILABLE" && !item.commingSoon ? (
+                                    <Badge type={'red'} text={`${translation.notAvailable}`} />
+                                ) : null
+                            }
+                            {
+                                profileData?.allQty ? (
+                                    <>
+                                        {item.avlqty === 1 && !item.commingSoon && (
+                                            <Badge
+                                                type="red"
+                                                text={`${translation.only} ${item.avlqty} ${translation.pieceOne}`}
+                                            />
+                                        )}
 
-                                {item.avlqty > 1 && item.avlqty <= 10 && !item.commingSoon && (
-                                    <Badge
-                                        type="red"
-                                        text={`${translation.only} ${item.avlqty} ${item.avlqty > 10
-                                            ? translation.pieceOnly
-                                            : translation.piecesOnly
-                                            }`}
-                                    />
-                                )}
+                                        {item.avlqty > 1 && item.avlqty <= 10 && !item.commingSoon && (
+                                            <Badge
+                                                type="red"
+                                                text={`${translation.only} ${item.avlqty} ${item.avlqty > 10
+                                                    ? translation.pieceOnly
+                                                    : translation.piecesOnly
+                                                    }`}
+                                            />
+                                        )}
 
-                                {item.avlqty > 10 && !item.commingSoon && (
-                                    <Badge
-                                        type="red"
-                                        text={`${translation.only} ${item.avlqty} ${translation.pieceOnly}`}
-                                    />
-                                )}
+                                        {item.avlqty > 10 && !item.commingSoon && (
+                                            <Badge
+                                                type="red"
+                                                text={`${translation.only} ${item.avlqty} ${translation.pieceOnly}`}
+                                            />
+                                        )}
 
-                            </>
-                        ) : (
-                            <>
-                                {item.discountType === 'CLEARANCE' && item.avlqty > 0 && !item.commingSoon && (
-                                    <Badge
-                                        type={item.discountType === 'CLEARANCE' ? 'red' : undefined}
-                                        text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
-                                            ? translation.pieceOne
-                                            : item.avlqty > 10
-                                                ? translation.pieceOnly
-                                                : translation.piecesOnly
-                                            }`}
-                                    />
-                                )}
+                                    </>
+                                ) : (
+                                    <>
+                                        {item.discountType === 'CLEARANCE' && item.avlqty > 0 && !item.commingSoon && (
+                                            <Badge
+                                                type={item.discountType === 'CLEARANCE' ? 'red' : undefined}
+                                                text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
+                                                    ? translation.pieceOne
+                                                    : item.avlqty > 10
+                                                        ? translation.pieceOnly
+                                                        : translation.piecesOnly
+                                                    }`}
+                                            />
+                                        )}
 
-                                {item.discountType !== 'CLEARANCE' && !item.commingSoon &&
-                                    item.avlqty > 1 &&
-                                    item.avlqty < 10 && (
-                                        <Badge
-                                            type={item.discountType !== 'CLEARANCE' ? 'red' : undefined}
-                                            text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
-                                                ? translation.pieceOne
-                                                : translation.piecesOnly
-                                                }`}
-                                        />
-                                    )}
-                            </>
-                        )
-                    }
-                </div>
+                                        {item.discountType !== 'CLEARANCE' && !item.commingSoon &&
+                                            item.avlqty > 1 &&
+                                            item.avlqty < 10 && (
+                                                <Badge
+                                                    type={item.discountType !== 'CLEARANCE' ? 'red' : undefined}
+                                                    text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
+                                                        ? translation.pieceOne
+                                                        : translation.piecesOnly
+                                                        }`}
+                                                />
+                                            )}
+                                    </>
+                                )
+                            }
+                        </div>
+                    )
+                }
             </div>
             <div className="product-card-content">
-                <div className='isDesktop'>
-                    {
-                        item.isNew && (
-                            <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
-                        )
-                    }
-                    {/* {
+                {
+                    !profileData.viewOnly && (
+                        <div className='isDesktop'>
+                            {
+                                item.isNew && (
+                                    <Badge type={item.isNew && 'blue'} text={`${translation.new}`} />
+                                )
+                            }
+                            {/* {
                     item.commingSoon && (
                         <Badge type={item.commingSoon && 'yellow'} text={`${translation.soon}`} />
                     )
                 } */}
-                    {
-                        profileData.isCorporate || profileData.hideTargetSOA ? (
-                            item.itemdisc > 0 && (
-                                <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
-                            )
-                        ) : null
-                    }
-                    {
-                        !profileData.isCorporate && !profileData.hideTargetSOA ? (
-                            !item.commingSoon && item.itemdisc > 0 && !item.hideDiscount ? (
-                                <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
-                            ) : null
-                        ) : null
-                    }
-                    {
-                        item?.status !== "AVAILABLE" && !item.commingSoon ? (
-                            <Badge type={'red'} text={`${translation.notAvailable}`} />
-                        ) : null
-                    }
-                    {
-                        profileData?.allQty ? (
-                            <>
-                                {item.avlqty === 1 && !item.commingSoon && (
-                                    <Badge
-                                        type="red"
-                                        text={`${translation.only} ${item.avlqty} ${translation.pieceOne}`}
-                                    />
-                                )}
+                            {
+                                profileData.isCorporate || profileData.hideTargetSOA ? (
+                                    item.itemdisc > 0 && (
+                                        <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
+                                    )
+                                ) : null
+                            }
+                            {
+                                !profileData.isCorporate && !profileData.hideTargetSOA ? (
+                                    !item.commingSoon && item.itemdisc > 0 && !item.hideDiscount ? (
+                                        <Badge type={item.itemdisc > 0 && 'green'} text={`${translation.discount2} ${item.itemdisc} ${translation.percentage}`} />
+                                    ) : null
+                                ) : null
+                            }
+                            {
+                                item?.status !== "AVAILABLE" && !item.commingSoon ? (
+                                    <Badge type={'red'} text={`${translation.notAvailable}`} />
+                                ) : null
+                            }
+                            {
+                                profileData?.allQty ? (
+                                    <>
+                                        {item.avlqty === 1 && !item.commingSoon && (
+                                            <Badge
+                                                type="red"
+                                                text={`${translation.only} ${item.avlqty} ${translation.pieceOne}`}
+                                            />
+                                        )}
 
-                                {item.avlqty > 1 && item.avlqty <= 10 && !item.commingSoon && (
-                                    <Badge
-                                        type="red"
-                                        text={`${translation.only} ${item.avlqty} ${item.avlqty > 10
-                                            ? translation.pieceOnly
-                                            : translation.piecesOnly
-                                            }`}
-                                    />
-                                )}
+                                        {item.avlqty > 1 && item.avlqty <= 10 && !item.commingSoon && (
+                                            <Badge
+                                                type="red"
+                                                text={`${translation.only} ${item.avlqty} ${item.avlqty > 10
+                                                    ? translation.pieceOnly
+                                                    : translation.piecesOnly
+                                                    }`}
+                                            />
+                                        )}
 
-                                {item.avlqty > 10 && !item.commingSoon && (
-                                    <Badge
-                                        type="red"
-                                        text={`${translation.only} ${item.avlqty} ${translation.pieceOnly}`}
-                                    />
-                                )}
+                                        {item.avlqty > 10 && !item.commingSoon && (
+                                            <Badge
+                                                type="red"
+                                                text={`${translation.only} ${item.avlqty} ${translation.pieceOnly}`}
+                                            />
+                                        )}
 
-                            </>
-                        ) : (
-                            <>
-                                {item.discountType === 'CLEARANCE' && item.avlqty > 0 && !item.commingSoon && (
-                                    <Badge
-                                        type={item.discountType === 'CLEARANCE' ? 'red' : undefined}
-                                        text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
-                                            ? translation.pieceOne
-                                            : item.avlqty > 10
-                                                ? translation.pieceOnly
-                                                : translation.piecesOnly
-                                            }`}
-                                    />
-                                )}
+                                    </>
+                                ) : (
+                                    <>
+                                        {item.discountType === 'CLEARANCE' && item.avlqty > 0 && !item.commingSoon && (
+                                            <Badge
+                                                type={item.discountType === 'CLEARANCE' ? 'red' : undefined}
+                                                text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
+                                                    ? translation.pieceOne
+                                                    : item.avlqty > 10
+                                                        ? translation.pieceOnly
+                                                        : translation.piecesOnly
+                                                    }`}
+                                            />
+                                        )}
 
-                                {item.discountType !== 'CLEARANCE' && !item.commingSoon &&
-                                    item.avlqty > 1 &&
-                                    item.avlqty < 10 && (
-                                        <Badge
-                                            type={item.discountType !== 'CLEARANCE' ? 'red' : undefined}
-                                            text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
-                                                ? translation.pieceOne
-                                                : translation.piecesOnly
-                                                }`}
-                                        />
-                                    )}
-                            </>
-                        )
-                    }
-                </div>
+                                        {item.discountType !== 'CLEARANCE' && !item.commingSoon &&
+                                            item.avlqty > 1 &&
+                                            item.avlqty < 10 && (
+                                                <Badge
+                                                    type={item.discountType !== 'CLEARANCE' ? 'red' : undefined}
+                                                    text={`${translation.only} ${item.avlqty} ${item.avlqty === 1
+                                                        ? translation.pieceOne
+                                                        : translation.piecesOnly
+                                                        }`}
+                                                />
+                                            )}
+                                    </>
+                                )
+                            }
+                        </div>
+                    )
+                }
                 <h2 className="product-card-title cursor-pointer short-title" title={item.name}>
                     <Link href={`/products/${encodeURIComponent(item.id)}`} onClick={() => sessionStorage.setItem('scrollToProduct', item.id)}>
                         {item.name}
@@ -254,11 +262,11 @@ export default function ProductCard({ type, badgeType, related, item }) {
                 </h2>
                 <h3 className="font-bold sku-number">{item?.id}</h3>
                 <p className='product-card-description'>
-                    <Link href={`/products?brand=${item?.brand?.id}&itemStatus=AVAILABLE`}>
+                    <Link href={`/products?brand=${item?.brand?.id}&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                         <span className="product-card-brand">{item?.brand?.description}</span>
                     </Link>
                     <span className='mx-1'>-</span>
-                    <Link href={`/products?category=${item?.category?.id}&itemStatus=AVAILABLE`}>
+                    <Link href={`/products?category=${item?.category?.id}&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                         <span className="product-card-category">{item?.category?.description}</span>
                     </Link>
                 </p>
@@ -309,20 +317,26 @@ export default function ProductCard({ type, badgeType, related, item }) {
                     }
                 </div>
                 {
-                    item?.status === "AVAILABLE" && !item.commingSoon ? (
-                        <AddToCart item={item} />
-                    ) : null
-                }
+                    !profileData.viewOnly && (
+                        <>
+                            {
+                                item?.status === "AVAILABLE" && !item.commingSoon ? (
+                                    <AddToCart item={item} />
+                                ) : null
+                            }
 
-                {
-                    item?.status !== "AVAILABLE" && (
-                        !item.commingSoon ? (
-                            <button className={`primary-btn w-full block request-when-available ${isRequestBtnActive ? '' : 'disabled'}`} onClick={() => requestOutofStock(item?.id)}>{item?.productRequested ? translation.toldMe : translation.tellMe}</button>
-                        ) : null
+                            {
+                                item?.status !== "AVAILABLE" && (
+                                    !item.commingSoon ? (
+                                        <button className={`primary-btn w-full block request-when-available ${isRequestBtnActive ? '' : 'disabled'}`} onClick={() => requestOutofStock(item?.id)}>{item?.productRequested ? translation.toldMe : translation.tellMe}</button>
+                                    ) : null
+                                )
+                            }
+
+                            {item.commingSoon && <p className={`out-stock-btn yellow`}>{translation.availableSoon}</p>
+                            }
+                        </>
                     )
-                }
-
-                {item.commingSoon && <p className={`out-stock-btn yellow`}>{translation.availableSoon}</p>
                 }
 
             </div>

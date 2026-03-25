@@ -321,7 +321,7 @@ function Cart() {
       const lang = Cookies.get("lang") || "AR";
       const url = `${BASE_API}${endpoints.products.list}&id=${encodeURIComponent(
         sku
-      )}&pageSize=1&itemStatus=AVAILABLE&lang=${lang}&token=${token}`;
+      )}&pageSize=1&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${token}`;
       const res = await axios.get(url);
       return res.data?.items?.[0] || null;
     } catch (err) {

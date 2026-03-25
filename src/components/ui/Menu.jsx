@@ -98,7 +98,7 @@ export default function Menu({ scroll, resetSignal }) {
           </li>
 
           <li className="allProductsTab">
-            <Link href="/products?itemStatus=AVAILABLE" className="block py-2 px-3" onClick={() => {
+            <Link href={`/products?${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`} className="block py-2 px-3" onClick={() => {
               Cookies.remove('filterstatus')
               sessionStorage.removeItem('scrollToProduct');
               closeAllPopups();
@@ -112,7 +112,7 @@ export default function Menu({ scroll, resetSignal }) {
           {
             siteLocation !== "primereach" &&
             <li className="clearanceTab">
-              <Link href="/products?age=ALL&itemType=CLEARANCE&itemStatus=AVAILABLE&pageSize=12" className="block py-2 px-3" onClick={() => {
+              <Link href={`/products?age=ALL&itemType=CLEARANCE&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&pageSize=12`} className="block py-2 px-3" onClick={() => {
                 Cookies.remove('filterstatus')
                 closeAllPopups()
                 sessionStorage.removeItem('scrollToProduct');
@@ -212,7 +212,7 @@ export default function Menu({ scroll, resetSignal }) {
                           category.catalog_links.map((linkItem, linkIndex) => (
                             <li className={`dropdown-item ${activeCatalog === linkItem.id ? "active" : ""
                               }`} key={linkIndex}>
-                              <Link href={`/products?age=ALL&itemStatus=AVAILABLE&pageSize=12&catalog=${linkItem.id}`} onClick={() => setIsOpenCategoriesDropdown(false)}>
+                              <Link href={`/products?age=ALL&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&pageSize=12&catalog=${linkItem.id}`} onClick={() => setIsOpenCategoriesDropdown(false)}>
                                 {linkItem.name}
                               </Link>
                             </li>

@@ -5,6 +5,7 @@ import en from "../../../../locales/en.json";
 import ar from "../../../../locales/ar.json";
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
+import { getProfile } from '@/actions/utils';
 
 export default function FixedMobileMenu() {
     const { state = {}, dispatch = () => { } } = useAppContext() || {};
@@ -15,10 +16,11 @@ export default function FixedMobileMenu() {
     }, [state.LANG]);
     const pathname = usePathname();
     const isActive = (path) => pathname === path ? "active" : "";
+    const profileData = getProfile();
 
     return (
         <div className='fixed-mobile-menu isMobile'>
-            <div className="grid grid-cols-5 gap-1 h-full">
+            <div className={`grid gap-1 h-full ${profileData.viewOnly ? 'grid-cols-4' : 'grid-cols-5'}`}>
                 <Link className={isActive("/home")} href="/home">
                     <span className='flex flex-col items-center justify-center h-full gap-2'>
                         <i className='icon-home-01'></i>
@@ -26,7 +28,7 @@ export default function FixedMobileMenu() {
                         <span className="txt text-center">{translation.mobile.home}</span>
                     </span>
                 </Link>
-                <Link className={isActive("/products")} href="/products?itemStatus=AVAILABLE">
+                <Link className={isActive("/products")} href={`/products?${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`}>
                     <span className='flex flex-col items-center justify-center h-full gap-2'>
                         <i className='icon-shop'></i>
                         <i className='icon-shop-1 active'></i>
@@ -40,18 +42,22 @@ export default function FixedMobileMenu() {
                         <span className="txt text-center">{translation.mobile.brands}</span>
                     </span>
                 </Link>
-                <Link className={isActive("/cart")} href="/cart">
-                    <span className='flex flex-col items-center justify-center h-full gap-2'>
-                        <span className="cart-icon relative">
-                            {cartLength > 0 && (
-                                <span className="cart-count-num">{cartLength}</span>
-                            )}
-                            <i className="icon-bag-happy"></i>
-                            <i className="icon-bag-happy-1 active"></i>
-                        </span>
-                        <span className="txt text-center">{translation.mobile.bin}</span>
-                    </span>
-                </Link>
+                {
+                    !profileData.viewOnly && (
+                        <Link className={isActive("/cart")} href="/cart">
+                            <span className='flex flex-col items-center justify-center h-full gap-2'>
+                                <span className="cart-icon relative">
+                                    {cartLength > 0 && (
+                                        <span className="cart-count-num">{cartLength}</span>
+                                    )}
+                                    <i className="icon-bag-happy"></i>
+                                    <i className="icon-bag-happy-1 active"></i>
+                                </span>
+                                <span className="txt text-center">{translation.mobile.bin}</span>
+                            </span>
+                        </Link>
+                    )
+                }
                 <Link className={isActive("/profile")} href="/profile?personal">
                     <span className='flex flex-col items-center justify-center h-full gap-2'>
                         <i className='icon-user-03'></i>

@@ -38,6 +38,7 @@ function Cart() {
   });
   const router = useRouter()
   const siteLocation = Cookies.get("siteLocation")
+  const profileData = getProfile();
 
   const { state = {}, dispatch = () => { } } = useAppContext() || {};
   const [translation, setTranslation] = useState(ar);
@@ -145,7 +146,7 @@ function Cart() {
 
       const url = `${BASE_API}${endpoints.products.list}&id=${encodeURIComponent(
         sku
-      )}&pageSize=1&itemStatus=AVAILABLE&lang=${lang}&token=${token}`;
+      )}&pageSize=1&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${token}`;
 
       const res = await axios.get(url);
       return res.data?.items?.[0] || null;
