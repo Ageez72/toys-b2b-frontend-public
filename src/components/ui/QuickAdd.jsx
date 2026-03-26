@@ -110,16 +110,20 @@ export default function QuickAdd({ openSidebar }) {
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                             <i className="icon-search-normal"></i>
                         </div>
-                        <div
-                            className="absolute inset-y-0 start-0 flex items-center pe-3.5 password-icon"
-                            onClick={() => {
-                                openSidebar();
-                                document.body.classList.add('html-overflow');
-                            }}
-                        >
-                            {state.NumberOfParams > 0 ? <span className="red-filter-home">{state.NumberOfParams}</span> : null}
-                            <i className="icon-setting-4"></i>
-                        </div>
+                        {
+                            !profileData.viewOnly && (
+                                <div
+                                    className="absolute inset-y-0 start-0 flex items-center pe-3.5 password-icon"
+                                    onClick={() => {
+                                        openSidebar();
+                                        document.body.classList.add('html-overflow');
+                                    }}
+                                >
+                                    {state.NumberOfParams > 0 ? <span className="red-filter-home">{state.NumberOfParams}</span> : null}
+                                    <i className="icon-setting-4"></i>
+                                </div>
+                            )
+                        }
                         <SearchInput
                             bulk={false}
                             onCollectQuickAdd={getSelectedProduct}

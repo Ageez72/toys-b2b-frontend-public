@@ -393,7 +393,11 @@ export default function Page() {
           }
 
         </div>
-        <RateCard reviews={details?.reviews.reviews} id={details?.id} onRefresh={() => setRefresh(true)} />
+        {
+          !profileData.viewOnly && (
+            <RateCard reviews={details?.reviews.reviews} id={details?.id} onRefresh={() => setRefresh(true)} />
+          )
+        }
       </div>
       <div className="max-w-screen-xl mx-auto px-4">
         {

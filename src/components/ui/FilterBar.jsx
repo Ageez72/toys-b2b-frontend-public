@@ -198,7 +198,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             setToAge(0);
             setSelectedAge("ALL");
             setItemType("");
-            setItemStatus("");
+            setItemStatus("ALL");
             setBrand([]);
             setCategory([]);
             setCatalog([]);

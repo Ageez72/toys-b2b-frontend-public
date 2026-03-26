@@ -66,7 +66,7 @@ export default function Hero({
                 }}
             >
                 <div className="hero-content">
-                    <h1 className="hero-title text-center">{translation.heroTitle}</h1>
+                    <h1 className="hero-title text-center">{profileData.viewOnly ? translation.exploreOurProduct : translation.heroTitle}</h1>
                     <QuickAdd openSidebar={() => setIsSidebarModalOpen(true)} />
                     {
                         !profileData.viewOnly && (
