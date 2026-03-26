@@ -39,7 +39,7 @@ export default function Hero({
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    const backgroundImage = isMobile ? mobileImage : desktopImage;
+    const backgroundImage = desktopImage;
 
     return (
         <>
