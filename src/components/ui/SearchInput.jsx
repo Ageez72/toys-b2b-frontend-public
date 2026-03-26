@@ -106,11 +106,11 @@ export default function SearchInput({ closeSearchPopup, bulk, onCollectBulkItems
                                     </button>
                                     {
                                         item.commingSoon ? (<span className='price price-txt'>{translation.commingSoon}</span>) : (
-                                            <span className='price'>{Number(item.price).toFixed(2)} {siteLocation === "primereach" ? translation.iqd : translation.jod}</span>
+                                            <span className={`price ${profileData.viewOnly ? 'text-end' : ''}`}>{Number(item.price).toFixed(2)} {siteLocation === "primereach" ? translation.iqd : translation.jod}</span>
                                         )
                                     }
                                     {
-                                        !item.commingSoon ? (
+                                        !item.commingSoon && !profileData.viewOnly ? (
                                             <button className='view-details flex items-center' onClick={() => handleSelectProduct(item)} aria-label='Add Prodduct'>
                                                 <i className="icon-add" ></i>
                                             </button>
@@ -133,9 +133,13 @@ export default function SearchInput({ closeSearchPopup, bulk, onCollectBulkItems
                                             )
                                         }
                                     </div>
-                                    <button onClick={() => push(`/products/${encodeURIComponent(item.id)}`)} className='view-details flex items-center' aria-label='arrow'>
-                                        <span className="icon-arrow-left-01-round"></span>
-                                    </button>
+                                    {
+                                        !profileData.viewOnly && (
+                                            <button onClick={() => push(`/products/${encodeURIComponent(item.id)}`)} className='view-details flex items-center' aria-label='arrow'>
+                                                <span className="icon-arrow-left-01-round"></span>
+                                            </button>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </>
