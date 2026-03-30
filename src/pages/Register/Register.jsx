@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import img1 from "../../assets/imgs/auth-bg.png";
 import img2 from "../../assets/imgs/primeReach2.png";
+import img3 from "../../assets/imgs/primereach.png";
 import pattern from "../../assets/imgs/pattern.svg";
 import logo from "../../assets/imgs/logo.png";
 import LangSwitcher from '@/components/ui/LangSwitcher';
@@ -96,7 +97,7 @@ export default function Register() {
         <div className='form-side md:flex-1 flex-12'>
           <div className='image-logo flex-12 block lg:hidden'>
             <Image className='pattern-img' src={pattern} alt="Pattern" />
-            <Image className='logo-img' src={logo} width={252} alt="Logo" />
+            <Image className='logo-img' src={siteLocation === "primereach" ? img3 : logo} width={siteLocation === "primereach" ? 200 : 252} alt="Logo" />
           </div>
 
           <LangSwitcher />

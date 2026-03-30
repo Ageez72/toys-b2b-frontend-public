@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import img1 from "../../assets/imgs/auth-bg.png";
 import img2 from "../../assets/imgs/primeReach2.png";
+import img3 from "../../assets/imgs/primereach.png";
 import pattern from "../../assets/imgs/pattern.svg";
 import logo from "../../assets/imgs/logo.png";
 import LangSwitcher from '@/components/ui/LangSwitcher';
@@ -87,8 +88,8 @@ function Login() {
             />
             <Image
               className='logo-img'
-              src={logo}
-              width={252}
+              src={siteLocation === "primereach" ? img3 : logo}
+              width={siteLocation === "primereach" ? 200 : 252}
               alt="My Image"
             />
           </div>
