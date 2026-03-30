@@ -3,7 +3,7 @@ import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import img1 from "../../assets/imgs/auth-bg.png";
-import img2 from "../../assets/imgs/primeReach2.png";
+import img2 from "../../assets/imgs/primeReach3.png";
 import pattern from "../../assets/imgs/pattern.svg";
 import logo from "../../assets/imgs/logo.png";
 import LangSwitcher from '@/components/ui/LangSwitcher';
