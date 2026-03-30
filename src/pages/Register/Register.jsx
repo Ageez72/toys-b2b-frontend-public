@@ -96,7 +96,15 @@ export default function Register() {
       <div className="auth-container register-auth-container flex flex-col lg:flex-row gap-4">
         <div className='form-side md:flex-1 flex-12'>
           <div className='image-logo flex-12 block lg:hidden'>
-            <Image className='pattern-img' src={pattern} alt="Pattern" />
+            {
+              siteLocation !== "primereach" && (
+                <Image
+                  className='pattern-img'
+                  src={pattern}
+                  alt="My Image"
+                />
+              )
+            }
             <Image className='logo-img' src={siteLocation === "primereach" ? img3 : logo} width={siteLocation === "primereach" ? 200 : 252} alt="Logo" />
           </div>
 
