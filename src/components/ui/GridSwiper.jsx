@@ -31,7 +31,7 @@ export default function GridSwiper({ title, route, badgeType, type, id }) {
         queryKey: [type],
         queryFn: async () => {
             return axios.get(
-                `${BASE_API}${endpoints.products.list}&itemType=${type}&pageSize=12&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${Cookies.get('token')}`
+                `${BASE_API}${endpoints.products.list}&itemType=${type}&pageSize=12&noFilters=true&${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}&lang=${lang}&token=${Cookies.get('token')}`
             );
         },
         staleTime: 1000 * 60 * 5,
