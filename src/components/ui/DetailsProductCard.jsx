@@ -188,31 +188,43 @@ export default function DetailsProductCard({ item }) {
                                         (!profileData.isCorporate && !profileData.hideTargetSOA && !item.hideDiscount)
                                     ) ? (
                                     <>
-                                        <span className="product-card-price">
-                                            <span className="price-number">
-                                                {Number(item?.priceAfterDisc).toFixed(2)}
-                                            </span>
-                                            <span className="price-unit mx-1">
-                                                {siteLocation === "primereach" ? translation.iqd : translation.jod}
-                                            </span>
-                                        </span>
 
-                                        <span className="price-number discount">
-                                            {Number(item?.price).toFixed(2)}{" "}
-                                            {siteLocation === "primereach" ? translation.iqd : translation.jod}
-                                        </span>
+                                        {
+                                            item?.priceAfterDisc && (
+                                                <span className="product-card-price">
+                                                    <span className="price-number">
+                                                        {Number(item?.priceAfterDisc).toFixed(2)}
+                                                    </span>
+                                                    <span className="price-unit mx-1">
+                                                        {siteLocation === "primereach" ? translation.iqd : translation.jod}
+                                                    </span>
+                                                </span>
+                                            )
+                                        }
+                                        {
+                                            item?.price && (
+                                                <span className="price-number discount">
+                                                    {Number(item?.price).toFixed(2)}{" "}
+                                                    {siteLocation === "primereach" ? translation.iqd : translation.jod}
+                                                </span>
+                                            )
+                                        }
                                         <span>{(profileData.username === "MOHAMAD.KHIR" || profileData.username === "MOHAMAD.KHIR.PR") && item.cost > 0 ? `(${item.cost})` : null}</span>
                                     </>
                                 ) : (
                                     <>
-                                        <span className="product-card-price">
-                                            <span className="price-number">
-                                                {Number(item?.price).toFixed(2)}
-                                            </span>
-                                            <span className="price-unit mx-1">
-                                                {siteLocation === "primereach" ? translation.iqd : translation.jod}
-                                            </span>
-                                        </span>
+                                        {
+                                            item?.price && (
+                                                <span className="product-card-price">
+                                                    <span className="price-number">
+                                                        {Number(item?.price).toFixed(2)}
+                                                    </span>
+                                                    <span className="price-unit mx-1">
+                                                        {siteLocation === "primereach" ? translation.iqd : translation.jod}
+                                                    </span>
+                                                </span>
+                                            )
+                                        }
                                         <span>{(profileData.name === "MOHAMAD.KHIR" || profileData.name === "MOHAMAD.KHIR.PR") && item.cost > 0 ? `(${item.cost})` : null}</span>
                                     </>
                                 )
