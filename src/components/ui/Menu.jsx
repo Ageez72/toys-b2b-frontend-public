@@ -98,7 +98,7 @@ export default function Menu({ scroll, resetSignal }) {
           </li>
 
           <li className="allProductsTab">
-            <Link href={`/products?${profileData.viewOnly ? 'itemStatus=ALL' : 'itemStatus=AVAILABLE'}`} className="block py-2 px-3" onClick={() => {
+            <Link href={`/products?${profileData.viewOnly ? 'age=ALL&itemStatus=All&pageSize=12' : 'age=ALL&itemStatus=AVAILABLE&pageSize=12'}`} className="block py-2 px-3" onClick={() => {
               Cookies.remove('filterstatus')
               sessionStorage.removeItem('scrollToProduct');
               closeAllPopups();
