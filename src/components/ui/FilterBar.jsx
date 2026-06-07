@@ -365,7 +365,7 @@ export default function FilterBar({ isProductsPage, resetUpperFilters, catalogEn
             parentOptions(false, brand);
         }
         // if(brand.length){
-        // }else {
+        // }else { 
         fetchCategoriesOptions(true, brand)
         // }
     }, [filtersSections])
