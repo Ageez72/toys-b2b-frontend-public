@@ -118,7 +118,7 @@ export default function Header({ scroll, handleOffCanvas }) {
                     <i className="icon-search-normal"></i>
                   </div>
 
-                  <SearchInput bulk={false} closeSearchPopup={() => setIsOpenSearch(false)} />
+                  <SearchInput generalSearch={true} bulk={false} closeSearchPopup={() => setIsOpenSearch(false)} />
                 </div>
               </div>
             </div>

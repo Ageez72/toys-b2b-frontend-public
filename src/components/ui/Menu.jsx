@@ -157,7 +157,7 @@ export default function Menu({ scroll, resetSignal }) {
                     <i className="icon-search-normal"></i>
                   </div>
 
-                  <SearchInput bulk={false} closeSearchPopup={() => setIsOpenSearch(false)} />
+                  <SearchInput generalSearch={true} bulk={false} closeSearchPopup={() => setIsOpenSearch(false)} />
                 </div>
                 {/* <div className="flex items-center justify-center">
                   <i
