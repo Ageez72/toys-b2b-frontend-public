@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
   const [isOffCanvas, setOffCanvas] = useState(false);
   const [isSearch, setSearch] = useState(false);
   const pathname = usePathname();
+  const siteLocation = Cookies.get("siteLocation")
 
   const isAuthPage = pathname === "/" || pathname === "/register" || pathname === '/reset-password' || pathname === '/forget-password';
 
@@ -77,20 +78,24 @@ export default function RootLayout({ children }) {
               })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
             `}
           </Script>
-
-          {/* Google Analytics */}
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-HFR3DPYGR5"
-            strategy="beforeInteractive"
-          />
-          <Script id="google-analytics" strategy="beforeInteractive">
-            {`
+          {
+            siteLocation === "primereach" && (
+              <>
+                {/* Google Analytics */}
+                <Script
+                  src="https://www.googletagmanager.com/gtag/js?id=G-HFR3DPYGR5"
+                  strategy="beforeInteractive"
+                />
+                <Script id="google-analytics" strategy="beforeInteractive">
+                  {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-HFR3DPYGR5');
             `}
-          </Script>
+                </Script>
+              </>
+            )}
 
         </head>
         <body

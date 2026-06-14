@@ -198,7 +198,7 @@ export default function OrderDetails() {
                                             <h3 className="sub-title mb-4 mt-8">{translation.paymentMethod}</h3>
                                             <div className="payment-methods flex flex-wrap lg:flex-nowrap gap-3">
                                                 {
-                                                    orderDetails.paymentMethod === "cash" ? (
+                                                    orderDetails.paymentMethod === "Cash" ? (
                                                         <label className="block w-full lg:w-1/2">
                                                             <div className={`card`}>
                                                                 <div className="payment-method">
@@ -211,7 +211,7 @@ export default function OrderDetails() {
                                                     ) : null
                                                 }
                                                 {
-                                                    orderDetails.paymentMethod === "eb" ? (
+                                                    orderDetails.paymentMethod === "EB" ? (
                                                         <label className="block w-full lg:w-1/2">
                                                             <div className={`card`}>
                                                                 <div className="payment-method">
@@ -224,7 +224,7 @@ export default function OrderDetails() {
                                                     ) : null
                                                 }
                                                 {
-                                                    orderDetails.paymentMethod === "online" ? (
+                                                    orderDetails.paymentMethod === "Online" ? (
                                                         <label className="block w-full lg:w-1/2">
                                                             <div className={`card`}>
                                                                 <div className="payment-method">
