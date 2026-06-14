@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/ui/Header";
 import Footer from "@/components/ui/Footer";
@@ -10,7 +10,6 @@ import Cookies from "js-cookie";
 import "./globals.scss";
 import ContactTools from "@/components/ui/ContactTools";
 import { Toaster } from "react-hot-toast";
-import Script from "next/script";
 
 export default function RootLayout({ children }) {
   const [lang, setLang] = useState(Cookies?.get("lang"));
@@ -18,7 +17,7 @@ export default function RootLayout({ children }) {
   const [isOffCanvas, setOffCanvas] = useState(false);
   const [isSearch, setSearch] = useState(false);
   const pathname = usePathname();
-  const siteLocation = Cookies.get("siteLocation")
+  const analyticsInsertedRef = useRef(false);
 
   const isAuthPage = pathname === "/" || pathname === "/register" || pathname === '/reset-password' || pathname === '/forget-password';
 
@@ -32,7 +31,7 @@ export default function RootLayout({ children }) {
 
     document.addEventListener("scroll", () => {
       const scrollCheck = window.scrollY > 100;
-      if (scrollCheck !== scroll) setScroll(scrollCheck);
+      setScroll((current) => (current === scrollCheck ? current : scrollCheck));
     });
 
     if (Cookies?.get("lang")) {
@@ -45,35 +44,34 @@ export default function RootLayout({ children }) {
         Cookies?.get("lang") || "AR"
       );
     }
-  }, []);
 
-  return (
-    <ReactQueryProvider>
-      <html lang="ar" dir="rtl" data-scroll-behavior="smooth">
-        <head>
-          {
-            siteLocation !== "primereach" && (
-              <>
-                {/* Google Analytics */}
-                <Script
-                  src="https://www.googletagmanager.com/gtag/js?id=G-TE73NGSFDB"
-                  strategy="beforeInteractive"
-                />
-                <Script id="google-analytics" strategy="beforeInteractive">
-                  {`
+    if (!analyticsInsertedRef.current) {
+      analyticsInsertedRef.current = true;
+      const siteLocation = Cookies.get("siteLocation");
+      const analyticsId =
+        siteLocation === "primereach" ? "G-HFR3DPYGR5" : "G-TE73NGSFDB";
+
+      if (!document.querySelector(`script[src="https://www.googletagmanager.com/gtag/js?id=${analyticsId}"]`)) {
+        const externalScript = document.createElement("script");
+        externalScript.src = `https://www.googletagmanager.com/gtag/js?id=${analyticsId}`;
+        externalScript.async = true;
+        document.head.appendChild(externalScript);
+      }
+
+      const inlineScript = document.createElement("script");
+      inlineScript.innerHTML = `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-TE73NGSFDB');
-            `}
-                </Script>
-              </>
-            )
-          }
+              gtag('config', '${analyticsId}');
+            `;
+      document.head.appendChild(inlineScript);
+    }
 
-          {/* Hotjar Tracking */}
-          <Script id="hotjar" strategy="beforeInteractive">
-            {`
+    if (!document.getElementById("hotjar-script")) {
+      const hotjarScript = document.createElement("script");
+      hotjarScript.id = "hotjar-script";
+      hotjarScript.innerHTML = `
               (function(h,o,t,j,a,r){
                   h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
                   h._hjSettings={hjid:6513872,hjsv:6};
@@ -82,27 +80,16 @@ export default function RootLayout({ children }) {
                   r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
                   a.appendChild(r);
               })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-            `}
-          </Script>
-          {
-            siteLocation === "primereach" && (
-              <>
-                {/* Google Analytics */}
-                <Script
-                  src="https://www.googletagmanager.com/gtag/js?id=G-HFR3DPYGR5"
-                  strategy="beforeInteractive"
-                />
-                <Script id="google-analytics" strategy="beforeInteractive">
-                  {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-HFR3DPYGR5');
-            `}
-                </Script>
-              </>
-            )}
+            `;
+      document.head.appendChild(hotjarScript);
+    }
+  }, []);
 
+  return (
+    <ReactQueryProvider>
+      <html lang="ar" dir="rtl" data-scroll-behavior="smooth">
+        <head>
+          {/* Hotjar Tracking */}
         </head>
         <body
           className={`antialiased ${!isAuthPage ? "header-padding" : ""}`}
