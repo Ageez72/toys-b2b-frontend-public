@@ -1459,6 +1459,10 @@ $tablet-font-percent: 25%;
     @media (max-width: $max-mobile-breakpoint) {
         padding: 0;
     }
+
+    .payment-methods label {
+        cursor: auto;
+    }
 }
 
 .product-card-content {
