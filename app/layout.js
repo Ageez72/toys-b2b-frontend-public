@@ -51,19 +51,25 @@ export default function RootLayout({ children }) {
     <ReactQueryProvider>
       <html lang="ar" dir="rtl" data-scroll-behavior="smooth">
         <head>
-          {/* Google Analytics */}
-          <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-TE73NGSFDB"
-            strategy="beforeInteractive"
-          />
-          <Script id="google-analytics" strategy="beforeInteractive">
-            {`
+          {
+            siteLocation !== "primereach" && (
+              <>
+                {/* Google Analytics */}
+                <Script
+                  src="https://www.googletagmanager.com/gtag/js?id=G-TE73NGSFDB"
+                  strategy="beforeInteractive"
+                />
+                <Script id="google-analytics" strategy="beforeInteractive">
+                  {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-TE73NGSFDB');
             `}
-          </Script>
+                </Script>
+              </>
+            )
+          }
 
           {/* Hotjar Tracking */}
           <Script id="hotjar" strategy="beforeInteractive">
